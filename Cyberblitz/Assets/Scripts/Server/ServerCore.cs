@@ -45,8 +45,16 @@ public static class ServerCore
 	{
 		ConnectedUser connectedUser = GetConnectedUser(id);
 		if (connectedUser != null)
+		{
 			connectedUser.Emit(message, content);
+			Debug.Log("Sent " + message + " to " + connectedUser.user.username);
+		}
+	}
 
+	public static void TerminateGame(MatchID id)
+	{
+		games.Remove(GetGame(id));
+		UpdateUserList();
 	}
 
 	public static void Broadcast(string message, object content)
@@ -62,7 +70,9 @@ public static class ServerCore
 		List<User> userList = new List<User>();
 		foreach (ConnectedUser connectedUser in users)
 		{
-			userList.Add(connectedUser.user);
+			User user = connectedUser.user;
+			user.playable = GetUserGame(user.id) == null;
+			userList.Add(user);
 		}
 		Broadcast("USER_LIST", userList);
 	}
@@ -96,11 +106,11 @@ public static class ServerCore
 			if (connectedUser.socket == socket)
 			{
 				Referee activeGame = GetUserGame(connectedUser.user.id);
+				users.Remove(connectedUser);
 				if (activeGame != null)
 				{
 					activeGame.OnPlayerDisconnect(connectedUser.user);
 				}
-				users.Remove(connectedUser);
 				Debug.Log($"Disconnected user {connectedUser.user.username}\nTotal connected users: {users.Count}");
 			}
 		}
@@ -139,7 +149,10 @@ public static class ServerCore
 			referee.AddPlayer(user1.user);
 			referee.AddPlayer(user2.user);
 			referee.Start();
+
+			UpdateUserList();
 		}
+
 	}
 
 	static void StartGameWithBot(NetworkPacket packet)
@@ -157,6 +170,7 @@ public static class ServerCore
 		referee.AddPlayer(packet.user);
 		referee.AddBot();
 		referee.Start();
-	}
 
+		UpdateUserList();
+	}
 }

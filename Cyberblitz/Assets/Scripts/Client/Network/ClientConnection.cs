@@ -38,7 +38,6 @@ public class ClientConnection
 		{
 			NetworkPacket packet = NetworkPacket.fromJSON(e.Data);
 			callstack.Add(packet);
-			//events.Invoke(packet);
 		};
 
 		ws.OnClose += (sender, e) =>

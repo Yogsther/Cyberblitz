@@ -31,26 +31,28 @@ public class PlayerBrowser : MonoBehaviour
 		ClearList();
 		List<User> userList = packet.Parse<List<User>>();
 
-		LoadUser("Play against bot", () => ClientConnection.Emit("PLAY_BOT"));
+		title.text = "Logged in as " + ClientLogin.user.username;
+
+		LoadUser("Play against bot", true, () => ClientConnection.Emit("PLAY_BOT"));
 
 		foreach (User user in userList)
 			if (user.id != ClientLogin.user.id)
-				LoadUser(user.username, () => ClientConnection.Emit("PLAY_PLAYER", user.id));
+				LoadUser(user.username, user.playable, () => ClientConnection.Emit("PLAY_PLAYER", user.id));
 	}
 
 	void ClearList()
 	{
-		Debug.Log("Clear list");
 		foreach (Transform child in userListParent)
 		{
 			Destroy(child.gameObject);
 		}
 	}
 
-	public void LoadUser(string username, Action callback)
+	public void LoadUser(string title, bool playable, Action callback)
 	{
 		UserListEntry entry = Instantiate(userListEntryPrefab, userListParent);
-		entry.username.text = username;
+		entry.username.text = title;
+		entry.SetPlayable(playable);
 		entry.button.onClick.AddListener(() =>
 		{
 			callback();

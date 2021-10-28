@@ -6,16 +6,13 @@ using UnityEngine.UI;
 public class UserListEntry : MonoBehaviour
 {
 
-	public Text username;
+	public Text username, buttonText;
 	public Button button;
 
-	void Start()
+	public void SetPlayable(bool playable)
 	{
-
+		button.interactable = playable;
+		buttonText.text = playable ? "Play" : "Already in game";
 	}
 
-	void Update()
-	{
-
-	}
 }
