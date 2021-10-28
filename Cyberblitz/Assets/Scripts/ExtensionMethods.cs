@@ -1,0 +1,104 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class ExtensionMethods
+{
+    //___Position___//
+
+    public static Vector2 ToVector2(this Position position)
+    {
+        return new Vector2(position.x, position.y);
+    }
+
+
+
+    //___Vector2___//
+
+    public static Vector2 Round(this Vector2 vector, float roundTo = 1f)
+    {
+        float x = vector.x != 0f ? Mathf.Round(vector.x / roundTo) * roundTo : 0f;
+        float y = vector.y != 0f ? Mathf.Round(vector.y / roundTo) * roundTo : 0f;
+
+        return new Vector2(x, y);
+    }
+
+    public static Vector3 ToFlatVector3(this Vector2 vector, float y = 0f)
+    {
+        return new Vector3(vector.x, y, vector.y);
+    }
+
+    public static Vector2Int RoundToVector2Int(this Vector2 vector)
+    {
+        int x = Mathf.RoundToInt(vector.x);
+        int y = Mathf.RoundToInt(vector.y);
+
+        return new Vector2Int(x, y);
+    }
+
+    public static Position ToPosition(this Vector2 vector)
+    {
+        return new Position(vector.x, vector.y);
+    }
+
+    //___Vector3___//
+
+    public static Vector2 FlatVector3ToVector2(this Vector3 vector)
+    {
+        return new Vector2(vector.x, vector.z);
+    }
+
+    public static Vector3 Flatten(this Vector3 vector, float y = 0)
+    {
+        return new Vector3(vector.x, y, vector.z);
+    }
+
+    public static Vector2Int RoundFlatToVector2Int(this Vector3 vector)
+    {
+        int x = Mathf.RoundToInt(vector.x);
+        int y = Mathf.RoundToInt(vector.z);
+
+        return new Vector2Int(x, y);
+    }
+
+    public static Vector3Int RoundToVector3Int(this Vector3 vector)
+    {
+        int x = Mathf.RoundToInt(vector.x);
+        int y = Mathf.RoundToInt(vector.y);
+        int z = Mathf.RoundToInt(vector.z);
+
+        return new Vector3Int(x, y, z);
+    }
+
+
+    //___Vector2Int___//
+
+    public static Vector2 ToVector2(this Vector2Int vector2Int)
+    {
+        return vector2Int;
+    }
+
+    public static Vector3 ToFlatVector3(this Vector2Int vector, float y = 0f)
+    {
+        return new Vector3(vector.x, y, vector.y);
+    }
+
+    //___Vector3Int___//
+    public static Vector2Int FlatToVector2Int(this Vector3Int vector)
+    {
+        return new Vector2Int(vector.x, vector.z);
+    }
+
+    //___List<Vector2Int>___//
+    public static List<Vector3> ToFlatVector3(this List<Vector2Int> vector2Ints, float y = 0f)
+    {
+        List<Vector3> vector3s = new List<Vector3>();
+
+        foreach (Vector2Int vector2Int in vector2Ints) vector3s.Add(vector2Int.ToFlatVector3(y));
+
+        return vector3s;
+    }
+
+    
+
+
+}

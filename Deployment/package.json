@@ -1,0 +1,16 @@
+{
+  "name": "deployment",
+  "version": "1.0.0",
+  "description": "This is the automatic deployment system for the\r server and website. This system automatically listens to\r webhooks for the `stable` and `nightly` branches. When an update\r is pushed, it pulls, updates the server `/ServerBuild` and restart. It also zips the game build \r `/Build`, names it correctly `(CyberBlitz_Stable_V1.2.zip)` and makes it avalible to\r download from the website.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "file-system": "^2.2.2",
+    "http": "^0.0.1-security"
+  }
+}

@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &750073791241598315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 750073791241598314}
+  - component: {fileID: 750073791241598293}
+  m_Layer: 0
+  m_Name: Test Level
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &750073791241598314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750073791241598315}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &750073791241598293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750073791241598315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7840808830181fa47ab4dcc38e28fe4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelGridSize: {x: 40, y: 25}
+  spawnAreas:
+  - gridTransform:
+      x: 3
+      y: 3
+      width: 5
+      height: 5
+    gameObjectPrefab: {fileID: 0}
+    gameObjectInstance: {fileID: 0}
+    cameraRotationForTeam: 0
+    team: 0
+  - gridTransform:
+      x: 36
+      y: 21
+      width: 5
+      height: 5
+    gameObjectPrefab: {fileID: 0}
+    gameObjectInstance: {fileID: 0}
+    cameraRotationForTeam: 180
+    team: 1
+  gridColliders:
+  - gridTransform:
+      x: 16
+      y: 20
+      width: 2
+      height: 9
+    gameObjectPrefab: {fileID: 4288265369110412121, guid: 75453405905ffd247b28979a23f80f95, type: 3}
+    gameObjectInstance: {fileID: 0}
+    type: 1
+  - gridTransform:
+      x: 16
+      y: 10
+      width: 2
+      height: 2
+    gameObjectPrefab: {fileID: 4288265369110412121, guid: 3e2e20f34ffd3274fb06dd1c2c187b1b, type: 3}
+    gameObjectInstance: {fileID: 0}
+    type: 2
+  - gridTransform:
+      x: 16
+      y: 7
+      width: 8
+      height: 4
+    gameObjectPrefab: {fileID: 4288265369110412121, guid: a96f4f8e65f546d4dbcd79516b9c3134, type: 3}
+    gameObjectInstance: {fileID: 0}
+    type: 4
+  groundPrefab: {fileID: 3267147761011900592, guid: fc1013451bdb2bf4ca30c1195c6799f6, type: 3}
+  showGameObjectsInEditor: 0
