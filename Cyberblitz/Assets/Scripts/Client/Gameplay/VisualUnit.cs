@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class VisualUnit : MonoBehaviour, IPointerClickHandler
+public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
 {
 	public UnitID id = "test id";
 	public Transform mainModel;
@@ -16,7 +16,12 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler
 	public bool isSelectable;
 
 	public static Action<UnitID> OnSelected;
+	public static Action<UnitID> OnSelectAndDrag;
 	public static Action<UnitID> OnDeselected;
+
+	public bool mouseDownOnUnit = false;
+
+
 
 	private void Start()
 	{
@@ -41,8 +46,28 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler
 
 	}
 
+
 	public void OnPointerClick(PointerEventData eventData)
 	{
 		SetSelected(true);
+	}
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		if (mouseDownOnUnit)
+		{
+			OnSelectAndDrag?.Invoke(id);
+			mouseDownOnUnit = false;
+		}
+	}
+
+	public void OnPointerDown(PointerEventData eventData)
+	{
+		mouseDownOnUnit = true;
+	}
+
+	public void OnPointerUp(PointerEventData eventData)
+	{
+		mouseDownOnUnit = false;
 	}
 }
