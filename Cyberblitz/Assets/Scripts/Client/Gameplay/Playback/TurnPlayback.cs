@@ -52,8 +52,22 @@ public class TurnPlayback : MonoBehaviour
 
 		Unit[] units = match.GetAllUnits();
 
+		MatchEvent nextEvent = null;
+
+		Debug.Log("MATCH EVENT COUNT: " + match.events.Count);
+
+		if (match.events.Count != 0) nextEvent = match.events.Dequeue();
+
 		for (float time = 0f; time < match.rules.turnTime; time += Time.deltaTime)
 		{
+
+			if(nextEvent != null && time > nextEvent.time)
+            {
+				nextEvent.PlaybackEffect(match);
+
+				if (match.events.Count != 0) nextEvent = match.events.Dequeue();
+			}
+
 			foreach (Unit unit in units)
 			{
 

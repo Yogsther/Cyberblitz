@@ -1,128 +1,125 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BlockEditor : InGameEditor
 {
-	public AutoGridPathEditor pathEditor;
-	public VisionConeEditor visionConeEditor;
+    public AutoGridPathEditor pathEditor;
+    public VisionConeEditor visionConeEditor;
 
-	private Block selectedBlock;
-	private float currentFreeTime;
+    private Block selectedBlock;
+    private float currentFreeTime;
 
-	public void EditBlock(ref Block block, float freeTime)
-	{
-		currentFreeTime = freeTime;
+    public void EditBlock(ref Block block, float freeTime)
+    {
+        currentFreeTime = freeTime;
 
-		StartCoroutine(BlockEditing(block));
-	}
+        StartCoroutine(BlockEditing(block));
+    }
 
-	public void StopEditing()
-	{
-		selectedBlock = null;
-	}
+    public void StopEditing()
+    {
+        selectedBlock = null;
+    }
 
-	public IEnumerator BlockEditing(Block block)
-	{
+    public IEnumerator BlockEditing(Block block)
+    {
 
-		selectedBlock = block;
+        selectedBlock = block;
 
-		yield return null;
+        Unit blockOwner = MatchManager.match.GetUnit(block.ownerId);
+        UnitStats ownerStats = UnitDataManager.GetUnitDataByType(blockOwner.type).stats;
 
-		Debug.Log("[BlockEditor] - Started editing a block");
+        GridPoint originPoint = blockOwner.timeline.GetOriginPoint(block.timelineIndex);
 
-		switch (block.type)
-		{
-			case BlockType.Move:
-			{
+        yield return null;
 
-				MoveBlock moveBlock = block as MoveBlock;
+        Debug.Log("[BlockEditor] - Started editing a block");
 
-				if (moveBlock.movementPath == null)
-				{
-					moveBlock.movementPath = new AutoGridPath(MatchManager.match.GetUnit(moveBlock.ownerId).timeline.GetOriginPoint(moveBlock.timelineIndex));
-				}
+        switch (block.type)
+        {
+            case BlockType.Move:
+            {
 
+                MoveBlock moveBlock = block as MoveBlock;
 
+                if (moveBlock.movementPath == null)
+                {
+                    moveBlock.movementPath = new AutoGridPath(originPoint);
+                }
 
-				pathEditor.EditGridPath(ref moveBlock.movementPath, 500f + currentFreeTime);
-				pathEditor.OnUpdated += UpdateBlock;
-
-
-				while (selectedBlock == block)
-				{
-					yield return null;
-				}
+                pathEditor.EditGridPath(ref moveBlock.movementPath, 500f + currentFreeTime);
+                pathEditor.OnUpdated += UpdateBlock;
 
 
-				pathEditor.StopEditing();
+                while (selectedBlock == block)
+                {
+                    yield return null;
+                }
 
-				pathEditor.OnUpdated -= UpdateBlock;
-				/*}*//*else
-				{
-					Debug.LogWarning("MoveBlock.movementPath was null");
-				}*/
-			}
-			break;
-			case BlockType.Guard:
-			{
-				GuardBlock guardBlock = block as GuardBlock;
 
-				if (guardBlock.aimCone != null)
-				{
-					visionConeEditor.EditGridPath(ref guardBlock.aimCone);
-					visionConeEditor.OnUpdated += UpdateBlock;
+                pathEditor.StopEditing();
 
-					while (selectedBlock == block)
-					{
-						yield return null;
-					}
+                pathEditor.OnUpdated -= UpdateBlock;
 
-					visionConeEditor.OnUpdated -= UpdateBlock;
-				} else
-				{
-					Debug.LogWarning("GuardBlock.aimCone was null");
-				}
-			}
-			break;
-		}
+            }
+            break;
+            case BlockType.Guard:
+            {
+                GuardBlock guardBlock = block as GuardBlock;
 
-		Debug.Log("[BlockEditor] - Stopped editing a block");
+                if (guardBlock.aimCone == null)
+                {
+                    guardBlock.aimCone = new VisionCone(originPoint, ownerStats.range, ownerStats.spread);
+                }
 
-	}
+                visionConeEditor.EditVisionCone(ref guardBlock.aimCone);
+                visionConeEditor.OnUpdated += UpdateBlock;
 
-	public void UpdateBlock()
-	{
-		Timeline blockTimeline = MatchManager.GetUnit(selectedBlock.ownerId).timeline;
+                while (selectedBlock == block)
+                {
+                    yield return null;
+                }
 
-		GridPoint lastGridPoint = null;
+                visionConeEditor.OnUpdated -= UpdateBlock;
+            }
+            break;
+        }
 
-		foreach (Block block in blockTimeline.blocks)
-		{
+        Debug.Log("[BlockEditor] - Stopped editing a block");
 
-			switch (block.type)
-			{
-				case BlockType.Move:
-				{
-					MoveBlock moveBlock = block as MoveBlock;
+    }
 
-					if (lastGridPoint != null)
-					{
-						moveBlock.movementPath.origin = lastGridPoint;
-					}
+    public void UpdateBlock()
+    {
+        Timeline blockTimeline = MatchManager.GetUnit(selectedBlock.ownerId).timeline;
 
-					lastGridPoint = moveBlock.movementPath.target;
+        GridPoint lastGridPoint = null;
 
-					moveBlock.duration = moveBlock.movementPath.GetTotalPathLength();
+        foreach (Block block in blockTimeline.blocks)
+        {
 
-				}
-				break;
-				case BlockType.Guard:
-					break;
-			}
+            switch (block.type)
+            {
+                case BlockType.Move:
+                {
+                    MoveBlock moveBlock = block as MoveBlock;
 
-		}
-		OnUpdated?.Invoke();
-	}
+                    if (lastGridPoint != null)
+                    {
+                        moveBlock.movementPath.origin = lastGridPoint;
+                    }
+
+                    lastGridPoint = moveBlock.movementPath.target;
+
+                    moveBlock.duration = moveBlock.movementPath.GetTotalPathLength();
+
+                }
+                break;
+                case BlockType.Guard:
+                break;
+            }
+
+        }
+        OnUpdated?.Invoke();
+    }
 }

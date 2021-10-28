@@ -19,6 +19,8 @@ MonoBehaviour:
     speed: 1
     damage: 2
     firerate: 2
+    range: 5
+    spread: 45
   description: 
   canGuard: 1
   model: {fileID: 8952396240317939304, guid: f04d462344de67d4f9d29d4b6c5dda10, type: 3}

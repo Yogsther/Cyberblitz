@@ -16,6 +16,8 @@ public class UnitStats
     public float speed = 2f;
     public float damage = 2f;
     public float firerate = 2f;
+    public float range = 5f;
+    public float spread = 45f;
 }
 
 
