@@ -10,6 +10,8 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 	private readonly float RESIZE_PIXEL_THRESHOLD = 60f;
 	private TimelineEditor editor;
 
+	public bool deletable = false;
+
 	public RectTransform rectTransform, resizeHandleRect;
 
 	public Image blockBackgroundImage, iconImage, selectionImage, resizeHandleImage;
@@ -114,7 +116,7 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	private void OnDragStart()
 	{
-		if (template.moveable)
+		if (template.moveable || deletable)
 		{
 			editor.SelectBlock(block);
 			drag.attemptedDrag = false;
@@ -128,8 +130,13 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 	{
 		if (editor.IsMouseIsOverTimeline() && IsPlaceableInTimeline())
 		{
-			editor.InsertBlock(this, editor.GetMousePositionRelative().x);
+			int insertIndex = editor.GetInsertIndex(editor.GetMousePositionRelative().x);
+
+			if (!template.moveable && block != null) insertIndex = block.timelineIndex;
+
+			editor.InsertBlock(this, insertIndex);
 			editor.SelectBlock(block);
+
 		} else
 		{
 			editor.DeselectBlockSafe();

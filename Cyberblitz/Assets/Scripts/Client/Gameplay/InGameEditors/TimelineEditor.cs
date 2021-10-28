@@ -50,6 +50,7 @@ public class TimelineEditor : InGameEditor
 		TIMELINE_PIXELS_TO_SECONDS = TIMELINE_WIDTH / TIMELINE_DURATION;
 
 		VisualUnit.OnSelected += id => SelectUnit(MatchManager.GetUnit(id));
+		VisualUnit.OnSelectAndDrag += id => SelectAndDragUnit(MatchManager.GetUnit(id));
 
 		blockSources.CreateSourceButtons(this);
 
@@ -156,7 +157,6 @@ public class TimelineEditor : InGameEditor
 	}
 
 	private void SelectUnit(Unit unit)
-
 	{
 		if (MatchManager.match.state == Match.GameState.Planning)
 		{
@@ -170,6 +170,16 @@ public class TimelineEditor : InGameEditor
 		}
 	}
 
+	void SelectAndDragUnit(Unit unit)
+	{
+		SelectUnit(unit);
+
+		if (GetSelectedTimeline().GetSize() == 0)
+
+			AddNewMoveBlock();
+	}
+
+
 	void LoadTimeline()
 	{
 		foreach (Block block in GetSelectedTimeline().blocks)
@@ -178,11 +188,8 @@ public class TimelineEditor : InGameEditor
 			blockElements.Add(blockElement);
 		}
 
-		if (GetSelectedTimeline().GetSize() > 0 && GetSelectedTimeline().GetLastBlock().type == BlockType.Move)
+		if (GetSelectedTimeline().GetSize() > 0)
 			SelectBlock(GetSelectedTimeline().GetLastBlock());
-		else
-			AddNewMoveBlock();
-
 
 		ArrengeUITimeline();
 	}
@@ -256,10 +263,8 @@ public class TimelineEditor : InGameEditor
 	}
 
 
-	public bool InsertBlock(BlockElement blockElement, float x = -1)
+	public bool InsertBlock(BlockElement blockElement, int insertIndex = -1)
 	{
-
-		int insertIndex = GetInsertIndex(x);
 
 		if (blockElement.block == null)
 		{
@@ -269,7 +274,7 @@ public class TimelineEditor : InGameEditor
 			blockElement.block = block;
 		}
 
-		if (insertIndex == -1 || insertIndex > blockElements.Count || x == -1) blockElements.Add(blockElement);
+		if (insertIndex == -1 || insertIndex > blockElements.Count) blockElements.Add(blockElement);
 		else blockElements.Insert(insertIndex, blockElement);
 
 		GetSelectedTimeline().InsertBlock(blockElement.block, insertIndex);
@@ -283,6 +288,9 @@ public class TimelineEditor : InGameEditor
 		float x = BLOCK_ELEMENT_PADDING;
 		freeTimeInTimeline = TOTAL_TIMELINE_DURATION;
 
+		BlockElement lastMovementBlock = null;
+
+
 		for (int i = 0; i < blockElements.Count; i++)
 		{
 			BlockElement blockElement = blockElements[i];
@@ -291,8 +299,17 @@ public class TimelineEditor : InGameEditor
 			blockElement.UpdatePhysicalProperties();
 			x += blockElement.GetWidth() + BLOCK_ELEMENT_PADDING;
 
+			if (blockElement.block.type == BlockType.Move)
+			{
+				blockElement.deletable = false;
+				lastMovementBlock = blockElement;
+			}
+
 			freeTimeInTimeline -= blockElement.block.duration;
 		}
+
+		// The last movement block can always be deleted but not moved.
+		if (lastMovementBlock != null) lastMovementBlock.deletable = true;
 	}
 
 	public int GetInsertIndex(float x)
