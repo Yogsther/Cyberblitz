@@ -30,8 +30,6 @@ public class MoveBlock : Block
 
 		Vector2 newPosition = GetPositionAtTime(localTime);
 
-		Debug.Log(newPosition);
-
 		Vector3 newForwardDirection = (GetPositionAtTime(localTime + 1f) - newPosition).ToFlatVector3();
 
 
