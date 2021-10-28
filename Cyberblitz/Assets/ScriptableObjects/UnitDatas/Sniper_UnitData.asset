@@ -16,7 +16,7 @@ MonoBehaviour:
   name: Sniper
   stats:
     maxHp: 2
-    speed: 2
+    speed: 8
     damage: 3
     firerate: 1
     range: 5

@@ -44,7 +44,10 @@ public class ConnectionConfiguration : MonoBehaviour
 		if (connectionType == ConnectionType.Client)
 		{
 			foreach (NetworkPacket packet in clientConnection.callstack)
+			{
 				ClientConnection.events.Invoke(packet);
+			}
+
 
 			clientConnection.callstack.Clear();
 		}

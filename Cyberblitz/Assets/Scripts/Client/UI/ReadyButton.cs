@@ -45,9 +45,17 @@ public class ReadyButton : MonoBehaviour
 		{
 			if (MatchManager.match.state == Match.GameState.Planning)
 			{
-				timer -= Time.deltaTime;
-				if (timer < 0) timer = 0;
-				timerText.text = TimeFormat.TimeToString(timer) + "S";
+				if (timer > 0)
+				{
+					timer -= Time.deltaTime;
+					if (timer <= 0)
+					{
+						timer = 0;
+						MatchManager.SignalReady();
+					}
+					timerText.text = TimeFormat.TimeToString(timer) + "S";
+				}
+
 			}
 		}
 	}
