@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GuardBlock : Block
 {
-	public VisionCone aimCone = new VisionCone();
+	public VisionCone aimCone;
 
 	public GuardBlock(UnitID ownerId, int timelineIndex) : base(ownerId, timelineIndex)
 	{
@@ -12,6 +12,8 @@ public class GuardBlock : Block
 	}
 	public override void Simulate(Match simulatedMatch, float localTime)
 	{
+		Unit ownerUnit = simulatedMatch.GetUnit(ownerId);
+
 		int ownerTeam = simulatedMatch.GetUnitTeam(ownerId);
 
 		foreach (Unit otherUnit in simulatedMatch.GetAllUnits())
@@ -25,6 +27,11 @@ public class GuardBlock : Block
 
 				Debug.Log($"[GuardBlock - {ownerId}] Shot {otherUnit.id}");
 
+				float deathTime = ownerUnit.timeline.GetStartTimeOfBlock(this) + localTime;
+
+				DeathEvent deathEvent = new DeathEvent(otherUnit.id, deathTime);
+
+				simulatedMatch.events.Enqueue(deathEvent);
 			}
 		}
 
@@ -34,7 +41,9 @@ public class GuardBlock : Block
 	{
 		VisualUnit ownerVisualUnit = VisualUnitManager.GetVisualUnitById(ownerId);
 
-		ownerVisualUnit.transform.rotation = Quaternion.AngleAxis(aimCone.direction, Vector3.up);
+		Transform ownerTransform = ownerVisualUnit.mainModel;
+
+		ownerTransform.rotation = Quaternion.AngleAxis(aimCone.direction, Vector3.up);
 	}
 
 }

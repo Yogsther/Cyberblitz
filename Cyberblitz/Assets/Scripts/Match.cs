@@ -11,7 +11,7 @@ public class Match
 	public Unit[] units;
 	public int round;
 	public string level;
-	public List<GameEvent> events = new List<GameEvent>();
+	public Queue<MatchEvent> events = new Queue<MatchEvent>();
 	public GameState state = GameState.Starting;
 	public MatchRules rules = new MatchRules();
 
