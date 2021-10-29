@@ -30,11 +30,11 @@ public class ClientConnection
 		ws.Close();
 	}
 
-	public ClientConnection(Config config)
+	public ClientConnection(Config config, bool live)
 	{
 		this.config = config;
 		version = config.version;
-		ws = new WebSocket("ws://localhost");
+		ws = new WebSocket(live ? "wss://stable.cyberblitz.okdev.se" : "ws://localhost");
 
 		ws.OnMessage += (sender, e) =>
 		{
