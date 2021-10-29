@@ -14,6 +14,7 @@ public class Match
 	public Queue<MatchEvent> events = new Queue<MatchEvent>();
 	public GameState state = GameState.Starting;
 	public MatchRules rules = new MatchRules();
+	public float longestTimelineDuration;
 
 	public bool IsOwnerOfUnit(UserID userId, UnitID unitId)
 	{

@@ -7,11 +7,12 @@ public class BlockEditor : InGameEditor
 	public VisionConeEditor visionConeEditor;
 
 	private Block selectedBlock;
-	private float currentFreeTime;
+	private UnitStats blockOwnerStats;
+	private TimelineEditor timelineEditor;
 
-	public void EditBlock(ref Block block, float freeTime)
+	public void EditBlock(ref Block block, TimelineEditor editor)
 	{
-		currentFreeTime = freeTime;
+		timelineEditor = editor;
 
 		StartCoroutine(BlockEditing(block));
 	}
@@ -27,7 +28,7 @@ public class BlockEditor : InGameEditor
 		selectedBlock = block;
 
 		Unit blockOwner = MatchManager.match.GetUnit(block.ownerId);
-		UnitStats ownerStats = UnitDataManager.GetUnitDataByType(blockOwner.type).stats;
+		blockOwnerStats = UnitDataManager.GetUnitDataByType(blockOwner.type).stats;
 
 		GridPoint originPoint = blockOwner.timeline.GetOriginPoint(block.timelineIndex);
 
@@ -48,12 +49,13 @@ public class BlockEditor : InGameEditor
 				}
 
 				// TODO Remove 500f below, but it causes the game to crash.
-				pathEditor.EditGridPath(ref moveBlock.movementPath, 500f + currentFreeTime);
+				pathEditor.EditGridPath(ref moveBlock.movementPath);
 				pathEditor.OnUpdated += UpdateBlock;
 
 
 				while (selectedBlock == block)
 				{
+					pathEditor.lengthCap = timelineEditor.freeTimeInTimeline;
 					yield return null;
 				}
 
@@ -70,7 +72,7 @@ public class BlockEditor : InGameEditor
 
 				if (guardBlock.aimCone == null)
 				{
-					guardBlock.aimCone = new VisionCone(originPoint, ownerStats.range, ownerStats.spread);
+					guardBlock.aimCone = new VisionCone(originPoint, blockOwnerStats.range, blockOwnerStats.spread);
 				}
 
 				visionConeEditor.EditVisionCone(ref guardBlock.aimCone);
@@ -92,6 +94,7 @@ public class BlockEditor : InGameEditor
 
 	public void UpdateBlock()
 	{
+		if (selectedBlock == null) return;
 		Timeline blockTimeline = MatchManager.GetUnit(selectedBlock.ownerId).timeline;
 
 		GridPoint lastGridPoint = null;
@@ -112,7 +115,7 @@ public class BlockEditor : InGameEditor
 
 					lastGridPoint = moveBlock.movementPath.target;
 
-					moveBlock.duration = moveBlock.movementPath.GetTotalPathLength();
+					moveBlock.duration = moveBlock.movementPath.GetTotalPathLength() / blockOwnerStats.speed;
 
 				}
 				break;

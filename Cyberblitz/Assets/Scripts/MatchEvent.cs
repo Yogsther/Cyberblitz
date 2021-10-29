@@ -34,7 +34,9 @@ public class ShootEvent : MatchEvent
 
     public override void PlaybackEffect(Match simulatedMatch)
     {
-        throw new System.NotImplementedException();
+        VisualUnit shooterVisualUnit = VisualUnitManager.GetVisualUnitById(actorUnitId);
+        shooterVisualUnit.animator.SetTrigger("Fire");
+
     }
 }
 
@@ -50,7 +52,7 @@ public class DamageEvent : MatchEvent
 
     public override void PlaybackEffect(Match simulatedMatch)
     {
-        throw new System.NotImplementedException();
+
     }
 }
 
