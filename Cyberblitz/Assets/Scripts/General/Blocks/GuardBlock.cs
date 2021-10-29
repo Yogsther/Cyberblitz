@@ -28,9 +28,7 @@ public class GuardBlock : Block
 				Debug.Log($"[GuardBlock - {ownerId}] Shot {otherUnit.id}");
 
 				float deathTime = ownerUnit.timeline.GetStartTimeOfBlock(this) + localTime;
-
 				DeathEvent deathEvent = new DeathEvent(otherUnit.id, deathTime);
-
 				simulatedMatch.events.Enqueue(deathEvent);
 			}
 		}

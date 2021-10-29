@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TurnSimulator : MonoBehaviour
 {
-
 	public static Match SimulateTurn(Match match)
 	{
 		Debug.Log("[TurnSimulator] - Started simulation");
