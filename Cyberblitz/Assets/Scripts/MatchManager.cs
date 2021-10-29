@@ -99,6 +99,26 @@ public class MatchManager : MonoBehaviour
 		Debug.Log($"Loading level '{match.level}'...");
 	}
 
+	public static void SignalReady()
+	{
+		ClientConnection.Emit("READY");
+	}
+
+
+	public static bool TryGetLocalPlayer(out Player localPlayer)
+    {
+		localPlayer = null;
+
+		foreach(Player player in match.players)
+        {
+			if (player.user.id == ClientLogin.user.id)
+            {
+				localPlayer = player;
+            }
+        }
+
+		return localPlayer != null;
+    }
 
 	public static Unit GetUnit(UnitID id)
 	{
@@ -120,12 +140,6 @@ public class MatchManager : MonoBehaviour
 		}
 
 		return null;
-	}
-
-
-	public static void SignalReady()
-	{
-		ClientConnection.Emit("READY");
 	}
 }
 

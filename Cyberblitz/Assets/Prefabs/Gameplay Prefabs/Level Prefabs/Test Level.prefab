@@ -54,6 +54,8 @@ MonoBehaviour:
     gameObjectInstance: {fileID: 0}
     cameraRotationForTeam: 0
     team: 0
+    direction: 0
+    testSpawnPoints: 5
   - gridTransform:
       x: 36
       y: 21
@@ -63,6 +65,8 @@ MonoBehaviour:
     gameObjectInstance: {fileID: 0}
     cameraRotationForTeam: 180
     team: 1
+    direction: 1
+    testSpawnPoints: 5
   gridColliders:
   - gridTransform:
       x: 16
