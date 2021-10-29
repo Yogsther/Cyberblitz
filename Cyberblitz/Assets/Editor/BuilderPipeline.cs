@@ -83,7 +83,7 @@ public class BuilderPipeline : Editor
 
 		Config config = GetConfig();
 
-		string destination = "Builds/" + path + "/" + (server ? "CyberBlitzServer" : "ServerBlitzClient") + "_" + config.version + sufix;
+		string destination = "Builds/" + path + "/" + (server ? "CyberBlitzServer" : "CyberBlitzClient") + "_" + config.version + sufix;
 		BuildPipeline.BuildPlayer(scenes, destination, target, server ? BuildOptions.EnableHeadlessMode : BuildOptions.None);
 
 		// Does not work, should be investigaed:
