@@ -10,14 +10,15 @@ public class NetworkPacket
 	public Token token; // Token of the client sending (only used Client -> Server com)
 	public SocketID socket = "NOT_ASSIGNED"; // Used by the server to store socket ids in packets.
 	public User user;
+	public string version;
 
-	public NetworkPacket(Token token, string identifier, object content)
+	public NetworkPacket(string version, Token token, string identifier, object content)
 	{
 
 		this.identifier = identifier;
 		this.content = content is string ? (string)content : Serialize(content);
 		this.token = token;
-
+		this.version = version;
 	}
 
 	public NetworkPacket(string identifier, object content)
