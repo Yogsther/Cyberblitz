@@ -62,7 +62,7 @@ public class MatchManager : MonoBehaviour
 	void SendUnits(NetworkPacket packet)
 	{
 		OnPlanningEnd?.Invoke();
-		foreach (Player player in match.players)
+		/*foreach (Player player in match.players)
 		{
 			foreach (Unit unit in player.units)
 			{
@@ -81,7 +81,7 @@ public class MatchManager : MonoBehaviour
 				}
 
 			}
-		}
+		}*/
 
 		ClientConnection.Emit("UNITS", match);
 

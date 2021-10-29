@@ -6,9 +6,10 @@ using UnityEngine.EventSystems;
 public class TimelineVisualizationManager : MonoBehaviour
 {
 
-	public LineRenderer line;
+	public LineRenderer moveBlockLine, tempCone, lockedConePrefab;
 	public Waypoint waypointPrefab;
 	public Camera camera;
+	public Transform waypointParent, lockedConesParent;
 
 	Unit selectedUnit;
 	Block selectedBlock;
@@ -20,18 +21,29 @@ public class TimelineVisualizationManager : MonoBehaviour
 		TimelineEditor.OnBlockUpdate += OnBlockUpdated;
 		TimelineEditor.OnUnitSelected += OnUnitSelected;
 		TimelineEditor.OnBlockSelected += OnBlockSelected;
+		TimelineEditor.OnBlockDeselected += OnBlockDeselected;
 		MatchManager.OnMatchUpdate += OnMatchUpdate;
+	}
+
+	void OnBlockDeselected()
+	{
+		selectedBlock = null;
+		OnBlockUpdated();
 	}
 
 	void OnMatchUpdate(Match match)
 	{
-		if (match.state != Match.GameState.Planning) ClearVisualElements();
+		if (match.state != Match.GameState.Planning)
+		{
+			selectedBlock = null;
+			ClearVisualElements();
+		}
 	}
 
 	void CreateNewWaypoint(MoveBlock block)
 	{
 		if (block.movementPath == null) return;
-		Waypoint waypoint = Instantiate(waypointPrefab, transform);
+		Waypoint waypoint = Instantiate(waypointPrefab, waypointParent);
 		waypoint.transform.position = block.movementPath.target.point.ToFlatVector3(waypoint.transform.position.y);
 		waypoint.index = waypoints.Count;
 		waypoint.block = block;
@@ -47,8 +59,8 @@ public class TimelineVisualizationManager : MonoBehaviour
 		float lineHeight = 0.21f;
 
 		// Set the first position to current unit position
-		line.positionCount = 1;
-		line.SetPosition(0, unit.position.ToVector2().ToFlatVector3(lineHeight));
+		moveBlockLine.positionCount = 1;
+		moveBlockLine.SetPosition(0, unit.position.ToVector2().ToFlatVector3(lineHeight));
 
 		foreach (Block block in timeline.blocks)
 		{
@@ -60,8 +72,8 @@ public class TimelineVisualizationManager : MonoBehaviour
 					foreach (Vector2Int point in moveBlock.movementPath.GetPoints())
 					{
 						// Add line point for movement block target
-						line.positionCount++;
-						line.SetPosition(line.positionCount - 1, point.ToFlatVector3(lineHeight));
+						moveBlockLine.positionCount++;
+						moveBlockLine.SetPosition(moveBlockLine.positionCount - 1, point.ToFlatVector3(lineHeight));
 					}
 				}
 
@@ -70,18 +82,68 @@ public class TimelineVisualizationManager : MonoBehaviour
 		}
 
 		// If no movementblocks were added, remove the line.
-		if (line.positionCount == 1) line.positionCount = 0;
+		if (moveBlockLine.positionCount == 1) moveBlockLine.positionCount = 0;
 	}
 
 	void ClearVisualElements()
 	{
-		line.positionCount = 0;
-		foreach (Transform obj in transform)
-		{
-			Destroy(obj.gameObject);
-		}
+		tempCone.positionCount = 0;
+		moveBlockLine.positionCount = 0;
+
+		ClearTransform(waypointParent);
+		ClearTransform(lockedConesParent);
+
 		waypoints.Clear();
 	}
+
+	void ClearTransform(Transform parent)
+	{
+		foreach (Transform child in parent)
+		{
+			Destroy(child.gameObject);
+		}
+	}
+
+	void CreateNewLockedCone(Vector2[] points)
+	{
+		LineRenderer line = Instantiate(lockedConePrefab, lockedConesParent);
+		DrawCone(points, line);
+	}
+
+	void DrawCone(Vector2[] points, LineRenderer line)
+	{
+		float height = .2f;
+		int coneResolution = 15;
+
+		line.positionCount = points.Length + 1; // Add one for the closing point at the end
+		line.positionCount += coneResolution;
+
+		// Draw the first two positions, from unit position to the outer left point of the cone
+		for (int i = 0; i < 2; i++)
+		{
+			line.SetPosition(i, points[i].ToFlatVector3(height));
+		}
+
+		Vector2 startDiration = points[1] - points[0];
+		Vector2 endDirection = points[2] - points[0];
+		float startAngle = Mathf.Atan2(startDiration.y, startDiration.x);
+		float endAngle = Mathf.Atan2(endDirection.y, endDirection.x);
+
+		// Angle step is the resolution of the curved part of the cone
+		float angleStep = (endAngle - startAngle) / coneResolution;
+
+		for (int i = 0; i < coneResolution; i++)
+		{
+			float angle = Mathf.LerpAngle(startAngle * Mathf.Rad2Deg, endAngle * Mathf.Rad2Deg, (float)i / (float)coneResolution) * Mathf.Deg2Rad;
+			float x = (Mathf.Cos(angle) * 5f) + points[0].x;
+			float y = (Mathf.Sin(angle) * 5f) + points[0].y;
+			line.SetPosition(i + 2, new Vector2(x, y).ToFlatVector3(height));
+		}
+
+		line.SetPosition(line.positionCount - 2, points[2].ToFlatVector3(height));
+		line.SetPosition(line.positionCount - 1, points[0].ToFlatVector3(height));
+	}
+
 
 	void LoadMoveBlock(MoveBlock block)
 	{
@@ -108,8 +170,46 @@ public class TimelineVisualizationManager : MonoBehaviour
 		{
 			if (block.type == BlockType.Move)
 				LoadMoveBlock((MoveBlock)block);
+			if (block.type == BlockType.Guard)
+			{
+				GuardBlock guardBlock = (GuardBlock)block;
+				if (guardBlock.aimCone != null && guardBlock.aimCone.isSet)
+				{
+					Vector2[] points = guardBlock.aimCone.GetConePoints(guardBlock.aimCone.direction);
+					CreateNewLockedCone(points);
+				}
+			}
 		}
 
 		DrawPath(selectedUnit);
+	}
+
+	private void Update()
+	{
+		if (selectedBlock != null)
+		{
+			if (selectedBlock.type == BlockType.Guard)
+			{
+				GuardBlock guardBlock = (GuardBlock)selectedBlock;
+				float inputDirection = 0;
+				int groundLayer = 6;
+				if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(groundLayer, out RaycastHit groundHit))
+				{
+
+					Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();
+
+					Vector2 toMouse = mouseHitPoint - guardBlock.aimCone.origin.point;
+
+					inputDirection = Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg;
+
+					Vector2[] points = guardBlock.aimCone.GetConePoints(inputDirection);
+					DrawCone(points, tempCone);
+				} else
+				{
+					tempCone.positionCount = 0;
+				}
+			}
+		}
+
 	}
 }

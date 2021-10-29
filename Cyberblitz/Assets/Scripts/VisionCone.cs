@@ -6,14 +6,15 @@ public class VisionCone
 	public float direction;
 	public float radius;
 	public float angleWidth;
+	public bool isSet = false;
 
 	public VisionCone()
-    {
+	{
 		direction = 0f;
-    }
-	
+	}
+
 	public VisionCone(GridPoint origin, float radius, float angleWidth)
-    {
+	{
 		this.origin = origin;
 		this.radius = radius;
 		this.angleWidth = angleWidth;
@@ -22,9 +23,9 @@ public class VisionCone
 	}
 
 	public Vector2[] GetConePoints()
-    {
+	{
 		return GetConePoints(direction);
-    }
+	}
 
 	public Vector2[] GetConePoints(float simulatedDirection)
 	{

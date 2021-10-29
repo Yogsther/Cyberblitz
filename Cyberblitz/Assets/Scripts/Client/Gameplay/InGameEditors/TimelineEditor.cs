@@ -43,6 +43,7 @@ public class TimelineEditor : InGameEditor
 	public static Action<Unit> OnUnitSelected;
 	public static Action<Block> OnBlockUpdate;
 	public static Action OnUnitDeselect;
+	public static Action OnBlockDeselected;
 
 	private void Start()
 	{
@@ -102,6 +103,7 @@ public class TimelineEditor : InGameEditor
 			blockEditor.StopEditing();
 			DeselectBlockSafe();
 		}
+		OnBlockDeselected?.Invoke();
 	}
 
 	// Safe way to deselect a block if you are not sure if it's inside or outside
@@ -172,11 +174,13 @@ public class TimelineEditor : InGameEditor
 
 	void SelectAndDragUnit(Unit unit)
 	{
-		SelectUnit(unit);
+		if (MatchManager.match.state == Match.GameState.Planning)
+		{
+			SelectUnit(unit);
+			if (GetSelectedTimeline().GetSize() == 0)
+				AddNewMoveBlock();
+		}
 
-		if (GetSelectedTimeline().GetSize() == 0)
-
-			AddNewMoveBlock();
 	}
 
 
