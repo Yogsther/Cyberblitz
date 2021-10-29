@@ -92,6 +92,7 @@ public class BlockEditor : InGameEditor
 
 	public void UpdateBlock()
 	{
+		if (selectedBlock == null) return;
 		Timeline blockTimeline = MatchManager.GetUnit(selectedBlock.ownerId).timeline;
 
 		GridPoint lastGridPoint = null;
