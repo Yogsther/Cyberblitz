@@ -23,5 +23,5 @@ MonoBehaviour:
     spread: 45
   description: 
   canGuard: 1
-  model: {fileID: 8952396240317939304, guid: f04d462344de67d4f9d29d4b6c5dda10, type: 3}
+  model: {fileID: 497778076058119406, guid: e05d898cc6aba114396405df1ca13d4b, type: 3}
   image: {fileID: 0}

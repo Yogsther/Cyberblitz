@@ -8,11 +8,11 @@ public class BlockEditor : InGameEditor
 
 	private Block selectedBlock;
 	private UnitStats blockOwnerStats;
-	private float currentFreeTime;
+	private TimelineEditor timelineEditor;
 
-	public void EditBlock(ref Block block, float freeTime)
+	public void EditBlock(ref Block block, TimelineEditor editor)
 	{
-		currentFreeTime = freeTime;
+		timelineEditor = editor;
 
 		StartCoroutine(BlockEditing(block));
 	}
@@ -49,12 +49,13 @@ public class BlockEditor : InGameEditor
 				}
 
 				// TODO Remove 500f below, but it causes the game to crash.
-				pathEditor.EditGridPath(ref moveBlock.movementPath, 500f + currentFreeTime);
+				pathEditor.EditGridPath(ref moveBlock.movementPath);
 				pathEditor.OnUpdated += UpdateBlock;
 
 
 				while (selectedBlock == block)
 				{
+					pathEditor.lengthCap = timelineEditor.freeTimeInTimeline;
 					yield return null;
 				}
 
@@ -114,7 +115,7 @@ public class BlockEditor : InGameEditor
 
 					lastGridPoint = moveBlock.movementPath.target;
 
-					moveBlock.duration = moveBlock.movementPath.GetTotalPathLength() * (1f / blockOwnerStats.speed);
+					moveBlock.duration = moveBlock.movementPath.GetTotalPathLength() / blockOwnerStats.speed;
 
 				}
 				break;
