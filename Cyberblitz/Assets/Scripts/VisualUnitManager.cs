@@ -28,9 +28,9 @@ public class VisualUnitManager : MonoBehaviour
 			
 		});*/
 
-		MatchManager.OnMatchStart += (match) =>
+		LevelManager.OnLevelLoaded += (level) =>
 		{
-			SpawnUnits(match);
+			SpawnUnits(level);
 		};
 
 		MatchManager.OnMatchUpdate += OnMatchUpdate;
@@ -50,12 +50,16 @@ public class VisualUnitManager : MonoBehaviour
 				visualUnit.isSelectable = selectable;
 	}
 
-	public void SpawnUnits(Match match)
+	public void SpawnUnits(Level level)
 	{
 		DeleteAllVisualUnits();
 
-		foreach (Player player in match.players)
+		foreach (Player player in MatchManager.match.players)
 		{
+			int team = player.team;
+
+			SpawnArea spawnArea = level.spawnAreas[team];
+
 			List<VisualUnit> userVisualUnits = new List<VisualUnit>();
 			foreach (Unit unit in player.units)
 			{
@@ -73,6 +77,7 @@ public class VisualUnitManager : MonoBehaviour
 					visualUnitInstance.isSelectable = false;
 
 					visualUnitInstance.mainModel.position = unit.position.ToVector2().ToFlatVector3();
+					visualUnitInstance.mainModel.rotation = spawnArea.cameraRotation;
 
 					userVisualUnits.Add(visualUnitInstance);
 				}

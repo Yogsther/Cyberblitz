@@ -58,7 +58,7 @@ public class TurnPlayback : MonoBehaviour
 
 		if (match.events.Count != 0) nextEvent = match.events.Dequeue();
 
-		for (float time = 0f; time < match.rules.turnTime; time += Time.deltaTime)
+		for (float time = 0f; time < match.longestTimelineDuration; time += Time.deltaTime)
 		{
 
 			if(nextEvent != null && time > nextEvent.time)
