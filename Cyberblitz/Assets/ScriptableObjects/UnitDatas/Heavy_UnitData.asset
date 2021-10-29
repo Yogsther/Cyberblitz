@@ -16,9 +16,9 @@ MonoBehaviour:
   name: Heavy
   stats:
     maxHp: 3
-    speed: 8
+    speed: 1
     damage: 2
-    firerate: 2
+    firerate: 3
     range: 5
     spread: 45
   description: 

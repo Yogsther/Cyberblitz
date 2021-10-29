@@ -6,6 +6,7 @@ using UnityEngine;
 public class Referee
 {
 	public Match match;
+	public LevelData levelData;
 	List<UserID> readyPlayers = new List<UserID>();
 
 	void MatchStep()
@@ -159,6 +160,20 @@ public class Referee
 		StartListening();
 	}
 
+	public void LoadLevel()
+    {
+		bool gotLevel = LevelManager.levelDataDict.TryGetValue(match.level, out levelData);
+
+        if (gotLevel)
+        {
+			Debug.Log($"Loaded LevelData - {match.level}");
+		}
+        else
+        {
+			Debug.Log($"Failed to load LevelData - {match.level}");
+		}
+	}
+
 	public void AddPlayer(User user)
 	{
 		int team = GetFreePlayerTeam();
@@ -193,6 +208,8 @@ public class Referee
 		Player player = new Player(user, team);
 		player.units = new Unit[5];
 
+		SpawnArea spawnArea = levelData.levelPrefab.spawnAreas[team];
+
 		for (int i = 0; i < player.units.Length; i++)
 		{
 			Unit unit = new Unit(player.user.id);
@@ -200,7 +217,10 @@ public class Referee
 			unit.hp = 100f;
 			unit.ownerID = player.user.id;
 			unit.type = UnitType.Scout;
-			unit.SetPosition(6 + i, team == 0 ? 0 : 19);
+
+			Vector2Int spawnPos = spawnArea.GetSpawnPosition(i);
+
+			unit.SetPosition(spawnPos.x, spawnPos.y);
 			player.units[i] = unit;
 		}
 
