@@ -16,13 +16,10 @@ This system is built using NodeJS
 
 `stable.cyberblitz.okdev.se` Stable Live server
 
-`nightly.cyberblitz.okdev.se` Latest Live server
-
 `cyberblitz.ygstr.com` Prototype server
 
 
 ### Internal ports
 
-* `810 nightly`
-* `811 stable`
+* `810 stable`
 * `812 website`
