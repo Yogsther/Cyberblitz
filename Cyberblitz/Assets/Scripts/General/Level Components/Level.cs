@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
+	public Color gridGizmoColor;
 	public Vector2Int levelGridSize;
 	public SpawnArea[] spawnAreas;
 	public GridCollider[] gridColliders;
@@ -17,7 +18,7 @@ public class Level : MonoBehaviour
 
 
 	public bool showGameObjectsInEditor;
-	private bool isShowingGameObjects;
+	[HideInInspector] public bool isShowingGameObjects;
 
 	public void SetupLevel()
 	{
@@ -45,6 +46,7 @@ public class Level : MonoBehaviour
 
 	public void ShowElementGameObjects()
 	{
+		Debug.Log("show");
 		if (visualsParent == null)
 		{
 			GameObject visualsContainer = new GameObject("Level Visuals");
@@ -143,7 +145,7 @@ public class Level : MonoBehaviour
 
 	private void DrawGizmosGrid()
 	{
-		Gizmos.color = new Color(1f, 1f, 1f, .025f);
+		Gizmos.color = gridGizmoColor;
 
 		for (float y = -.5f; y < levelGridSize.y + .5f; y++)
 		{

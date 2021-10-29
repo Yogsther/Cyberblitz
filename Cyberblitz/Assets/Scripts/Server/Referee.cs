@@ -216,7 +216,7 @@ public class Referee
 			unit.isMVP = i == 3;
 			unit.hp = 100f;
 			unit.ownerID = player.user.id;
-			unit.type = UnitType.Scout;
+			unit.type = (UnitType)(i % 3);
 
 			Vector2Int spawnPos = spawnArea.GetSpawnPosition(i);
 

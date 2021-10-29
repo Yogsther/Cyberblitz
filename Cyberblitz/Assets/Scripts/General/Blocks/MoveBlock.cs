@@ -25,6 +25,7 @@ public class MoveBlock : Block
 	public override void Playback(Match simulatedMatch, float localTime)
 	{
 		VisualUnit ownerVisualUnit = VisualUnitManager.GetVisualUnitById(ownerId);
+		ownerVisualUnit.animator.SetTrigger("Run");
 
 		Transform ownerTransform = ownerVisualUnit.mainModel;
 
@@ -36,6 +37,8 @@ public class MoveBlock : Block
 		Quaternion newRotation = (newForwardDirection.magnitude != 0f) ? Quaternion.LookRotation(newForwardDirection, Vector3.up) : ownerTransform.rotation;
 
 		ownerTransform.SetPositionAndRotation(newPosition.ToFlatVector3(), newRotation);
+
+		if(localTime + .1f > duration) ownerVisualUnit.animator.SetTrigger("Stop");
 	}
 
 	public Vector2 GetPositionAtTime(float localTime)

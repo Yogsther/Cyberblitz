@@ -13,7 +13,7 @@ public class LevelEditor : Editor
         level.UpdateLevelElements();
 
 
-        if (level.showGameObjectsInEditor)
+        if (level.showGameObjectsInEditor && !level.isShowingGameObjects)
         {
             level.ShowElementGameObjects();
         }
