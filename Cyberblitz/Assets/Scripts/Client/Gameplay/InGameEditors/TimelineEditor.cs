@@ -84,7 +84,7 @@ public class TimelineEditor : InGameEditor
 		selectedBlock = block;
 		GetSelectedBlockElement().SetSelected(true);
 
-		blockEditor.EditBlock(ref block, freeTimeInTimeline);
+		blockEditor.EditBlock(ref block, this);
 		blockEditor.OnUpdated += BlockUpdate;
 		OnBlockSelected?.Invoke(block);
 	}

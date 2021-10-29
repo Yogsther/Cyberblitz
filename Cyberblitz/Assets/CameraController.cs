@@ -7,11 +7,17 @@ public class CameraController : MonoBehaviour
 
 	public void InitCamera(Level level)
 	{
-		SpawnArea spawnArea = level.spawnAreas[1];
+		if(MatchManager.TryGetLocalPlayer(out Player localPlayer))
+        {
+			int team = localPlayer.team;
 
-		transform.position = spawnArea.center.ToFlatVector3();
+			SpawnArea spawnArea = level.spawnAreas[team];
 
-		transform.Rotate(Vector3.up, spawnArea.cameraRotationForTeam, Space.World);// *= spawnArea.cameraRotation;       
+			transform.position = spawnArea.center.ToFlatVector3();
+
+			transform.Rotate(Vector3.up, spawnArea.cameraRotationForTeam, Space.World);// *= spawnArea.cameraRotation;    
+		}
+		   
 	}
 
 	private void LateUpdate()

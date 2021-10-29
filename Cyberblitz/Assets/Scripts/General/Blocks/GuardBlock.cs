@@ -38,6 +38,8 @@ public class GuardBlock : Block
 	public override void Playback(Match simulatedMatch, float localTime)
 	{
 		VisualUnit ownerVisualUnit = VisualUnitManager.GetVisualUnitById(ownerId);
+		ownerVisualUnit.animator.SetTrigger("Stop");
+		
 
 		Transform ownerTransform = ownerVisualUnit.mainModel;
 

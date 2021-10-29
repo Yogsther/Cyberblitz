@@ -16,12 +16,12 @@ MonoBehaviour:
   name: Scout
   stats:
     maxHp: 1
-    speed: 8
+    speed: 3
     damage: 2
     firerate: 2
-    range: 5
-    spread: 45
+    range: 8
+    spread: 30
   description: 
   canGuard: 1
-  model: {fileID: 8952396240317939304, guid: f04d462344de67d4f9d29d4b6c5dda10, type: 3}
+  model: {fileID: 2913493002124985741, guid: 64799838e3439f1419c1eeb1e8439dde, type: 3}
   image: {fileID: 0}
