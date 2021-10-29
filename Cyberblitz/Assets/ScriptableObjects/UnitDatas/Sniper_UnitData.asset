@@ -16,11 +16,11 @@ MonoBehaviour:
   name: Sniper
   stats:
     maxHp: 2
-    speed: 8
+    speed: 2
     damage: 3
     firerate: 1
-    range: 5
-    spread: 45
+    range: 15
+    spread: 15
   description: 
   canGuard: 1
   model: {fileID: 8952396240317939304, guid: f04d462344de67d4f9d29d4b6c5dda10, type: 3}
