@@ -10469,7 +10469,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 276323334354522064}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1996978695}
+        m_TargetAssemblyTypeName: UnitsPage, Assembly-CSharp
+        m_MethodName: Navigate
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &276323334354522070
 Animator:
   serializedVersion: 3
@@ -16158,6 +16170,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 276323335060911684}
+  - component: {fileID: 1996978695}
   m_Layer: 5
   m_Name: LAYOUT_Units
   m_TagString: Untagged
@@ -16182,6 +16195,26 @@ Transform:
   m_Father: {fileID: 3388042962066488503}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1996978695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276323335060911739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb15e3e5ab997f1449c9c020d3f14d51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: {fileID: 8339227994977877745}
+  description: {fileID: 276323335127054491}
+  story: {fileID: 276323334553556459}
+  dotFilled: {fileID: -6128595263890567405, guid: 7794483bf78dfc94e8b4ca73bb96d972, type: 3}
+  dotEmpty: {fileID: 3906740080862106566, guid: 7794483bf78dfc94e8b4ca73bb96d972, type: 3}
+  health: {fileID: 276323334376922584}
+  speed: {fileID: 276323335022049397}
+  damage: {fileID: 276323333980352671}
 --- !u!1 &276323335097892579
 GameObject:
   m_ObjectHideFlags: 0
@@ -18139,19 +18172,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8303086323301415905}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3283556319866769846}
-        m_TargetAssemblyTypeName: PlayerBrowser, Assembly-CSharp
-        m_MethodName: SetVisbility
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!95 &6950755238750837994
 Animator:
   serializedVersion: 3
@@ -20595,7 +20616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2109809370966391386
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20855,6 +20876,7 @@ MonoBehaviour:
   userListParent: {fileID: 7413091160621838181}
   background: {fileID: 8785107470706112643}
   title: {fileID: 8214038036961882039}
+  menuSystem: {fileID: 0}
 --- !u!1 &2313941904542626427
 GameObject:
   m_ObjectHideFlags: 0
@@ -23790,19 +23812,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3497437880965992954}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3283556319866769846}
-        m_TargetAssemblyTypeName: PlayerBrowser, Assembly-CSharp
-        m_MethodName: SetVisbility
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!95 &5364394502621749958
 Animator:
   serializedVersion: 3
@@ -27138,7 +27148,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5993445947982416405}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1996978695}
+        m_TargetAssemblyTypeName: UnitsPage, Assembly-CSharp
+        m_MethodName: Navigate
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!95 &5993445947982416407
 Animator:
   serializedVersion: 3
@@ -27205,7 +27227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4245894149990418101
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33630,16 +33652,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3283556319866769846}
-        m_TargetAssemblyTypeName: PlayerBrowser, Assembly-CSharp
-        m_MethodName: SetVisbility
-        m_Mode: 6
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: MenuSystem, Assembly-CSharp
+        m_MethodName: LoadScreen
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: units
           m_BoolArgument: 1
         m_CallState: 2
 --- !u!95 &6260565817060386887

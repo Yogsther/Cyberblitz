@@ -22,6 +22,7 @@ MonoBehaviour:
     range: 15
     spread: 15
   description: Is the VIP, slow firerate
+  story: This is the story for the Courier
   canGuard: 1
   model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
   image: {fileID: 397736350623959575, guid: 27d75b41d9fc5c84caa6bc684e89ff1c, type: 3}

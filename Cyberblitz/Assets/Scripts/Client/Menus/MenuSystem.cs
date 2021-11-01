@@ -37,7 +37,6 @@ public class MenuSystem : MonoBehaviour
 
 	public void LoadScreen(string name)
 	{
-		Debug.Log("Loaded screen " + name);
 
 		if (selectedMenuScreen != null) selectedMenuScreen.screen.SetActive(false);
 		selectedMenuScreen = GetScreen(name);
@@ -50,13 +49,10 @@ public class MenuSystem : MonoBehaviour
 
 	void Awake()
 	{
-		OnPageLoad["units"] = OnUnitPage;
+		// Example of how to use OnPageLoad
+		/*OnPageLoad["units"] = OnUnitPage;*/
 	}
 
-	void OnUnitPage()
-	{
-
-	}
 
 	public void SetMainMenuVisibility(bool visible)
 	{

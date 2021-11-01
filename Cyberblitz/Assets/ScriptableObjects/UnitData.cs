@@ -30,6 +30,7 @@ public class UnitData : ScriptableObject
 	public new string name;
 	public UnitStats stats;
 	[TextArea] public string description;
+	[TextArea] public string story;
 	public bool canGuard = true;
 	public GameObject model;
 	public GameObject image;

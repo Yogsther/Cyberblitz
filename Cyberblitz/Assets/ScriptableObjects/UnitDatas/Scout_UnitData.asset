@@ -22,6 +22,7 @@ MonoBehaviour:
     range: 8
     spread: 30
   description: Very fast dude
+  story: This is the story for scout
   canGuard: 1
   model: {fileID: 2913493002124985741, guid: 64799838e3439f1419c1eeb1e8439dde, type: 3}
   image: {fileID: 83415280419826830, guid: f20f5ba6960f34142aa61154be0664f9, type: 3}

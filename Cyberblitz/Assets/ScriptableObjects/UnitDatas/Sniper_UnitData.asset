@@ -22,6 +22,7 @@ MonoBehaviour:
     range: 15
     spread: 15
   description: Is a sniper :)
+  story: This is the story for sniper
   canGuard: 1
   model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
   image: {fileID: 8361745343233683824, guid: 9f51f2332d7866e43b619c8360286999, type: 3}
