@@ -60,7 +60,7 @@ public class Level : MonoBehaviour
 		{
 			if (groundPrefab != null)
 			{
-				groundInstance = Instantiate(groundPrefab, (levelGridSize.ToVector2() * .5f - Vector2.one * .5f).ToFlatVector3(), Quaternion.identity, visualsParent);
+				groundInstance = Instantiate(groundPrefab, visualsParent);
 			}
 
 			foreach (LevelElement element in levelElements)
