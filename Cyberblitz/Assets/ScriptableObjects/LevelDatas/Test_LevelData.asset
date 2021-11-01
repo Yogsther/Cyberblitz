@@ -15,4 +15,4 @@ MonoBehaviour:
   name: Test Level
   description: This is a test level
   thumbnail: {fileID: 0}
-  levelPrefab: {fileID: 750073791241598293, guid: 9d2382969b1b9cf48870233be6f4cdfc, type: 3}
+  levelPrefab: {fileID: 3070884839923585934, guid: 00fd6dd11a23eff42affeb2bf4e0c4ea, type: 3}
