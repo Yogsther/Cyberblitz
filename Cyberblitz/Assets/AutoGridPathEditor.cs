@@ -49,14 +49,16 @@ public class AutoGridPathEditor : InGameEditor
                 Vector2 mousePoint = groundHit.point.FlatVector3ToVector2();
                 Vector2Int point = mousePoint.RoundToVector2Int();
 
-                bool isBlocked = Physics.CheckSphere(point.ToFlatVector3(.5f), .25f);
+                Vector2Int originToCurrentTarget = gridPath.target.point - gridPath.origin.point;
+                Vector2Int fromTo = (point - gridPath.origin.point);
+
+                point = (gridPath.origin.point + Vector2.ClampMagnitude(fromTo, originToCurrentTarget.magnitude + lengthCap)).RoundToVector2Int();
+
+                bool isBlocked = Physics.CheckSphere(point.ToFlatVector3(.5f), .25f, GameManager.instance.blockPathfinderMask);
 
                 if (!isBlocked)
                 {
-                    Vector2Int originToCurrentTarget = gridPath.target.point - gridPath.origin.point;
-                    Vector2Int fromTo = (point - gridPath.origin.point);
-
-                    point = (gridPath.origin.point + Vector2.ClampMagnitude(fromTo, originToCurrentTarget.magnitude + lengthCap)).RoundToVector2Int();
+                   
 
                     gridPath.target.point = point;
 

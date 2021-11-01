@@ -161,15 +161,14 @@ public class Referee
 	}
 
 	public void LoadLevel()
-    {
+	{
 		bool gotLevel = LevelManager.levelDataDict.TryGetValue(match.level, out levelData);
 
-        if (gotLevel)
-        {
+		if (gotLevel)
+		{
 			Debug.Log($"Loaded LevelData - {match.level}");
-		}
-        else
-        {
+		} else
+		{
 			Debug.Log($"Failed to load LevelData - {match.level}");
 		}
 	}
@@ -213,10 +212,13 @@ public class Referee
 		for (int i = 0; i < player.units.Length; i++)
 		{
 			Unit unit = new Unit(player.user.id);
-			unit.isMVP = i == 3;
-			unit.hp = 100f;
-			unit.ownerID = player.user.id;
+
 			unit.type = (UnitType)(i % 3);
+			UnitData unitData = UnitDataManager.GetUnitDataByType(unit.type);
+
+			unit.isMVP = i == 3;
+			unit.hp = unitData.stats.maxHp;
+			unit.ownerID = player.user.id;
 
 			Vector2Int spawnPos = spawnArea.GetSpawnPosition(i);
 

@@ -289,6 +289,9 @@ MonoBehaviour:
   VisualUnitManager: {fileID: 1786339221}
   TimelineEditor: {fileID: 1016662065}
   CameraController: {fileID: 913508001}
+  blockPathfinderMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &404477400
 GameObject:
   m_ObjectHideFlags: 0

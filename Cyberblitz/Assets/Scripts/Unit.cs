@@ -11,12 +11,20 @@ public class Unit
 	public Position position = new Position(0f, 0f);
 	public Position gridPosition;
 
+	// The time they last shot, undefined value is -1
+	// Used by Guard simulator to implement fire-rate.
+	public float lastShot = -1;
+
 	public Unit(UserID ownerID)
 	{
 		this.ownerID = ownerID;
 		timeline.ownerId = id;
 	}
 
+	public bool IsDead()
+	{
+		return hp <= 0;
+	}
 	public void SetPosition(int x, int y)
 	{
 		position = new Position(x, y);
