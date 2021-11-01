@@ -237,6 +237,69 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e38b7b7a4bc7e04eba1eb4839799e3f, type: 3}
+--- !u!114 &238972778 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6477189507577363633, guid: 0e38b7b7a4bc7e04eba1eb4839799e3f, type: 3}
+  m_PrefabInstance: {fileID: 238972777}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86d8404298110244b8b304fb740c5cd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &622209650
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 622209652}
+  - component: {fileID: 622209651}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &622209651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622209650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f5c41c5b52e8940ae57bfc0d085d34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameplayUIManager: {fileID: 0}
+  LevelManager: {fileID: 720056813}
+  UnitDataManager: {fileID: 238972778}
+  VisualUnitManager: {fileID: 0}
+  TimelineEditor: {fileID: 0}
+  CameraController: {fileID: 0}
+  blockPathfinderMask:
+    serializedVersion: 2
+    m_Bits: 1024
+--- !u!4 &622209652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622209650}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705094057
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,6 +406,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 576d0f3863db09a419496cd3ce0620d0, type: 3}
+--- !u!114 &720056813 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3046515893002449961, guid: 576d0f3863db09a419496cd3ce0620d0, type: 3}
+  m_PrefabInstance: {fileID: 720056812}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6171fea8b0de7b24fb0ee41c2888db2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1219202449
 PrefabInstance:
   m_ObjectHideFlags: 0
