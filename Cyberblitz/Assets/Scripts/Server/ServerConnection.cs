@@ -83,14 +83,19 @@ public class ServerConnection : WebSocketBehavior
 
 	public ServerConnection(Config config)
 	{
+		// TODO MAKE THIS BETTER!
+		string portString = System.Environment.GetCommandLineArgs()[1];
+		Debug.Log("PARSING STRING: " + portString);
+		int port = Int32.Parse(portString);
+
 		this.config = config;
-		wssv = new WebSocketServer("ws://localhost");
+		wssv = new WebSocketServer(port);
 		wssv.AddWebSocketService("/", () => new SocketInstance(this));
 
 		// Should be be last in this constructor
 		wssv.Start();
 		Debug.Log($"----------------------------------\n\n\n" +
-			$"Started CyberBlitz server {config.version} on port {config.port}");
+			$"Started CyberBlitz server {config.version} on port {port}");
 	}
 
 	public static void On(string identifier, Action<NetworkPacket> callback)

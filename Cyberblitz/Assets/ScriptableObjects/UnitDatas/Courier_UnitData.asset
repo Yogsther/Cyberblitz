@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b4e0a088c796714c972d99f4f20d790, type: 3}
-  m_Name: Heavy_UnitData
+  m_Name: Courier_UnitData
   m_EditorClassIdentifier: 
-  type: 2
-  name: Heavy
+  type: 3
+  name: Courier
   stats:
-    maxHp: 5
-    speed: 2
-    damage: 3
-    firerate: 1
-    range: 5
-    spread: 45
-  description: 
+    maxHp: 3
+    speed: 3
+    damage: 2
+    firerate: 2
+    range: 15
+    spread: 15
+  description: Is the VIP, slow firerate
   canGuard: 1
-  model: {fileID: 497778076058119406, guid: e05d898cc6aba114396405df1ca13d4b, type: 3}
-  image: {fileID: 4170728524077081871, guid: 6e50609d59b5018488917e49b9bb2f36, type: 3}
+  model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
+  image: {fileID: 397736350623959575, guid: 27d75b41d9fc5c84caa6bc684e89ff1c, type: 3}

@@ -6,7 +6,8 @@ public enum UnitType
 {
 	Scout,
 	Sniper,
-	Heavy
+	Heavy,
+	Courier
 }
 
 [System.Serializable]
@@ -31,5 +32,5 @@ public class UnitData : ScriptableObject
 	[TextArea] public string description;
 	public bool canGuard = true;
 	public GameObject model;
-	public Sprite image;
+	public GameObject image;
 }

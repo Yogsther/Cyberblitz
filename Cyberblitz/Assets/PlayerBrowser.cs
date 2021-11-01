@@ -19,7 +19,7 @@ public class PlayerBrowser : MonoBehaviour
 		SetVisbility(true);
 	}
 
-	void SetVisbility(bool visibility)
+	public void SetVisbility(bool visibility)
 	{
 		background.enabled = visibility;
 		title.enabled = visibility;
