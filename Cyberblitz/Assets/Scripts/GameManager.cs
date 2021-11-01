@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 	public TimelineEditor TimelineEditor;
 	public CameraController CameraController;
 
-
+	public LayerMask blockPathfinderMask;
 	private void Awake()
 	{
 		if (instance != null && instance != this)
