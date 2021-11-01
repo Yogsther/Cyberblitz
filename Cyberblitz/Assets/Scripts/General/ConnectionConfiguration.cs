@@ -47,8 +47,6 @@ public class ConnectionConfiguration : MonoBehaviour
 			{
 				ClientConnection.events.Invoke(packet);
 			}
-
-
 			clientConnection.callstack.Clear();
 		}
 	}

@@ -41,11 +41,18 @@ public class ServerConnection : WebSocketBehavior
 	static WebSocketServer wssv;
 
 	static NetworkEvents events = new NetworkEvents();
+	Config config;
 
 	public void OnMessage(string message, SocketID socket)
 	{
 		NetworkPacket packet = NetworkPacket.fromJSON(message);
 		packet.socket = socket;
+
+		if (packet.version != config.version)
+		{
+			SendTo(socket, "MISSMATCH_VERSION", config.version);
+			return;
+		}
 
 		ConnectedUser user = ServerCore.GetConnectedUser(packet.token);
 		if (user != null)
@@ -76,7 +83,7 @@ public class ServerConnection : WebSocketBehavior
 
 	public ServerConnection(Config config)
 	{
-
+		this.config = config;
 		wssv = new WebSocketServer("ws://localhost");
 		wssv.AddWebSocketService("/", () => new SocketInstance(this));
 

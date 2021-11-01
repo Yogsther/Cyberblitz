@@ -16,6 +16,7 @@ public class ClientConnection
 	public List<NetworkPacket> callstack = new List<NetworkPacket>();
 
 	public static Action OnConnected;
+	public static string version;
 
 
 	public static bool IsConnected()
@@ -32,6 +33,7 @@ public class ClientConnection
 	public ClientConnection(Config config)
 	{
 		this.config = config;
+		version = config.version;
 		ws = new WebSocket("ws://localhost");
 
 		ws.OnMessage += (sender, e) =>
@@ -58,7 +60,7 @@ public class ClientConnection
 
 	public static void Emit(string identifier, object content)
 	{
-		NetworkPacket packet = new NetworkPacket(ClientLogin.token, identifier, content);
+		NetworkPacket packet = new NetworkPacket(version, ClientLogin.token, identifier, content);
 		ws.Send(packet.ToJSON());
 	}
 

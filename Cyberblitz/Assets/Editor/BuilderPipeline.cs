@@ -83,6 +83,8 @@ public class BuilderPipeline : Editor
 
 		Config config = GetConfig();
 
+		FileUtil.DeleteFileOrDirectory("Builds/" + path);
+
 		string destination = "Builds/" + path + "/" + (server ? "CyberBlitzServer" : "CyberBlitzClient") + "_" + config.version + sufix;
 		BuildPipeline.BuildPlayer(scenes, destination, target, server ? BuildOptions.EnableHeadlessMode : BuildOptions.None);
 
