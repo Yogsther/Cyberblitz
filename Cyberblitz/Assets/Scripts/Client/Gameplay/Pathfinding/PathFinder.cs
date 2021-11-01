@@ -23,6 +23,8 @@ namespace WayStarPathfinding
 
 		public List<Vector2Int> points = new List<Vector2Int>();
 
+		public LayerMask blockMask;
+
 
 		private static Vector2Int[] GetNeighborCoords(Vector2Int position)
 		{
@@ -42,13 +44,27 @@ namespace WayStarPathfinding
 		public List<Vector2Int> GetPath(Vector2Int origin, Vector2Int target, int maxLoops = 1000)
 		{
 
+			bool targetIsBlocked = Physics.CheckSphere(target.ToFlatVector3(.5f), .25f, blockMask);
+
+            if (targetIsBlocked)
+            {
+				Debug.LogWarning("Target was blocked");
+				return points;
+            }
+
 			if (origin == this.origin && target == this.target)
 			{
 				return points;
 			}
 
+
+
+			
+
 			this.origin = origin;
 			this.target = target;
+
+			
 
 			openNodes.Clear();
 			closedNodes.Clear();
@@ -81,7 +97,7 @@ namespace WayStarPathfinding
 				foreach (Node neighbor in GetNodeNeighbors(current))
 				{
 
-					bool isBlocked = Physics.CheckSphere(neighbor.position.ToFlatVector3(.5f), .25f);
+					bool isBlocked = Physics.CheckSphere(neighbor.position.ToFlatVector3(.5f), .25f, blockMask);
 
 					if (!(isBlocked || TryGetNodeAtPosition(closedNodes, neighbor.position, out Node nodeAtPos)))
 					{
