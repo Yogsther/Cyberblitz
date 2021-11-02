@@ -27,11 +27,22 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 	{
 		animator = mainModel.GetComponentInChildren<Animator>();
 		ghostModel.gameObject.SetActive(false);
+		SetRagdollEnabled(false);
 	}
 
 	public void SetVisable(bool visable)
 	{
 
+	}
+
+	public void SetRagdollEnabled(bool enabled)
+	{
+		animator.enabled = !enabled;
+
+		foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
+		{
+			rb.isKinematic = !enabled;
+		}
 	}
 
 	public void SetSelected(bool selected)

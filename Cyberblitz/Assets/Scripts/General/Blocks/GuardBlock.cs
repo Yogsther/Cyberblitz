@@ -66,7 +66,6 @@ public class GuardBlock : Block
 		VisualUnit ownerVisualUnit = VisualUnitManager.GetVisualUnitById(ownerId);
 		ownerVisualUnit.animator.SetTrigger("Stop");
 
-
 		Transform ownerTransform = ownerVisualUnit.mainModel;
 
 		ownerTransform.rotation = Quaternion.AngleAxis(aimCone.direction, Vector3.up);

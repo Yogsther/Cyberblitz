@@ -69,7 +69,7 @@ public class DeathEvent : MatchEvent
 	public override void PlaybackEffect(Match simulatedMatch)
 	{
 		VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(actorUnitId);
-
-		visualUnit.gameObject.SetActive(false);
+		visualUnit.SetRagdollEnabled(true);
+		/*visualUnit.gameObject.SetActive(false);*/
 	}
 }
