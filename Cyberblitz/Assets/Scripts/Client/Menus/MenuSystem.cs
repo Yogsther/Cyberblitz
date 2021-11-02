@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,9 @@ public class MenuSystem : MonoBehaviour
 
 	public GameObject mainMenu;
 
+	public Transform subHeader;
+	public GameObject subHeaderButton;
+
 	public Dictionary<string, Action> OnPageLoad = new Dictionary<string, Action>();
 
 	public MenuScreen GetScreen(string name)
@@ -37,7 +41,7 @@ public class MenuSystem : MonoBehaviour
 
 	public void LoadScreen(string name)
 	{
-
+		ClearSubHeader();
 		if (selectedMenuScreen != null) selectedMenuScreen.screen.SetActive(false);
 		selectedMenuScreen = GetScreen(name);
 		selectedMenuScreen.screen.SetActive(true);
@@ -46,9 +50,25 @@ public class MenuSystem : MonoBehaviour
 		OnScreenLoaded?.Invoke(name);
 	}
 
+	public void ClearSubHeader()
+	{
+		foreach (Transform obj in subHeader)
+			Destroy(obj.gameObject);
+	}
+
+	public void CreateSubHeaderButton(string title, Action func)
+	{
+		Button button = Instantiate(subHeaderButton, subHeader).GetComponent<Button>();
+		button.onClick.AddListener(() =>
+		{
+			Debug.Log("Pressed");
+			func();
+		});
+		button.GetComponentInChildren<TMP_Text>().text = title;
+	}
+
 	void Awake()
 	{
-		// Example of how to use OnPageLoad
 		/*OnPageLoad["units"] = OnUnitPage;*/
 	}
 
