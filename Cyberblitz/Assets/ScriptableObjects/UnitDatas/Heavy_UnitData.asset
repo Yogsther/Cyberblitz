@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Heavy_UnitData
   m_EditorClassIdentifier: 
   type: 2
-  name: Heavy
+  name: Titan
   stats:
     maxHp: 5
     speed: 2

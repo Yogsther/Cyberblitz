@@ -21,8 +21,13 @@ MonoBehaviour:
     firerate: 2
     range: 15
     spread: 15
-  description: Is the VIP, slow firerate
-  story: This is the story for the Courier
+  description: V.I.P and Support class
+  story: As the new method of "Deathmatch" was implemented by countries to avoid
+    war, regulators quickly realized a flaw. With nothing to lose the duels started
+    to get out of hands and every corporation challenged everyone for anything. To
+    avoid this, new rules were implemented. Every party needed to provide an executive
+    or otherwise important person. The Courier is seen as the only operator of any
+    value.
   canGuard: 1
   model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
   image: {fileID: 397736350623959575, guid: 27d75b41d9fc5c84caa6bc684e89ff1c, type: 3}

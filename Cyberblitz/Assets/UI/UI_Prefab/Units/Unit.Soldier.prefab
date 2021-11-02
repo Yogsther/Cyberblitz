@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Emergency heal at low health (+1HP)
+  m_text: Grants a +5% dodge chance.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Optical Implants
+  m_text: Light Armor
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}
@@ -546,7 +546,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sniper
+  m_text: Playback AR
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}
@@ -1144,7 +1144,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' PASSIVE ABILITY'
+  m_text: ACTIVE ABILITY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}
@@ -1421,7 +1421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The reactive armor creates an general high resistance to damage.
+  m_text: Grants "Double tap" the next round, resets overwatch if you hit someone.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}
