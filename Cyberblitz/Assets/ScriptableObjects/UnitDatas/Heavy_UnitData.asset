@@ -22,7 +22,11 @@ MonoBehaviour:
     range: 5
     spread: 45
   description: Heavy tank class
-  story: This is the story for tank
+  story: Just like the old world's tanks, the TITAN has reactive armor. The thin
+    layer of the reactive armor makes the armor very resistant to explosive damage,
+    and the angular shape helps mitigate ballistic damage from projectiles. Together
+    with the help of a second synthetic heart that produces healing agents to the
+    bloodstream. The TITAN is a formidable foe that's hard to eliminate.
   canGuard: 1
   model: {fileID: 497778076058119406, guid: e05d898cc6aba114396405df1ca13d4b, type: 3}
   image: {fileID: 4170728524077081871, guid: 6e50609d59b5018488917e49b9bb2f36, type: 3}
