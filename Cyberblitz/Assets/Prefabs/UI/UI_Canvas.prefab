@@ -16207,6 +16207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb15e3e5ab997f1449c9c020d3f14d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuSystem: {fileID: 0}
   title: {fileID: 8339227994977877745}
   description: {fileID: 276323335127054491}
   story: {fileID: 276323334553556459}
@@ -17905,7 +17906,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1233, y: 135.4343}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &978957309207637878
