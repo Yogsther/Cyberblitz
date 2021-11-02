@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6981174404635103774}
   - component: {fileID: 7811638850505545310}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Model - Main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2649165141135665667}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Model - Ghost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5476288589069959317}
   - component: {fileID: 3713493067359960221}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: VisualUnit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,3 +125,4 @@ MonoBehaviour:
   animator: {fileID: 0}
   isSelected: 0
   isSelectable: 1
+  mouseDownOnUnit: 0

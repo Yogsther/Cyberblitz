@@ -101,6 +101,7 @@ public static class ServerCore
 
 	public static void DisconnectUser(SocketID socket)
 	{
+		Debug.Log("Disconnecting socket: " + socket);
 		foreach (ConnectedUser connectedUser in users.ToList())
 		{
 			if (connectedUser.socket == socket)

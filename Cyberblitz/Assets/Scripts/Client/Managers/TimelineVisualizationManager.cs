@@ -129,14 +129,16 @@ public class TimelineVisualizationManager : MonoBehaviour
 		float startAngle = Mathf.Atan2(startDiration.y, startDiration.x);
 		float endAngle = Mathf.Atan2(endDirection.y, endDirection.x);
 
+		float coneDistance = Vector2.Distance(points[0], points[1]);
+
 		// Angle step is the resolution of the curved part of the cone
 		float angleStep = (endAngle - startAngle) / coneResolution;
 
 		for (int i = 0; i < coneResolution; i++)
 		{
 			float angle = Mathf.LerpAngle(startAngle * Mathf.Rad2Deg, endAngle * Mathf.Rad2Deg, (float)i / (float)coneResolution) * Mathf.Deg2Rad;
-			float x = (Mathf.Cos(angle) * 5f) + points[0].x;
-			float y = (Mathf.Sin(angle) * 5f) + points[0].y;
+			float x = (Mathf.Cos(angle) * coneDistance) + points[0].x;
+			float y = (Mathf.Sin(angle) * coneDistance) + points[0].y;
 			line.SetPosition(i + 2, new Vector2(x, y).ToFlatVector3(height));
 		}
 

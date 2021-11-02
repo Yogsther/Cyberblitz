@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class UnitsPage : MonoBehaviour
@@ -70,6 +71,7 @@ public class UnitsPage : MonoBehaviour
 
 	void Update()
 	{
-
+		if (Keyboard.current[Key.LeftArrow].wasPressedThisFrame) Navigate(false);
+		if (Keyboard.current[Key.RightArrow].wasPressedThisFrame) Navigate(true);
 	}
 }
