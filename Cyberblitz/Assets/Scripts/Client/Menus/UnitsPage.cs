@@ -12,6 +12,8 @@ public class UnitsPage : MonoBehaviour
 	UnitType selectedUnitType;
 	UnitData selectedUnitData;
 
+	public MenuSystem menuSystem;
+
 	public TMP_Text title, description, story;
 	public Sprite dotFilled, dotEmpty;
 
@@ -25,6 +27,18 @@ public class UnitsPage : MonoBehaviour
 		if (unitTypeList.Count == 0) Debug.LogError("Unit list is empty!");
 		else selectedUnitType = unitTypeList[selectedUnitIndex];
 		LoadUnit();
+	}
+
+	public void SelectUnit(UnitType type)
+	{
+		Debug.Log("Selecting unit");
+		for (int i = 0; i < unitTypeList.Count; i++)
+			if (unitTypeList[i] == type)
+			{
+				Debug.Log("Found unit");
+				selectedUnitIndex = i;
+				LoadUnit();
+			}
 	}
 
 	void Awake()
@@ -51,7 +65,16 @@ public class UnitsPage : MonoBehaviour
 
 	void LoadUnit()
 	{
-		Debug.Log(selectedUnitIndex + " , index.");
+		menuSystem.ClearSubHeader();
+		foreach (UnitType unitType in unitTypeList)
+		{
+			UnitData unitData = UnitDataManager.GetUnitDataByType(unitType);
+			menuSystem.CreateSubHeaderButton(unitData.name, () =>
+			{
+				SelectUnit(unitType);
+			});
+		}
+
 		selectedUnitType = unitTypeList[selectedUnitIndex];
 
 		selectedUnitData = UnitDataManager.GetUnitDataByType(selectedUnitType);
