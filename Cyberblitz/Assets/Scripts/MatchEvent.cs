@@ -37,8 +37,10 @@ public class ShootEvent : MatchEvent
 	{
 		VisualUnit shooterVisualUnit = VisualUnitManager.GetVisualUnitById(actorUnitId);
 
+		shooterVisualUnit.animator.SetTrigger("FireTrigger");
 		/*Debug.Log("Playing fire animation");*/
 		/*shooterVisualUnit.animator.ResetTrigger("Fire");
+		 
 		shooterVisualUnit.animator.SetTrigger("Fire");*/
 	}
 }
@@ -55,7 +57,8 @@ public class DamageEvent : MatchEvent
 
 	public override void PlaybackEffect(Match simulatedMatch)
 	{
-
+		VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(actorUnitId);
+		visualUnit.animator.SetTrigger("Hit");
 	}
 }
 

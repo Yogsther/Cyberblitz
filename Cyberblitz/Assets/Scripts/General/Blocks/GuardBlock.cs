@@ -32,11 +32,14 @@ public class GuardBlock : Block
 				float shotsPerSecond = 1f / ownerUnitStats.firerate;
 				float secondsSinceLastShot = localTime - ownerUnit.lastShot;
 				bool canShoot = ownerUnit.lastShot == -1 || secondsSinceLastShot >= shotsPerSecond;
-				Debug.Log("Can shoot: " + canShoot + " - last Shot " + ownerUnit.lastShot + ", localTime " + localTime);
+
 
 				if (canShoot && !otherUnit.IsDead())
 				{
-					Debug.Log($"Shot");
+
+
+					float effectAnimationDelay = .2f;
+					float effectTime = ownerUnit.timeline.GetStartTimeOfBlock(this) + localTime + effectAnimationDelay;
 
 					ShootEvent shootEvent = new ShootEvent(ownerUnit.id, otherUnit.id, localTime);
 					simulatedMatch.events.Enqueue(shootEvent);
@@ -46,11 +49,14 @@ public class GuardBlock : Block
 
 					if (otherUnit.hp <= 0)
 					{
-						Debug.Log("UNIT DIED");
 						otherUnit.hp = 0;
-						float deathTime = ownerUnit.timeline.GetStartTimeOfBlock(this) + localTime;
-						DeathEvent deathEvent = new DeathEvent(otherUnit.id, deathTime);
+
+						DeathEvent deathEvent = new DeathEvent(otherUnit.id, effectTime);
 						simulatedMatch.events.Enqueue(deathEvent);
+					} else
+					{
+						DamageEvent damageEvent = new DamageEvent(otherUnit.id, ownerUnitStats.damage, effectTime);
+						simulatedMatch.events.Enqueue(damageEvent);
 					}
 
 				}

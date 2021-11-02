@@ -71,7 +71,6 @@ public class UnitsPage : MonoBehaviour
 
 	void Update()
 	{
-
 		if (Keyboard.current[Key.LeftArrow].wasPressedThisFrame) Navigate(false);
 		if (Keyboard.current[Key.RightArrow].wasPressedThisFrame) Navigate(true);
 	}

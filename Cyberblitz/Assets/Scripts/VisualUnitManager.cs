@@ -59,6 +59,7 @@ public class VisualUnitManager : MonoBehaviour
 			int team = player.team;
 
 			SpawnArea spawnArea = level.spawnAreas[team];
+			bool friendlyPlayer = player.user.id == ClientLogin.user.id;
 
 			List<VisualUnit> userVisualUnits = new List<VisualUnit>();
 			foreach (Unit unit in player.units)
@@ -69,7 +70,7 @@ public class VisualUnitManager : MonoBehaviour
 				{
 					GameObject go = Instantiate(visualUnitPrefab, visualUnitContainer);
 					VisualUnit visualUnitInstance = go.GetComponent<VisualUnit>();
-					visualUnitInstance.name = $"VisualUnit - {unit.id}";
+					visualUnitInstance.name = $"VisualUnit {(friendlyPlayer ? "Friendly" : "Enemy")} - {unitData.type.ToString()} - {unit.id}";
 					visualUnitInstance.id = unit.id;
 					Instantiate(unitData.model, visualUnitInstance.mainModel);
 					Instantiate(unitData.model, visualUnitInstance.ghostModel);

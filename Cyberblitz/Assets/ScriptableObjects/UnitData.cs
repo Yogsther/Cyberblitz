@@ -7,7 +7,8 @@ public enum UnitType
 	Scout,
 	Sniper,
 	Heavy,
-	Courier
+	Courier,
+	Solider
 }
 
 [System.Serializable]
