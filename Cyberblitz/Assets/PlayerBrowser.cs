@@ -11,15 +11,20 @@ public class PlayerBrowser : MonoBehaviour
 	public Transform userListParent;
 	public Image background;
 	public Text title;
+	public MenuSystem menuSystem;
 
 	void Start()
 	{
 		ClientConnection.On("USER_LIST", LoadUserList);
-		MatchManager.OnMatchStart += (match) => { SetVisbility(false); };
-		SetVisbility(true);
+		MatchManager.OnMatchStart += (match) =>
+		{
+			SetVisbility(false);
+			menuSystem.SetMainMenuVisibility(false);
+		};
+		/*SetVisbility(true);*/
 	}
 
-	void SetVisbility(bool visibility)
+	public void SetVisbility(bool visibility)
 	{
 		background.enabled = visibility;
 		title.enabled = visibility;
@@ -28,6 +33,7 @@ public class PlayerBrowser : MonoBehaviour
 
 	public void LoadUserList(NetworkPacket packet)
 	{
+		Debug.Log("Got user list");
 		ClearList();
 		List<User> userList = packet.Parse<List<User>>();
 

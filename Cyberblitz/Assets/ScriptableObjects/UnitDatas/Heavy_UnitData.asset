@@ -15,13 +15,14 @@ MonoBehaviour:
   type: 2
   name: Heavy
   stats:
-    maxHp: 6
-    speed: 1
-    damage: 2
-    firerate: 2
+    maxHp: 5
+    speed: 2
+    damage: 3
+    firerate: 1
     range: 5
     spread: 45
-  description: 
+  description: Heavy tank class
+  story: This is the story for tank
   canGuard: 1
   model: {fileID: 497778076058119406, guid: e05d898cc6aba114396405df1ca13d4b, type: 3}
-  image: {fileID: 0}
+  image: {fileID: 4170728524077081871, guid: 6e50609d59b5018488917e49b9bb2f36, type: 3}

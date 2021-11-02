@@ -56,7 +56,7 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 	{
 		if (mouseDownOnUnit)
 		{
-			OnSelectAndDrag?.Invoke(id);
+			if (isSelectable) OnSelectAndDrag?.Invoke(id);
 			mouseDownOnUnit = false;
 		}
 	}

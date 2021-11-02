@@ -83,8 +83,10 @@ public class ServerConnection : WebSocketBehavior
 
 	public ServerConnection(Config config)
 	{
+
+
 		this.config = config;
-		wssv = new WebSocketServer("ws://localhost");
+		wssv = new WebSocketServer(config.port);
 		wssv.AddWebSocketService("/", () => new SocketInstance(this));
 
 		// Should be be last in this constructor

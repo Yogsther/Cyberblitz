@@ -13,6 +13,8 @@ public class ConnectionConfiguration : MonoBehaviour
 		Server, Client
 	}
 
+	public bool live;
+
 	public ConnectionType connectionType;
 
 	Config config;
@@ -34,7 +36,7 @@ public class ConnectionConfiguration : MonoBehaviour
 		} else
 		{
 			// Connect to server
-			clientConnection = new ClientConnection(config);
+			clientConnection = new ClientConnection(config, live);
 			MatchManager.Instance.Init();
 		}
 	}

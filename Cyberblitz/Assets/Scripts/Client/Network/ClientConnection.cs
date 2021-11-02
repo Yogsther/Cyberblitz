@@ -30,11 +30,13 @@ public class ClientConnection
 		ws.Close();
 	}
 
-	public ClientConnection(Config config)
+	public ClientConnection(Config config, bool live)
 	{
 		this.config = config;
 		version = config.version;
-		ws = new WebSocket("ws://localhost");
+		ws = new WebSocket(live ? "ws://stable.cyberblitz.okdev.se:5009/" : "ws://localhost:5009");
+		/*ws = new WebSocket(live ? "wss://stable.cyberblitz.okdev.se/" : "ws://localhost");*/
+		/*ws.SetProxy("https://stable.cyberblitz.okdev.se", null, null);*/
 
 		ws.OnMessage += (sender, e) =>
 		{
@@ -53,6 +55,11 @@ public class ClientConnection
 			OnConnected?.Invoke();
 			ClientLogin.Login();
 		});
+
+		ws.OnError += (sender, e) =>
+		{
+			Debug.Log(e.Message);
+		};
 
 		// Should be last in constructor
 		ws.Connect();
