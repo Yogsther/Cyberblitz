@@ -41,9 +41,9 @@ public class MenuSystem : MonoBehaviour
 		if (selectedMenuScreen != null) selectedMenuScreen.screen.SetActive(false);
 		selectedMenuScreen = GetScreen(name);
 		selectedMenuScreen.screen.SetActive(true);
-		/*if (OnPageLoad.ContainsKey(name)) OnPageLoad[name]();*/
+		if (OnPageLoad.ContainsKey(name)) OnPageLoad[name]();
 
-		OnPageLoad[name]?.Invoke();
+
 		OnScreenLoaded?.Invoke(name);
 	}
 

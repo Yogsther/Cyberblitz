@@ -33,6 +33,7 @@ public class PlayerBrowser : MonoBehaviour
 
 	public void LoadUserList(NetworkPacket packet)
 	{
+		Debug.Log("Got user list");
 		ClearList();
 		List<User> userList = packet.Parse<List<User>>();
 
