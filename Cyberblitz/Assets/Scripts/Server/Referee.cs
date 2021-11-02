@@ -64,6 +64,7 @@ public class Referee
 
 	public void Terminate(string reason)
 	{
+		Debug.Log("Terminated game: " + reason);
 		Broadcast("GAME_TERMINATED", reason);
 	}
 

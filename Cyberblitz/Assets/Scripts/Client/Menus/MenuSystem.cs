@@ -43,7 +43,6 @@ public class MenuSystem : MonoBehaviour
 		selectedMenuScreen.screen.SetActive(true);
 		if (OnPageLoad.ContainsKey(name)) OnPageLoad[name]();
 
-
 		OnScreenLoaded?.Invoke(name);
 	}
 
