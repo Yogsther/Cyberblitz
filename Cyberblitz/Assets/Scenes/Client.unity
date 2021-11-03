@@ -1733,6 +1733,10 @@ PrefabInstance:
       propertyPath: menuSystem
       value: 
       objectReference: {fileID: 1033877946}
+    - target: {fileID: 276323334667554483, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2109809371519254594, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
       propertyPath: m_Name
       value: UI Canvas
