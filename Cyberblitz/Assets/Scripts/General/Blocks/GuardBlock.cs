@@ -69,7 +69,7 @@ public class GuardBlock : Block
 
 		Transform ownerTransform = ownerVisualUnit.mainModel;
 
-		ownerTransform.rotation = Quaternion.AngleAxis(aimCone.direction, Vector3.up);
+		ownerTransform.rotation = Quaternion.AngleAxis(aimCone.direction, Vector3.down);
 	}
 
 }

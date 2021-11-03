@@ -125,7 +125,7 @@ MonoBehaviour:
   ghostModel: {fileID: 2649165141135665667}
   outlineController: {fileID: 2935608566055494640}
   friendlyColor: {r: 0, g: 0.73564124, b: 2.2540498, a: 1}
-  enemyColor: {r: 6.556844, g: 0.23417301, b: 0.5561609, a: 1}
+  enemyColor: {r: 8.753901, g: 0, b: 0.17691031, a: 1}
   selectedColor: {r: 0.8279265, g: 2.2147033, b: 2.4734304, a: 1}
   hoverColor: {r: 0, g: 0.6, b: 0.85882354, a: 1}
   animator: {fileID: 0}
@@ -146,4 +146,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 0, g: 0, b: 0, a: 0}
   outlineMaterial: {fileID: 2100000, guid: f42160af7861bff40baf6293dde35a0e, type: 2}
-  renderers: []
+  mainRenderers: []
+  outlineRenderers: []

@@ -49,7 +49,7 @@ public class VisionConeEditor : InGameEditor
 
 				Vector2 toMouse = mouseHitPoint - visionCone.origin.point;
 
-				inputDirection = Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg;
+				inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
 
 
 				if (InputManager.pointerIsHeld)

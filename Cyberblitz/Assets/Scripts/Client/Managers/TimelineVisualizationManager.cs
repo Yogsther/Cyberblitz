@@ -200,7 +200,7 @@ public class TimelineVisualizationManager : MonoBehaviour
 
 					Vector2 toMouse = mouseHitPoint - guardBlock.aimCone.origin.point;
 
-					inputDirection = Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg;
+					inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
 
 					Vector2[] points = guardBlock.aimCone.GetConePoints(inputDirection);
 					DrawCone(points, tempCone);
