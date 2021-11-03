@@ -62,7 +62,7 @@ public class VisionCone
 
 		Vector2 pointDirection = point - origin.point;
 
-		float pointAngle = Mathf.Atan2(pointDirection.y, pointDirection.x) * Mathf.Rad2Deg;
+		float pointAngle = (Mathf.Atan2(pointDirection.y, pointDirection.x) * Mathf.Rad2Deg) - 90f;
 
 
 		if (Mathf.DeltaAngle(pointAngle, direction) > angleWidth * .5f) return false;
