@@ -9,6 +9,9 @@ public class CinematicCamera : MonoBehaviour
 	public float dollySpeed = 1f;
 	public float flyInSpeed = 3f;
 
+	public float eventPaddingBefore = 2f;
+	public float eventPaddingAfter = 2f;
+
 	public Transform focusPoint;
 	public new Camera camera;
 	public Camera planningCamera;
@@ -17,9 +20,13 @@ public class CinematicCamera : MonoBehaviour
 	public CinemachineVirtualCamera virtualCamera;
 	CinemachineTrackedDolly dolly;
 
+	bool inPlaybackMode = false;
+
 	public Transform focusedUnit;
+	public List<Transform> focusGroup = new List<Transform>();
 
 	bool circling = false;
+	float circleCameraProgress = 0;
 
 	float unitHeight = 1.7f;
 	float flyinHeight = 10f;
@@ -28,14 +35,110 @@ public class CinematicCamera : MonoBehaviour
 	float flyBehindRightOffset = 2.5f;
 	float lookAheadFocus = 5f;
 	float flyBehindHeight = 2f;
-	float flyinProgressStop = 8f;
+	float flyinProgressStop = 4f;
 	Vector3 flyinTarget;
 
 	ActionCamera actionCamera;
+	List<MatchEventType> notableEvents = new List<MatchEventType> { MatchEventType.Shoot, MatchEventType.Death };
 
 	public Image[] blinds;
 	float blindHeight = 540f;
 	float blindOpenSpeed = 1500f;
+
+	public float playbackStart;
+
+	private void Awake()
+	{
+		MatchManager.OnMatchUpdate += OnMatchUpdate;
+	}
+
+	class ActionClip
+	{
+		public float start, end;
+		public UnitID unit;
+		public bool run = true;
+		public bool hasStarted = false;
+		public bool hasEnded = false;
+	}
+
+	List<ActionClip> actionClips = new List<ActionClip>();
+
+	void OnMatchUpdate(Match match)
+	{
+
+		if (match.state == Match.GameState.Playback)
+		{
+			EnableCinematicCamera();
+			actionClips.Clear();
+
+			foreach (Unit unit in match.GetAllUnits(match.GetLocalTeam()))
+			{
+				focusPoint.position = VisualUnitManager.GetVisualUnitById(unit.id).mainModel.position;
+			}
+
+			foreach (MatchEvent matchEvent in match.events)
+			{
+				if (notableEvents.Contains(matchEvent.type))
+				{
+					Unit actor = match.GetUnit(matchEvent.actorUnitId);
+					if (actor.ownerID == ClientLogin.user.id)
+					{
+						// TODO FIX SO MULTIBLE CLIPS BY THE SAME UNITS MERGE
+						ActionClip clip = new ActionClip();
+						clip.start = matchEvent.time - eventPaddingBefore;
+						clip.end = matchEvent.time + eventPaddingAfter;
+						clip.unit = actor.id;
+						Debug.Log("Actual event start: " + matchEvent.time + ",  type: " + matchEvent.type);
+						Debug.Log("Action clip added, start: " + clip.start + " , end: " + clip.end);
+						actionClips.Add(clip);
+					}
+				}
+			}
+
+			foreach (ActionClip clip in actionClips)
+				foreach (ActionClip otherClip in actionClips)
+					if (otherClip.start >= clip.start && otherClip.start <= clip.end)
+					{
+						otherClip.run = false;
+						clip.run = false;
+					}
+
+			inPlaybackMode = true;
+			playbackStart = Time.time;
+			StartCircling();
+		} else
+		{
+			EnablePlanningCamera();
+			inPlaybackMode = false;
+		}
+	}
+
+	void Update()
+	{
+		if (inPlaybackMode)
+		{
+			float time = Time.time - playbackStart;
+			foreach (ActionClip clip in actionClips)
+			{
+				if (time >= clip.start && !clip.hasStarted)
+				{
+
+					clip.hasStarted = true;
+					VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(clip.unit);
+					focusedUnit = visualUnit.mainModel;
+
+					CreateZoomPath(visualUnit.transform);
+				}
+				if (time >= clip.end && !clip.hasEnded)
+				{
+					clip.hasEnded = true;
+					StartCircling();
+				}
+			}
+
+			/*foreach(Unit unit in match)*/
+		}
+	}
 
 	void SetBlindsVisible(bool show)
 	{
@@ -57,6 +160,7 @@ public class CinematicCamera : MonoBehaviour
 
 	void EnablePlanningCamera()
 	{
+		circling = false;
 		DisableActionCamera();
 		camera.enabled = false;
 		planningCamera.enabled = true;
@@ -94,11 +198,11 @@ public class CinematicCamera : MonoBehaviour
 
 		path.Add(CreateWaypoint(camera.transform.position));
 
-		Vector3 flyinRight = flyinTarget + (unit.right * rightOfCharacterAmount) + (unit.up * flyinHeight);
-		path.Add(CreateWaypoint(flyinRight));
+		/*Vector3 flyinRight = flyinTarget + (unit.right * rightOfCharacterAmount) + (unit.up * flyinHeight);
+		path.Add(CreateWaypoint(flyinRight));*/
 
-		Vector3 flyBehind = flyinTarget + (unit.forward * -flyBehindCharacterAmount) + (unit.right * flyBehindRightOffset) + (unit.up * flyBehindHeight);
-		path.Add(CreateWaypoint(flyBehind));
+		/*Vector3 flyBehind = flyinTarget + (unit.forward * -flyBehindCharacterAmount) + (unit.right * flyBehindRightOffset) + (unit.up * flyBehindHeight);
+		path.Add(CreateWaypoint(flyBehind));*/
 
 		Vector3 flyToUnit = flyinTarget;
 
@@ -108,8 +212,10 @@ public class CinematicCamera : MonoBehaviour
 		virtualCamera.LookAt = focusPoint;
 
 		circling = false;
-		dolly.m_Path = zoomPath;
+
+		circleCameraProgress = dolly.m_PathPosition;
 		dolly.m_PathPosition = 0f;
+		dolly.m_Path = zoomPath;
 
 
 		StartCoroutine(StartFlyingIn());
@@ -127,7 +233,6 @@ public class CinematicCamera : MonoBehaviour
 			Vector3 flyinFocus = (focusedUnit.forward * lookAheadFocus) + GetUnitHeadPosition();
 			focusPoint.position = flyinFocus;
 			dolly.m_PathPosition += Time.deltaTime * flyInSpeed;
-
 
 			yield return new WaitForEndOfFrame();
 		}
@@ -171,7 +276,7 @@ public class CinematicCamera : MonoBehaviour
 
 		circling = true;
 		dolly.m_Path = circlePath;
-		dolly.m_PathPosition = 0f;
+		dolly.m_PathPosition = circleCameraProgress;
 		virtualCamera.LookAt = focusPoint;
 
 		StartCoroutine(CircleEnumerator());
@@ -180,11 +285,12 @@ public class CinematicCamera : MonoBehaviour
 
 	IEnumerator CircleEnumerator()
 	{
-
 		while (circling)
 		{
-			focusPoint.position = focusedUnit.position;
+			// TODO FOCUS ON MOVING UNITS
+			/*focusPoint.position = focusedUnit.position;*/
 			dolly.m_PathPosition += Time.deltaTime * dollySpeed;
+			circleCameraProgress = dolly.m_PathPosition;
 			yield return new WaitForEndOfFrame();
 		}
 	}
@@ -318,8 +424,5 @@ public class CinematicCamera : MonoBehaviour
 		}
 	}*/
 
-	void Update()
-	{
 
-	}
 }
