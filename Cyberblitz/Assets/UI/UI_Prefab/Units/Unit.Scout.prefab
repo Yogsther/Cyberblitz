@@ -343,7 +343,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Emergency heal at low health (+1HP)
+  m_text: Lightweight legs grant maximum range and speed.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}
@@ -864,7 +864,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The reactive armor creates an general high resistance to damage.
+  m_text: "Grants \"Coup de gr\xE2ce\" instantly killing a operator with one hit."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}

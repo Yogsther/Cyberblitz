@@ -17,12 +17,15 @@ MonoBehaviour:
   stats:
     maxHp: 2
     speed: 3
-    damage: 5
+    damage: 2
     firerate: 2
     range: 15
     spread: 15
-  description: Solider descriptiion
-  story: This is the story for soldier
+  description: Versatile operator
+  story: The Soldier is the backbone of all kill squads and the most commonly picked
+    operator. The combat implants are cheap and average in every aspect but fill
+    an important role. The procedure for the combat implants is not as gruesome as
+    many of the other implants but death is still expected within 48h.
   canGuard: 1
   model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
   image: {fileID: 8602049787728755569, guid: 5f3b721ddc86716439ec7b2aff4ec123, type: 3}

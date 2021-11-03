@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The reactive armor creates an general high resistance to damage.
+  m_text: Deploy a holographic decoy (5 rounds)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}
@@ -400,7 +400,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Emergency heal at low health (+1HP)
+  m_text: Grants units within 2 squares a damage boost (+1 Damage)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}
@@ -788,7 +788,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Reactive Armor
+  m_text: Holographic Decoy
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}
@@ -999,7 +999,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' PASSIVE ABILITY'
+  m_text: ACTIVE ABILITY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a877bba0418b0bf46aef7eb35cc35cef, type: 2}
