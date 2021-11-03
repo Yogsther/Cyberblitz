@@ -6,7 +6,7 @@
         _OutlineWidth ("Outline Width", Float ) = 5
         
         _InnerColor ("Inner Color", Color) = (1, 1, 0, 0.5)
-        _OuterColor( "Outer Color", Color ) = (1, 1, 0, 1)
+        [HDR]_OuterColor( "Outer Color", Color ) = (1, 1, 0, 1)
         _Texture ("Texture", 2D ) = "black" {}
         _TextureSize("Texture Pixels Size", Vector) = (64,64,0,0)
         
