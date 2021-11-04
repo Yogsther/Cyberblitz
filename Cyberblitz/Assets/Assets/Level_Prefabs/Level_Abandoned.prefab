@@ -301,6 +301,38 @@ MonoBehaviour:
     gameObjectPrefab: {fileID: 0}
     gameObjectInstance: {fileID: 0}
     type: 2
+  - gridTransform:
+      x: 27
+      y: 10
+      width: 1
+      height: 21
+    gameObjectPrefab: {fileID: 0}
+    gameObjectInstance: {fileID: 0}
+    type: 4
+  - gridTransform:
+      x: -1
+      y: 10
+      width: 1
+      height: 21
+    gameObjectPrefab: {fileID: 0}
+    gameObjectInstance: {fileID: 0}
+    type: 4
+  - gridTransform:
+      x: 13
+      y: -1
+      width: 29
+      height: 1
+    gameObjectPrefab: {fileID: 0}
+    gameObjectInstance: {fileID: 0}
+    type: 4
+  - gridTransform:
+      x: 13
+      y: 21
+      width: 29
+      height: 1
+    gameObjectPrefab: {fileID: 0}
+    gameObjectInstance: {fileID: 0}
+    type: 4
   groundPrefab: {fileID: 6001247413846885357, guid: 9c5386c4ee22a5241b92617f4498b4b2, type: 3}
   showGameObjectsInEditor: 0
   isShowingGameObjects: 0

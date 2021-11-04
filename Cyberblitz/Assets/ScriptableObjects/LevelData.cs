@@ -10,4 +10,5 @@ public class LevelData : ScriptableObject
     public Sprite thumbnail;
 
     public Level levelPrefab;
+    public LevelLayout layout;
 }

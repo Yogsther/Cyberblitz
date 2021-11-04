@@ -6,7 +6,7 @@ using UnityEngine;
 public class Referee
 {
 	public Match match;
-	public LevelData levelData;
+	public LevelLayout levelLayout;
 	List<UserID> readyPlayers = new List<UserID>();
 
 	void MatchStep()
@@ -153,25 +153,13 @@ public class Referee
 	{
 		match = new Match();
 		match.level = "Test Level";
+		DataManager.levelLayouts.TryGetLevelLayout(match.level, out levelLayout);
 		match.state = Match.GameState.Starting;
 		match.round = 0;
 
 		match.players = new Player[2];
 
 		StartListening();
-	}
-
-	public void LoadLevel()
-	{
-		bool gotLevel = LevelManager.levelDataDict.TryGetValue(match.level, out levelData);
-
-		if (gotLevel)
-		{
-			Debug.Log($"Loaded LevelData - {match.level}");
-		} else
-		{
-			Debug.Log($"Failed to load LevelData - {match.level}");
-		}
 	}
 
 	public void AddPlayer(User user)
@@ -208,17 +196,16 @@ public class Referee
 		Player player = new Player(user, team);
 		player.units = new Unit[5];
 
-		SpawnArea spawnArea = levelData.levelPrefab.spawnAreas[team];
+		SpawnArea spawnArea = levelLayout.spawnAreas[team];
 
 		for (int i = 0; i < player.units.Length; i++)
 		{
 			Unit unit = new Unit(player.user.id);
 
 			unit.type = (UnitType)(i % 3);
-			UnitData unitData = UnitDataManager.GetUnitDataByType(unit.type);
-
+			DataManager.unitStats.TryGetUnitStatsByType(unit.type, out UnitStats unitStats);
 			unit.isMVP = i == 3;
-			unit.hp = unitData.stats.maxHp;
+			unit.hp = unitStats.maxHp;
 			unit.ownerID = player.user.id;
 
 			Vector2Int spawnPos = spawnArea.GetSpawnPosition(i);

@@ -59,7 +59,7 @@ public class AutoGridPath
 
 	public List<Vector2Int> GetPoints()
 	{
-		pathFinder.blockMask = GameManager.instance.blockPathfinderMask;
+		pathFinder.blockMask = LayerMask.GetMask("Wall");
 
 		return pathFinder.GetPath(origin.point, target.point, 10000);
 	}

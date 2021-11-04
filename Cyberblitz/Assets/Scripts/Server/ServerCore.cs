@@ -147,7 +147,6 @@ public static class ServerCore
 			games.Add(referee);
 
 			referee.Init();
-			referee.LoadLevel();
 			referee.AddPlayer(user1.user);
 			referee.AddPlayer(user2.user);
 			referee.Start();
@@ -169,7 +168,6 @@ public static class ServerCore
 		games.Add(referee);
 
 		referee.Init();
-		referee.LoadLevel();
 		referee.AddPlayer(packet.user);
 		referee.AddBot();
 		referee.Start();

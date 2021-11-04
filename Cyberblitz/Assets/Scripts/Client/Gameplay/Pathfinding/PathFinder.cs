@@ -12,7 +12,7 @@ namespace WayStarPathfinding
 		/// <summary>The target position of the path</summary>
 		public Vector2Int target;
 
-		public Vector2Int gridSize;
+		public static Vector2Int gridSize = new Vector2Int(1000, 1000);
 
 		public LayerMask blockingLayerMask;
 
@@ -43,6 +43,8 @@ namespace WayStarPathfinding
 
 		public List<Vector2Int> GetPath(Vector2Int origin, Vector2Int target, int maxLoops = 1000)
 		{
+			target.x = Mathf.Clamp(target.x, 0, gridSize.x - 1);
+			target.y = Mathf.Clamp(target.y, 0, gridSize.y - 1);
 
 			bool targetIsBlocked = Physics.CheckSphere(target.ToFlatVector3(.5f), .25f, blockMask);
 

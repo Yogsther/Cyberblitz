@@ -97,13 +97,4 @@ public static class ExtensionMethods
 
         return vector3s;
     }
-
-
-    //___UnitID___//
-
-    public static string Short(this UnitID id)
-    {
-        return id.ToString().Substring(0, 8);
-    }
-
 }

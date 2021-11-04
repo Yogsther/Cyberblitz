@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TurnSimulator : MonoBehaviour
+public static class TurnSimulator
 {
 
 	public static Match SimulateTurn(Match match)

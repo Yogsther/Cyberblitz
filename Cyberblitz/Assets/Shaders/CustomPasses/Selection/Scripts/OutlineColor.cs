@@ -29,4 +29,9 @@ public class OutlineColor : MonoBehaviour
 
         rndr.SetPropertyBlock(propertyBlock);
     }
+
+    public void SetWidth(float width)
+    {
+        
+    }
 }
