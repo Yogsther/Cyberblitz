@@ -14452,7 +14452,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &276323334761517775
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15483,6 +15483,8 @@ MonoBehaviour:
   - {fileID: 5832311071310551307}
   - {fileID: 5975595287275172792}
   - {fileID: 5161363691852542056}
+  modelSpawns: {fileID: 0}
+  selectAnimationController: {fileID: 9100000, guid: 25d535316e10a274caee008aa6c771db, type: 2}
 --- !u!1 &276323335008206453
 GameObject:
   m_ObjectHideFlags: 0
@@ -20677,7 +20679,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2109809370696295910
 RectTransform:
   m_ObjectHideFlags: 0

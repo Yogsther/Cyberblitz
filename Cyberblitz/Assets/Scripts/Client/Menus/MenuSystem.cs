@@ -17,8 +17,11 @@ public class MenuSystem : MonoBehaviour
 	public GameObject gameUI;
 	public GameObject menuBackground;
 
-	public Camera lobbyCamera, planningCamera;
+	public LobbyCamera lobbyCamera;
+	public Camera planningCamera;
 	public GameObject lobbyWorld;
+
+
 
 	[HideInInspector]
 	MenuScreen selectedMenuScreen = null;
@@ -57,7 +60,7 @@ public class MenuSystem : MonoBehaviour
 		MatchManager.OnMatchStart += match =>
 		{
 			DisplayGameUI(true);
-			lobbyCamera.enabled = false;
+			lobbyCamera.lobbyCamera.enabled = false;
 			SetOutlineVisibility(true);
 			lobbyWorld.SetActive(false);
 			Debug.Log("Test");
@@ -71,9 +74,29 @@ public class MenuSystem : MonoBehaviour
 
 	public void LoadScreen(string name)
 	{
+		if (selectedMenuScreen == null || name != selectedMenuScreen.name)
+		{
+			if (selectedMenuScreen != null && selectedMenuScreen.name == "play")
+			{
+				lobbyCamera.AnimateOut(() =>
+				{
+					LoadScreenElements(name);
+				});
+			} else
+			{
+				LoadScreenElements(name);
+			}
+		}
+
+	}
+
+
+	void LoadScreenElements(string name)
+	{
+
 		lobbyWorld.SetActive(true);
 		planningCamera.enabled = false;
-		lobbyCamera.enabled = true;
+		lobbyCamera.lobbyCamera.enabled = true;
 		SetOutlineVisibility(false);
 
 		if (!menuBackground.activeSelf) menuBackground.SetActive(true);

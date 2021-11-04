@@ -1,12 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class PlayPage : MonoBehaviour
 {
 	public MenuSystem menuSystem;
 	public AddUnitPanel[] panels;
 	public Transform modelSpawns;
+	public Button playButton;
+	public PlayerBrowser playerBrowser;
+
+	public RuntimeAnimatorController selectAnimationController;
+
+	public VisualEffect[] spawnEffects;
 
 	class SelectedUnit
 	{
@@ -26,6 +34,17 @@ public class PlayPage : MonoBehaviour
 		menuSystem.OnPageLoad["play"] = OnPageLoad;
 	}
 
+	private void Start()
+	{
+		playButton.onClick.AddListener(() =>
+		{
+			if (HasSelectedUnits())
+			{
+				playerBrowser.SetVisbility(true);
+			}
+		});
+	}
+
 	void ClearModelsInSpawnpoint(Transform spawnpoint)
 	{
 		foreach (Transform model in spawnpoint)
@@ -35,7 +54,7 @@ public class PlayPage : MonoBehaviour
 	public static bool HasSelectedUnits()
 	{
 		foreach (SelectedUnit selectedUnit in selectedUnits)
-			if (selectedUnit.empty) return false;
+			if (selectedUnit == null || selectedUnit.empty) return false;
 		return true;
 	}
 
@@ -61,11 +80,19 @@ public class PlayPage : MonoBehaviour
 			if (selectedUnit != null && !selectedUnit.loaded && !selectedUnit.empty)
 			{
 				ClearModelsInSpawnpoint(modelSpawns.GetChild(i));
-				Instantiate(UnitDataManager.GetUnitDataByType(selectedUnit.type).model, modelSpawns.GetChild(i));
+				GameObject model = Instantiate(UnitDataManager.GetUnitDataByType(selectedUnit.type).model, modelSpawns.GetChild(i));
+				Animator animator = model.GetComponent<Animator>();
+				animator.runtimeAnimatorController = selectAnimationController;
+				animator.applyRootMotion = true;
+				spawnEffects[i].enabled = false;
+
 				selectedUnit.loaded = true;
+
 			}
 		}
 	}
+
+
 
 	void OnPageLoad()
 	{
@@ -75,6 +102,7 @@ public class PlayPage : MonoBehaviour
 			panel.ClosePanel();
 		}
 		menuSystem.menuBackground.SetActive(false);
+		menuSystem.lobbyCamera.AnimateIn();
 	}
 
 	public void OpenPanel(AddUnitPanel panelToOpen)
