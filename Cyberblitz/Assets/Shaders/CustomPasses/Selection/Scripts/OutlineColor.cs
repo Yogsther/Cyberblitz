@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
-public class SelectionColor : MonoBehaviour
+public class OutlineColor : MonoBehaviour
 {
     [ColorUsage(true, true)] public Color selectionColor = new Color(1f, 0.5f, 0f, 1f);
 

@@ -7,24 +7,25 @@ using UnityEngine.EventSystems;
 public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
 {
 	public UnitID id = "test id";
+	public bool friendly = false;
+
 	public Transform mainModel;
-	public Transform ghostModel;
 
+	public Animator outlineAnimator;
 	public OutlineController outlineController;
-
-	[ColorUsage(true, true)] public Color friendlyColor;
-	[ColorUsage(true, true)] public Color enemyColor;
-	[ColorUsage(true, true)] public Color selectedColor;
-	[ColorUsage(true, true)] public Color hoverColor;
 
 	public Animator animator;
 
 	public bool isSelected;
 	public bool isSelectable;
 
+	public bool isDead;
+
 	public static Action<UnitID> OnSelected;
 	public static Action<UnitID> OnSelectAndDrag;
 	public static Action<UnitID> OnDeselected;
+
+	public static Action<UnitID> OnDeath;
 
 	public bool mouseDownOnUnit = false;
 
@@ -33,15 +34,31 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 	private void Start()
 	{
 		animator = mainModel.GetComponentInChildren<Animator>();
-		ghostModel.gameObject.SetActive(false);
 		SetRagdollEnabled(false);
 
-		outlineController.color = friendlyColor;
+		outlineAnimator.SetBool("Friendly", friendly);
 
-		OnSelected += (id) => outlineController.color = id == this.id ? selectedColor : friendlyColor;
+		TimelineEditor.OnUnitSelected += unit =>
+		{
+			isSelected = unit.id == id;
+
+			outlineAnimator.SetBool("Selected", isSelected);
+		};
+
+		OnDeath += id =>
+		{
+			if (id == this.id)
+			{
+				isDead = true;
+
+				SetRagdollEnabled(isDead);
+
+				outlineAnimator.SetBool("Dead", isDead);
+			}
+		};
 	}
 
-	public void SetVisable(bool visable)
+    public void SetVisable(bool visable)
 	{
 
 	}
