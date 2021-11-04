@@ -70,13 +70,12 @@ public class VisualUnitManager : MonoBehaviour
 				{
 					GameObject go = Instantiate(visualUnitPrefab, visualUnitContainer);
 					VisualUnit visualUnitInstance = go.GetComponent<VisualUnit>();
-					visualUnitInstance.name = $"VisualUnit {(friendlyPlayer ? "Friendly" : "Enemy")} - {unitData.type.ToString()} - {unit.id}";
+					visualUnitInstance.name = $"VisualUnit {(friendlyPlayer ? "Friendly" : "Enemy")} - {unitData.type} - {unit.id.Short()}";
 					visualUnitInstance.id = unit.id;
+					visualUnitInstance.friendly = friendlyPlayer;
 					GameObject model = Instantiate(unitData.model, visualUnitInstance.mainModel);
 
 					model.layer = 7;
-
-					Instantiate(unitData.model, visualUnitInstance.ghostModel);
 
 					visualUnitInstance.isSelectable = false;
 
@@ -123,7 +122,7 @@ public class VisualUnitManager : MonoBehaviour
 			return result;
 		}
 
-		Debug.Log($"Could not find VisualUnit with id {id}");
+		Debug.Log($"Could not find VisualUnit with id {id.Short()}");
 
 		return null;
 	}

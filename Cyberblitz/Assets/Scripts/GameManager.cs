@@ -27,18 +27,4 @@ public class GameManager : MonoBehaviour
 
 		LevelManager.OnLevelLoaded += CameraController.InitCamera;
 	}
-
-	/*private void Start()
-	{
-		*//*ClientLogin.OnLogin += user =>
-		{
-			ClientConnection.Emit("START_MATCH");
-		};*//*
-	}*/
-
-	/*[ContextMenu("Testing/Signal Ready")]
-	public void SignalReadyTest()
-	{
-		MatchManager.SignalReady();
-	}*/
 }
