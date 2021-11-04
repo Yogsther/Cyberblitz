@@ -39,9 +39,9 @@ public class GuardBlock : Block
 
 
 					float effectAnimationDelay = .2f;
-					float effectTime = ownerUnit.timeline.GetStartTimeOfBlock(this) + localTime + effectAnimationDelay;
+					float effectTime = ownerUnit.timeline.GetStartTimeOfBlock(this) + localTime;
 
-					ShootEvent shootEvent = new ShootEvent(ownerUnit.id, otherUnit.id, localTime);
+					ShootEvent shootEvent = new ShootEvent(ownerUnit.id, otherUnit.id, effectTime);
 					simulatedMatch.events.Enqueue(shootEvent);
 
 					ownerUnit.lastShot = localTime;
@@ -51,11 +51,11 @@ public class GuardBlock : Block
 					{
 						otherUnit.hp = 0;
 
-						DeathEvent deathEvent = new DeathEvent(otherUnit.id, effectTime);
+						DeathEvent deathEvent = new DeathEvent(otherUnit.id, effectTime + effectAnimationDelay);
 						simulatedMatch.events.Enqueue(deathEvent);
 					} else
 					{
-						DamageEvent damageEvent = new DamageEvent(otherUnit.id, ownerUnitStats.damage, effectTime);
+						DamageEvent damageEvent = new DamageEvent(otherUnit.id, ownerUnitStats.damage, effectTime + effectAnimationDelay);
 						simulatedMatch.events.Enqueue(damageEvent);
 					}
 
@@ -74,7 +74,7 @@ public class GuardBlock : Block
 
 		Transform ownerTransform = ownerVisualUnit.mainModel;
 
-		ownerTransform.rotation = Quaternion.AngleAxis(aimCone.direction, Vector3.up);
+		ownerTransform.rotation = Quaternion.AngleAxis(aimCone.direction, Vector3.down);
 	}
 
 }

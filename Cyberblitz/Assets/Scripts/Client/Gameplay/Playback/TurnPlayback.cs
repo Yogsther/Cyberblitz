@@ -58,11 +58,11 @@ public class TurnPlayback : MonoBehaviour
 
 		if (match.events.Count != 0) nextEvent = match.events.Dequeue();
 
-		for (float time = 0f; time < match.longestTimelineDuration; time += Time.deltaTime)
+		for (float time = -1f; time < match.longestTimelineDuration + 1f; time += Time.deltaTime)
 		{
 
-			if(nextEvent != null && time > nextEvent.time)
-            {
+			if (nextEvent != null && time > nextEvent.time)
+			{
 				nextEvent.PlaybackEffect(match);
 
 				if (match.events.Count != 0) nextEvent = match.events.Dequeue();
@@ -86,11 +86,7 @@ public class TurnPlayback : MonoBehaviour
 			}
 
 			yield return null;
-
-
 		}
-
-		Debug.Log("Finished Playback");
 
 		OnPlaybackFinished?.Invoke();
 	}

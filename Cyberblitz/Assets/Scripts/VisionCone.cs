@@ -48,8 +48,8 @@ public class VisionCone
 		Quaternion leftOffset = Quaternion.AngleAxis(simulatedDirection - directionOffsetDegrees, Vector3.down);
 		Quaternion rightOffset = Quaternion.AngleAxis(simulatedDirection + directionOffsetDegrees, Vector3.down);
 
-		directions[0] = (leftOffset * Vector3.right * radius).FlatVector3ToVector2();
-		directions[1] = (rightOffset * Vector3.right * radius).FlatVector3ToVector2();
+		directions[0] = (leftOffset * Vector3.forward * radius).FlatVector3ToVector2();
+		directions[1] = (rightOffset * Vector3.forward * radius).FlatVector3ToVector2();
 
 		return directions;
 	}
@@ -62,7 +62,7 @@ public class VisionCone
 
 		Vector2 pointDirection = point - origin.point;
 
-		float pointAngle = Mathf.Atan2(pointDirection.y, pointDirection.x) * Mathf.Rad2Deg;
+		float pointAngle = (Mathf.Atan2(pointDirection.y, pointDirection.x) * Mathf.Rad2Deg) - 90f;
 
 
 		if (Mathf.DeltaAngle(pointAngle, direction) > angleWidth * .5f) return false;
@@ -79,5 +79,7 @@ public class VisionCone
 
 		Gizmos.DrawLine(points[0].ToFlatVector3(.01f), points[1].ToFlatVector3(.01f));
 		Gizmos.DrawLine(points[0].ToFlatVector3(.01f), points[2].ToFlatVector3(.01f));
+
+		Gizmos.DrawRay(origin.point.ToFlatVector3(1f), Quaternion.AngleAxis(direction, Vector3.up) * Vector3.forward);
 	}
 }

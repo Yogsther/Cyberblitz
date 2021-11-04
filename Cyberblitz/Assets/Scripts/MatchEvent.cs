@@ -73,6 +73,7 @@ public class DeathEvent : MatchEvent
 	{
 		VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(actorUnitId);
 		visualUnit.SetRagdollEnabled(true);
+		visualUnit.isSelectable = false;
 		/*visualUnit.gameObject.SetActive(false);*/
 	}
 }
