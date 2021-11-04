@@ -10,6 +10,13 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 	public Transform mainModel;
 	public Transform ghostModel;
 
+	public OutlineController outlineController;
+
+	[ColorUsage(true, true)] public Color friendlyColor;
+	[ColorUsage(true, true)] public Color enemyColor;
+	[ColorUsage(true, true)] public Color selectedColor;
+	[ColorUsage(true, true)] public Color hoverColor;
+
 	public Animator animator;
 
 	public bool isSelected;
@@ -28,6 +35,10 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 		animator = mainModel.GetComponentInChildren<Animator>();
 		ghostModel.gameObject.SetActive(false);
 		SetRagdollEnabled(false);
+
+		outlineController.color = friendlyColor;
+
+		OnSelected += (id) => outlineController.color = id == this.id ? selectedColor : friendlyColor;
 	}
 
 	public void SetVisable(bool visable)
@@ -49,9 +60,11 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 	{
 		if (isSelectable && selected)
 		{
+			//outlineController.color = selectedColor;
 			OnSelected?.Invoke(id);
 		} else if (isSelected)
 		{
+			//outlineController.color = friendlyColor;
 			OnDeselected?.Invoke(id);
 		}
 

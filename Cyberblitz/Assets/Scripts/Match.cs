@@ -29,6 +29,11 @@ public class Match
 		return null;
 	}
 
+	public int GetLocalTeam()
+	{
+		return GetPlayer(ClientLogin.user.id).team;
+	}
+
 	public User GetUser(UserID userId)
 	{
 		Player player = GetPlayer(userId);
@@ -97,6 +102,28 @@ public class Match
 				units[index] = unit;
 				index++;
 			}
+		}
+		return units;
+	}
+
+	/// <summary>
+	/// Get all units from a certain team
+	/// </summary>
+	/// <param name="team">The team you want to get units from</param>
+	public Unit[] GetAllUnits(int team)
+	{
+		int amount = 0;
+		int index = 0;
+		foreach (Player player in players) if (player.team == team) amount += player.units.Length;
+		Unit[] units = new Unit[amount];
+		foreach (Player player in players)
+		{
+			if (player.team == team)
+				foreach (Unit unit in player.units)
+				{
+					units[index] = unit;
+					index++;
+				}
 		}
 		return units;
 	}
