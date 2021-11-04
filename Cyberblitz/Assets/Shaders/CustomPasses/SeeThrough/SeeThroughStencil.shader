@@ -27,7 +27,7 @@
         Pass
         {
             Name "FirstPass"
-            Tags { "LightMode" = "FirstPass" }
+            Tags { "LightMode" = "FirstPass" "Queue" = "Overlay+1" }
 
             Blend Off
             ColorMask 0

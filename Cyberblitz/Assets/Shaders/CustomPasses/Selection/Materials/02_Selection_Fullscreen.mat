@@ -30,11 +30,11 @@ Material:
     m_Floats:
     - _AlphaCutoff: 0.5
     - _BehindFactor: 0
-    - _OutlineWidth: 3.9
+    - _OutlineWidth: 2
     - _SamplePrecision: 3
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 0.2509804}
-    - _OuterColor: {r: 0, g: 1, b: 0.9361286, a: 0.5176471}
+    - _InnerColor: {r: 1, g: 1, b: 1, a: 0}
+    - _OuterColor: {r: 4.984799, g: 4.984799, b: 4.984799, a: 1}
     - _TextureSize: {r: 16, g: 16, b: 0, a: 0}
   m_BuildTextureStacks: []

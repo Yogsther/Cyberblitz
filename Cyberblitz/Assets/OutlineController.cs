@@ -8,17 +8,29 @@ public class OutlineController : MonoBehaviour
     [ColorUsage(true, true)] public Color color;
 
     public Material outlineMaterial;
-    public List<Renderer> renderers;
+    public List<Renderer> mainRenderers;
+    public List<SelectionColor> outlineRenderers;
 
     private Color lastColor;
 
     private void Start()
     {
-        renderers = GetComponentsInChildren<Renderer>().ToList();
+        mainRenderers = GetComponentsInChildren<Renderer>().ToList();
 
-        foreach(Renderer renderer in renderers)
+        CreateOutlineRenderers();
+    }
+
+    [ContextMenu("Create Outline")]
+    public void CreateOutlineRenderers()
+    {
+        List<Renderer> mainRenderers = GetComponentsInChildren<Renderer>().ToList();
+
+        foreach (Renderer renderer in mainRenderers)
         {
-            renderer.materials = new Material[] { renderer.material, outlineMaterial };
+            SelectionColor controller = renderer.gameObject.AddComponent<SelectionColor>();
+
+            outlineRenderers.Add(controller);
+
         }
     }
 
@@ -26,12 +38,17 @@ public class OutlineController : MonoBehaviour
     {
         if(color != lastColor)
         {
-            foreach(Renderer renderer in renderers)
-            {
-                renderer.materials[1].SetColor("_Color", color);
-            }
-
-            lastColor = color;
+            UpdateColors();
         }
+    }
+
+    private void UpdateColors()
+    {
+        foreach (SelectionColor selectionColor in outlineRenderers)
+        {
+            selectionColor.SetColor(color);
+        }
+
+        lastColor = color;
     }
 }
