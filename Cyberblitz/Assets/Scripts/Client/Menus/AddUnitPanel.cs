@@ -38,7 +38,8 @@ public class AddUnitPanel : MonoBehaviour
 				addUnitButton.GetComponentInChildren<TMP_Text>().text = type.ToString().ToUpper();
 				addUnitButton.onClick.AddListener(() =>
 				{
-					Debug.Log("Select unit " + type + " , at index: " + index);
+					openPanelButtonText.text = "CHANGE";
+					playPage.SelectUnit(type, index);
 					ClosePanel();
 				});
 			}

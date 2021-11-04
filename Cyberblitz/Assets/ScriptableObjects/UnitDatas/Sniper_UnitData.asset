@@ -18,7 +18,7 @@ MonoBehaviour:
     maxHp: 2
     speed: 3
     damage: 5
-    firerate: 2
+    firerate: 1
     range: 15
     spread: 15
   description: Long-range marksman

@@ -58,13 +58,9 @@ public class GuardBlock : Block
 						DamageEvent damageEvent = new DamageEvent(otherUnit.id, ownerUnitStats.damage, effectTime + effectAnimationDelay);
 						simulatedMatch.events.Enqueue(damageEvent);
 					}
-
 				}
 			}
-
-
 		}
-
 	}
 
 	public override void Playback(Match simulatedMatch, float localTime)

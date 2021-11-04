@@ -17,8 +17,8 @@ MonoBehaviour:
   stats:
     maxHp: 5
     speed: 2
-    damage: 3
-    firerate: 1
+    damage: 0.1
+    firerate: 6
     range: 5
     spread: 45
   description: Heavy tank class

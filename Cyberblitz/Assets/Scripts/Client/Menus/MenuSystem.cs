@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -14,6 +15,10 @@ public class MenuScreen
 public class MenuSystem : MonoBehaviour
 {
 	public GameObject gameUI;
+	public GameObject menuBackground;
+
+	public Camera lobbyCamera, planningCamera;
+	public GameObject lobbyWorld;
 
 	[HideInInspector]
 	MenuScreen selectedMenuScreen = null;
@@ -30,6 +35,13 @@ public class MenuSystem : MonoBehaviour
 
 	public Dictionary<string, Action> OnPageLoad = new Dictionary<string, Action>();
 
+	public CustomPassVolume outlineVolume;
+
+	public void SetOutlineVisibility(bool enabled)
+	{
+		outlineVolume.enabled = enabled;
+	}
+
 	public MenuScreen GetScreen(string name)
 	{
 		foreach (MenuScreen screen in menuScreens)
@@ -45,6 +57,10 @@ public class MenuSystem : MonoBehaviour
 		MatchManager.OnMatchStart += match =>
 		{
 			DisplayGameUI(true);
+			lobbyCamera.enabled = false;
+			SetOutlineVisibility(true);
+			lobbyWorld.SetActive(false);
+			Debug.Log("Test");
 		};
 	}
 
@@ -55,12 +71,18 @@ public class MenuSystem : MonoBehaviour
 
 	public void LoadScreen(string name)
 	{
+		lobbyWorld.SetActive(true);
+		planningCamera.enabled = false;
+		lobbyCamera.enabled = true;
+		SetOutlineVisibility(false);
+
+		if (!menuBackground.activeSelf) menuBackground.SetActive(true);
+
 		ClearSubHeader();
 		if (selectedMenuScreen != null) selectedMenuScreen.screen.SetActive(false);
 		selectedMenuScreen = GetScreen(name);
 		selectedMenuScreen.screen.SetActive(true);
 		if (OnPageLoad.ContainsKey(name)) OnPageLoad[name]();
-
 		OnScreenLoaded?.Invoke(name);
 		DisplayGameUI(false);
 	}
