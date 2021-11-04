@@ -9,7 +9,7 @@ public class OutlineController : MonoBehaviour
 
     public Material outlineMaterial;
     public List<Renderer> mainRenderers;
-    public List<SelectionColor> outlineRenderers;
+    public List<OutlineColor> outlineRenderers;
 
     private Color lastColor;
 
@@ -27,7 +27,7 @@ public class OutlineController : MonoBehaviour
 
         foreach (Renderer renderer in mainRenderers)
         {
-            SelectionColor controller = renderer.gameObject.AddComponent<SelectionColor>();
+            OutlineColor controller = renderer.gameObject.AddComponent<OutlineColor>();
 
             outlineRenderers.Add(controller);
 
@@ -44,7 +44,7 @@ public class OutlineController : MonoBehaviour
 
     private void UpdateColors()
     {
-        foreach (SelectionColor selectionColor in outlineRenderers)
+        foreach (OutlineColor selectionColor in outlineRenderers)
         {
             selectionColor.SetColor(color);
         }

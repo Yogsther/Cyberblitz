@@ -166,7 +166,6 @@ public class TimelineEditor : InGameEditor
 			SetTimelineVisibility(true);
 			ClearTimeline();
 			selectedUnit = unit;
-
 			LoadTimeline();
 			OnUnitSelected?.Invoke(selectedUnit);
 		}
