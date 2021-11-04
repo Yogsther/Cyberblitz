@@ -13,6 +13,7 @@ public class MenuScreen
 }
 public class MenuSystem : MonoBehaviour
 {
+	public GameObject gameUI;
 
 	[HideInInspector]
 	MenuScreen selectedMenuScreen = null;
@@ -39,6 +40,19 @@ public class MenuSystem : MonoBehaviour
 		return null;
 	}
 
+	private void Awake()
+	{
+		MatchManager.OnMatchStart += match =>
+		{
+			DisplayGameUI(true);
+		};
+	}
+
+	public void DisplayGameUI(bool show)
+	{
+		gameUI.SetActive(show);
+	}
+
 	public void LoadScreen(string name)
 	{
 		ClearSubHeader();
@@ -48,6 +62,7 @@ public class MenuSystem : MonoBehaviour
 		if (OnPageLoad.ContainsKey(name)) OnPageLoad[name]();
 
 		OnScreenLoaded?.Invoke(name);
+		DisplayGameUI(false);
 	}
 
 	public void ClearSubHeader()
@@ -61,15 +76,14 @@ public class MenuSystem : MonoBehaviour
 		Button button = Instantiate(subHeaderButton, subHeader).GetComponent<Button>();
 		button.onClick.AddListener(() =>
 		{
-			Debug.Log("Pressed");
 			func();
 		});
 		button.GetComponentInChildren<TMP_Text>().text = title;
 	}
 
-	void Awake()
+	private void Start()
 	{
-		/*OnPageLoad["units"] = OnUnitPage;*/
+		LoadScreen("play");
 	}
 
 
@@ -78,8 +92,4 @@ public class MenuSystem : MonoBehaviour
 		mainMenu.SetActive(visible);
 	}
 
-	void Update()
-	{
-
-	}
 }
