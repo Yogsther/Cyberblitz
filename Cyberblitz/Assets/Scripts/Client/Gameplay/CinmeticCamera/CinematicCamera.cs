@@ -23,7 +23,7 @@ public class CinematicCamera : MonoBehaviour
 	bool inPlaybackMode = false;
 
 	public Transform focusedUnit;
-	public List<Transform> focusGroup = new List<Transform>();
+	public Vector3 smoothFocusVal = Vector3.zero;
 
 	bool circling = false;
 	float circleCameraProgress = 0;
@@ -47,21 +47,29 @@ public class CinematicCamera : MonoBehaviour
 
 	public float playbackStart;
 
-	private void Awake()
+	class UnitFocus
 	{
-		MatchManager.OnMatchUpdate += OnMatchUpdate;
+		public float duration;
+		public Transform unitModel;
 	}
+
+	List<UnitFocus> focusGroup = new List<UnitFocus>();
 
 	class ActionClip
 	{
 		public float start, end;
 		public UnitID unit;
-		public bool run = true;
+		public bool canRun = true;
 		public bool hasStarted = false;
 		public bool hasEnded = false;
 	}
 
 	List<ActionClip> actionClips = new List<ActionClip>();
+
+	private void Awake()
+	{
+		MatchManager.OnMatchUpdate += OnMatchUpdate;
+	}
 
 	void OnMatchUpdate(Match match)
 	{
@@ -72,9 +80,14 @@ public class CinematicCamera : MonoBehaviour
 			actionClips.Clear();
 
 			foreach (Unit unit in match.GetAllUnits(match.GetLocalTeam()))
-			{
-				focusPoint.position = VisualUnitManager.GetVisualUnitById(unit.id).mainModel.position;
-			}
+				if (unit.timeline.GetDuration() > 0)
+				{
+					UnitFocus focus = new UnitFocus();
+					focus.unitModel = VisualUnitManager.GetVisualUnitById(unit.id).mainModel;
+					focus.duration = unit.timeline.GetDuration();
+					focusGroup.Add(focus);
+				}
+
 
 			foreach (MatchEvent matchEvent in match.events)
 			{
@@ -88,20 +101,20 @@ public class CinematicCamera : MonoBehaviour
 						clip.start = matchEvent.time - eventPaddingBefore;
 						clip.end = matchEvent.time + eventPaddingAfter;
 						clip.unit = actor.id;
-						Debug.Log("Actual event start: " + matchEvent.time + ",  type: " + matchEvent.type);
-						Debug.Log("Action clip added, start: " + clip.start + " , end: " + clip.end);
+
 						actionClips.Add(clip);
 					}
 				}
 			}
 
-			foreach (ActionClip clip in actionClips)
-				foreach (ActionClip otherClip in actionClips)
-					if (otherClip.start >= clip.start && otherClip.start <= clip.end)
-					{
-						otherClip.run = false;
-						clip.run = false;
-					}
+
+			// Checks for overlapping actions clips and removes them
+			ValidateActionClips();
+
+			// Merges action clips if they are performed by the same unit
+			MergeActionClips();
+			// Remove unrunnable clips that may have been modified with the merge action
+			RemoveUnrunnableActionClips();
 
 			inPlaybackMode = true;
 			playbackStart = Time.time;
@@ -113,16 +126,54 @@ public class CinematicCamera : MonoBehaviour
 		}
 	}
 
+	void MergeActionClips()
+	{
+		if (actionClips.Count < 2) return;
+		for (int i = 0; i < actionClips.Count - 1; i++)
+		{
+			if (actionClips[i].unit == actionClips[i + 1].unit)
+			{
+				// Make this clip not runnable (it will be replaced by the next clip)
+				actionClips[i].canRun = false;
+				// Move the start of the next clip to the start of this clip
+				actionClips[i + 1].start = actionClips[i].start;
+			}
+		}
+	}
+
+	void ValidateActionClips()
+	{
+		foreach (ActionClip clip in actionClips)
+			foreach (ActionClip otherClip in actionClips)
+				if (otherClip.start >= clip.start && otherClip.start <= clip.end && otherClip.unit != clip.unit)
+				{
+					otherClip.canRun = false;
+					clip.canRun = false;
+				}
+		RemoveUnrunnableActionClips();
+	}
+
+	void RemoveUnrunnableActionClips()
+	{
+		for (int i = 0; i < actionClips.Count; i++)
+			if (!actionClips[i].canRun) actionClips.RemoveAt(i);
+
+	}
+
+	float GetTimePassed()
+	{
+		return Time.time - playbackStart;
+	}
+
 	void Update()
 	{
 		if (inPlaybackMode)
 		{
-			float time = Time.time - playbackStart;
+			float time = GetTimePassed();
 			foreach (ActionClip clip in actionClips)
 			{
 				if (time >= clip.start && !clip.hasStarted)
 				{
-
 					clip.hasStarted = true;
 					VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(clip.unit);
 					focusedUnit = visualUnit.mainModel;
@@ -160,6 +211,7 @@ public class CinematicCamera : MonoBehaviour
 
 	void EnablePlanningCamera()
 	{
+		StartCoroutine(AnimateUpBlinds());
 		circling = false;
 		DisableActionCamera();
 		camera.enabled = false;
@@ -279,14 +331,41 @@ public class CinematicCamera : MonoBehaviour
 		dolly.m_PathPosition = circleCameraProgress;
 		virtualCamera.LookAt = focusPoint;
 
+		Vector3 avgFocus = GetAverageFocus();
+		if (focusGroup.Count > 0)
+			focusPoint.position = avgFocus;
+
+
 		StartCoroutine(CircleEnumerator());
 
 	}
 
+	Vector3 GetAverageFocus()
+	{
+		float timePassed = GetTimePassed();
+
+		Vector3 avgFocus = Vector3.zero;
+		for (int i = 0; i < focusGroup.Count; i++)
+		{
+			UnitFocus unitFocus = focusGroup[i];
+			if (unitFocus.duration < timePassed) focusGroup.RemoveAt(i);
+			else avgFocus += unitFocus.unitModel.position;
+		}
+
+		return avgFocus /= focusGroup.Count;
+	}
+
 	IEnumerator CircleEnumerator()
 	{
+		/*focusPoint.position = VisualUnitManager.GetVisualUnitById(unit.id).mainModel.position;*/
 		while (circling)
 		{
+
+			Vector3 avgFocus = GetAverageFocus();
+			if (focusGroup.Count > 0)
+				focusPoint.position = Vector3.SmoothDamp(focusPoint.position, avgFocus, ref smoothFocusVal, 1f);
+
+
 			// TODO FOCUS ON MOVING UNITS
 			/*focusPoint.position = focusedUnit.position;*/
 			dolly.m_PathPosition += Time.deltaTime * dollySpeed;
@@ -294,135 +373,5 @@ public class CinematicCamera : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 	}
-
-	/*public Camera cinemaCam;
-	bool circlingAroundMap = false;
-	public float circleSpeed;
-	Vector3 circleFocus;
-	Vector3 circlePivot;
-	Vector3 lastCirclePosition;
-
-	Vector3 desiredCircleFocus;
-	Vector3 circleFocusSmoothingVal = Vector3.zero;
-
-	public Transform focusTransform, pivotTransform, startTransform;
-
-	void Start()
-	{
-		transform.position = startTransform.position;
-		circleFocus = focusTransform.position;
-		circlePivot = pivotTransform.position;
-		*//*BeginCircling();*//*
-	}
-
-
-	void BeginCircling()
-	{
-		circlingAroundMap = true;
-		StartCoroutine(CircleRoutine());
-	}
-
-	[ContextMenu("Start transition to Action Cam")]
-	public void TransferToActionCamera()
-	{
-		circlingAroundMap = false;
-		lastCirclePosition = transform.position;
-		StartCoroutine(FlyToUnit());
-	}
-
-	IEnumerator FlyToUnit()
-	{
-		// The amount if distance infront of the unit the camera will look when switching focus
-		float forwardDistanceLook = 10f;
-		// The height of a unit to align camera height
-		float unitHeight = 1.73f;
-
-		Transform targetUnit = focusTransform;
-
-		ActionCamera actionCamera = targetUnit.GetComponentInChildren<ActionCamera>();
-
-		Vector3 targetPosition = new Vector3(targetUnit.position.x, unitHeight, targetUnit.position.z);
-		Vector3 targetSight = targetPosition + targetUnit.forward * forwardDistanceLook;
-		Vector3 descendVel = Vector3.zero;
-
-		// The amount of distance from the unit when the camera will cut over to the action camera.
-		float stopDistance = .5f;
-
-		// The distance from the unit when the camera will switch focus from the unit to where to unit is looking.
-		float switchFocusDistance = 10f;
-
-		bool hasSwitchedFocus = false;
-		float flyFocusSwitchSmoothing = .8f;
-		Vector3 flyFocus = targetPosition;
-		Vector3 desiredFlyFocus = flyFocus;
-		Vector3 flyFocusSmoothingVel = Vector3.zero;
-
-		int frames = 0;
-		while (true)
-		{
-			frames++;
-			flyFocus = Vector3.SmoothDamp(flyFocus, desiredFlyFocus, ref flyFocusSmoothingVel, flyFocusSwitchSmoothing);
-
-			transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref descendVel, .5f);
-			transform.LookAt(flyFocus);
-
-			float distance = Vector3.Distance(transform.position, targetPosition);
-
-			if (!hasSwitchedFocus && distance < switchFocusDistance)
-			{
-				Debug.Log("Switched focus at frame " + frames);
-				hasSwitchedFocus = true;
-				desiredFlyFocus = targetSight;
-			}
-
-			if (distance < stopDistance)
-			{
-				Debug.Log("Done at frame: " + frames);
-				break;
-			}
-
-			yield return new WaitForEndOfFrame();
-		}
-		Debug.Log("DONE!");
-	}
-
-
-	IEnumerator CircleRoutine()
-	{
-		while (circlingAroundMap)
-		{
-			desiredCircleFocus = focusTransform.position;
-			circleFocus = Vector3.SmoothDamp(circleFocus, desiredCircleFocus, ref circleFocusSmoothingVal, 1f);
-
-			cinemaCam.transform.LookAt(circlePivot);
-			transform.Translate(Vector3.right * Time.deltaTime * circleSpeed);
-			cinemaCam.transform.LookAt(circleFocus);
-			yield return new WaitForEndOfFrame();
-		}
-	}*/
-
-
-
-	/*void PlayScene(Transform start, Transform end, Transform focus, float duration)
-	{
-		StartCoroutine(PlaySceneRoutine(start, end, focus, duration));
-	}
-
-	IEnumerator PlaySceneRoutine(Transform start, Transform end, Transform focus, float duration)
-	{
-		float startTime = Time.time;
-		Vector3 smoothVal = Vector3.zero;
-
-		while (Time.time - startTime < startTime + duration)
-		{
-			float timeLeft = duration - (Time.time - startTime);
-
-			cinemaCam.transform.position = Vector3.SmoothDamp(cinemaCam.transform.position, end.transform.position, ref smoothVal, timeLeft);
-			cinemaCam.transform.LookAt(focus);
-
-			yield return new WaitForEndOfFrame();
-		}
-	}*/
-
 
 }
