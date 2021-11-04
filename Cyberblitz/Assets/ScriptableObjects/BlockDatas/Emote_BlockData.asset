@@ -15,10 +15,11 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: f78fb36d2661a6f43a4f731697b962ea, type: 3}
   color:
     serializedVersion: 2
-    rgba: 4280144923
+    rgba: 3357398043
   name: Emote
   type: 2
   resizable: 1
+  moveable: 1
   minLength: 1
   maxLength: -1
   showInToolbar: 1
