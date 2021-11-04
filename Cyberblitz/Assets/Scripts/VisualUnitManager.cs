@@ -72,7 +72,10 @@ public class VisualUnitManager : MonoBehaviour
 					VisualUnit visualUnitInstance = go.GetComponent<VisualUnit>();
 					visualUnitInstance.name = $"VisualUnit {(friendlyPlayer ? "Friendly" : "Enemy")} - {unitData.type.ToString()} - {unit.id}";
 					visualUnitInstance.id = unit.id;
-					Instantiate(unitData.model, visualUnitInstance.mainModel);
+					GameObject model = Instantiate(unitData.model, visualUnitInstance.mainModel);
+
+					model.layer = 7;
+
 					Instantiate(unitData.model, visualUnitInstance.ghostModel);
 
 					visualUnitInstance.isSelectable = false;
