@@ -15,10 +15,11 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 66f0608a96338ef4c89ff5f728dfe230, type: 3}
   color:
     serializedVersion: 2
-    rgba: 4283443182
+    rgba: 3360233433
   name: Guard
   type: 1
   resizable: 1
+  moveable: 1
   minLength: 1
   maxLength: -1
   showInToolbar: 1

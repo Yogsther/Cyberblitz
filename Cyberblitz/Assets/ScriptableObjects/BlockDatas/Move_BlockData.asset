@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: a3853b000a13e27429bc368f09c77bc9, type: 3}
   color:
     serializedVersion: 2
-    rgba: 4294939164
+    rgba: 3372209692
   name: Movement
   type: 0
   resizable: 0
