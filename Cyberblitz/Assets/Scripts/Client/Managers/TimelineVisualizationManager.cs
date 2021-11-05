@@ -152,9 +152,9 @@ public class TimelineVisualizationManager : MonoBehaviour
 		CreateNewWaypoint(block);
 	}
 
-	void OnUnitSelected(Unit unit)
+	void OnUnitSelected(UnitID id)
 	{
-		selectedUnit = unit;
+		selectedUnit = MatchManager.GetUnit(id);
 		OnBlockUpdated();
 	}
 

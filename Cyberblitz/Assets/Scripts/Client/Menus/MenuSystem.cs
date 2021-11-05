@@ -21,7 +21,7 @@ public class MenuSystem : MonoBehaviour
 	public Camera planningCamera;
 	public GameObject lobbyWorld;
 
-
+	string currentlyLoadingScreen = null;
 
 	[HideInInspector]
 	MenuScreen selectedMenuScreen = null;
@@ -74,13 +74,25 @@ public class MenuSystem : MonoBehaviour
 
 	public void LoadScreen(string name)
 	{
+
+		if (currentlyLoadingScreen != null) return;
+
 		if (selectedMenuScreen == null || name != selectedMenuScreen.name)
 		{
 			if (selectedMenuScreen != null && selectedMenuScreen.name == "play")
 			{
+				currentlyLoadingScreen = name;
 				lobbyCamera.AnimateOut(() =>
 				{
 					LoadScreenElements(name);
+				});
+			} else if (name == "play")
+			{
+				LoadScreenElements(name);
+				currentlyLoadingScreen = name;
+				lobbyCamera.AnimateIn(() =>
+				{
+					currentlyLoadingScreen = null;
 				});
 			} else
 			{
@@ -93,7 +105,7 @@ public class MenuSystem : MonoBehaviour
 
 	void LoadScreenElements(string name)
 	{
-
+		currentlyLoadingScreen = null;
 		lobbyWorld.SetActive(true);
 		planningCamera.enabled = false;
 		lobbyCamera.lobbyCamera.enabled = true;

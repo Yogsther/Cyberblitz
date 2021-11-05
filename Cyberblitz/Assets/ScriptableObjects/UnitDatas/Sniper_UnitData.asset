@@ -24,3 +24,5 @@ MonoBehaviour:
   canGuard: 1
   model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
   image: {fileID: 8361745343233683824, guid: 9f51f2332d7866e43b619c8360286999, type: 3}
+  portrait: {fileID: 6823333423481750170, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
+  roleIcon: {fileID: -3386787859828853567, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}

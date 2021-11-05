@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b4e0a088c796714c972d99f4f20d790, type: 3}
-  m_Name: Solider_UnitData
+  m_Name: Soldier_UnitData
   m_EditorClassIdentifier: 
   type: 4
   name: Soldier
@@ -23,3 +23,5 @@ MonoBehaviour:
   canGuard: 1
   model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
   image: {fileID: 8602049787728755569, guid: 5f3b721ddc86716439ec7b2aff4ec123, type: 3}
+  portrait: {fileID: 9013192901287847514, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
+  roleIcon: {fileID: -5999590672767869049, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}

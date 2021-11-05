@@ -44,19 +44,19 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
 		outlineAnimator.SetBool("Friendly", friendly);
 
-		TimelineEditor.OnUnitSelected += unit =>
+		TimelineEditor.OnUnitSelected += id =>
 		{
-			isSelected = unit.id == id;
+			isSelected = id == this.id;
 
 			outlineAnimator.SetBool("Selected", isSelected);
 		};
 
 		OnShoot += (id, direction) =>
 		{
-			if(id == this.id)
-            {
-				
-            }
+			if (id == this.id)
+			{
+
+			}
 		};
 
 		OnDeath += id =>
@@ -72,25 +72,25 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 		};
 	}
 
-    private void Update()
-    {
+	private void Update()
+	{
 
 		float angleDifference = Vector3.Angle(mainModel.forward, targetForward);
 		mainModel.forward = Vector3.RotateTowards(mainModel.forward, targetForward, (1f + (angleDifference * .1f)) * Time.deltaTime, 1f);
 
-    }
+	}
 
-    public void SetVisable(bool visable)
+	public void SetVisable(bool visable)
 	{
 
 	}
-	
+
 	public void SetTargetForward(Vector3 newTargetForward)
-    {
+	{
 
 		targetForward = Quaternion.AngleAxis(rotationOffset, Vector3.down) * newTargetForward;
 
-    }
+	}
 
 	/// <summary>
 	/// 
@@ -99,18 +99,18 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 	/// <param name="time">Time in seconds.</param>
 	/// <returns></returns>
 	public IEnumerator RotationToOverTime(Quaternion targetRotation, float time)
-    {
+	{
 		Quaternion startRotation = mainModel.transform.rotation;
 
-        for (float t = 0f; t < 1f && !isDead; t += Time.deltaTime / time)
-        {
+		for (float t = 0f; t < 1f && !isDead; t += Time.deltaTime / time)
+		{
 			mainModel.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, t);
 
 			Debug.Log(t);
 
 			yield return null;
-        }
-    }
+		}
+	}
 
 	public void SetRagdollEnabled(bool enabled)
 	{
