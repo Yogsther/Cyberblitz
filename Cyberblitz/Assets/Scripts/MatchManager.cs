@@ -42,6 +42,8 @@ public class MatchManager : MonoBehaviour
 	{
 		match = packet.Parse<Match>();
 
+		Debug.Log("Match manager got match update: " + match.state.ToString());
+
 		switch (match.state)
 		{
 			case Match.GameState.Planning:

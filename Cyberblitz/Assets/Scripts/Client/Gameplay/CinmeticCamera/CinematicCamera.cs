@@ -80,7 +80,7 @@ public class CinematicCamera : MonoBehaviour
 
 	void OnMatchUpdate(Match match)
 	{
-
+		Debug.Log("Cinematic camera got match update, STATE: " + match.state.ToString());
 		if (match.state == Match.GameState.Playback)
 		{
 			EnableCinematicCamera();
@@ -187,11 +187,12 @@ public class CinematicCamera : MonoBehaviour
 
 					activeActionActor = visualUnit.id;
 					OnActionCameraIn?.Invoke(activeActionActor);
-
+					Debug.Log("Starting action clip: " + time);
 					CreateZoomPath(visualUnit.transform);
 				}
 				if (time >= clip.end && !clip.hasEnded)
 				{
+					Debug.Log("Stopping action clip: " + time);
 					clip.hasEnded = true;
 					StartCircling();
 				}
@@ -237,6 +238,7 @@ public class CinematicCamera : MonoBehaviour
 
 	void DisableActionCamera()
 	{
+		Debug.Log("Trying to disable action camera, is null? " + actionCamera);
 		if (actionCamera != null) actionCamera.camera.enabled = false;
 	}
 
