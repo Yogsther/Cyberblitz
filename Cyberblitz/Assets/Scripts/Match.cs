@@ -41,53 +41,6 @@ public class Match
 		return null;
 	}
 
-	public static Match GetSampleMatch()
-	{
-		Match sampleMatch = new Match();
-
-		sampleMatch.id = MatchID.New;
-		sampleMatch.players = new Player[]
-		{
-			new Player(new User(), 0),
-			new Player(new User(), 1)
-		};
-		foreach (Player player in sampleMatch.players)
-		{
-			player.units = new Unit[]
-			{
-				new Unit(player.user.id),
-				new Unit(player.user.id)
-			};
-
-			foreach (Unit unit in player.units)
-			{
-				UnitData unitData = UnitDataManager.GetUnitDataByType(UnitType.Scout);
-				unit.hp = unitData.stats.maxHp;
-				unit.type = unitData.type;
-				unit.timeline.ownerId = unit.id;
-
-				unit.position = new Position(2f, 2f);
-
-				for (int i = 0; i < 2; i++)
-				{
-					MoveBlock moveBlock = new MoveBlock(unit.id, unit.timeline.GetSize());
-
-					Vector2Int startPos = unit.timeline.GetEndPosition(unit.position.ToVector2()).RoundToVector2Int();
-
-
-					unit.timeline.InsertBlock(moveBlock, i);
-
-					//Debug.Log(moveBlock.)
-				}
-			}
-		}
-
-		sampleMatch.round = 0;
-		sampleMatch.level = "Test Level";
-
-		return sampleMatch;
-	}
-
 	// Should prob be rewritten..
 	public Unit[] GetAllUnits()
 	{

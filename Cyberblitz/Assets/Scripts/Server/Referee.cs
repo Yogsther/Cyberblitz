@@ -6,7 +6,7 @@ using UnityEngine;
 public class Referee
 {
 	public Match match;
-	public LevelData levelData;
+	public LevelLayout levelLayout;
 	List<UserID> readyPlayers = new List<UserID>();
 
 	void MatchStep()
@@ -153,6 +153,7 @@ public class Referee
 	{
 		match = new Match();
 		match.level = "Test Level";
+		DataManager.levelLayouts.TryGetLevelLayout(match.level, out levelLayout);
 		match.state = Match.GameState.Starting;
 		match.round = 0;
 
@@ -161,23 +162,10 @@ public class Referee
 		StartListening();
 	}
 
-	public void LoadLevel()
-	{
-		bool gotLevel = LevelManager.levelDataDict.TryGetValue(match.level, out levelData);
-
-		if (gotLevel)
-		{
-			Debug.Log($"Loaded LevelData - {match.level}");
-		} else
-		{
-			Debug.Log($"Failed to load LevelData - {match.level}");
-		}
-	}
-
-	public void AddPlayer(User user)
+	public void AddPlayer(User user, UnitType[] units)
 	{
 		int team = GetFreePlayerTeam();
-		match.players[team] = CreatePlayer(user, team);
+		match.players[team] = CreatePlayer(user, team, units);
 	}
 
 	public void AddBot()
@@ -186,7 +174,10 @@ public class Referee
 		botUser.bot = true;
 		botUser.username = "Bot";
 		int team = GetFreePlayerTeam();
-		match.players[team] = CreatePlayer(botUser, team);
+
+		UnitType[] defaultUnits = new UnitType[] { UnitType.Sniper, UnitType.Scout, UnitType.Heavy };
+
+		match.players[team] = CreatePlayer(botUser, team, defaultUnits);
 	}
 
 	int GetFreePlayerTeam()
@@ -203,28 +194,35 @@ public class Referee
 		return -1;
 	}
 
-	Player CreatePlayer(User user, int team)
+	void AddUnit(Player player, UnitType type, Vector2Int spawn, int index)
+	{
+		Unit unit = new Unit(player.user.id);
+
+		unit.type = type;
+
+		DataManager.unitStats.TryGetUnitStatsByType(unit.type, out UnitStats unitStats);
+
+		unit.isMVP = type == UnitType.Courier;
+		unit.hp = unitStats.maxHp;
+		unit.ownerID = player.user.id;
+
+		unit.SetPosition(spawn.x, spawn.y);
+		player.units[index] = unit;
+	}
+			
+
+	Player CreatePlayer(User user, int team, UnitType[] units)
 	{
 		Player player = new Player(user, team);
-		player.units = new Unit[5];
 
-		SpawnArea spawnArea = levelData.levelPrefab.spawnAreas[team];
 
-		for (int i = 0; i < player.units.Length; i++)
+		SpawnArea spawnArea = levelLayout.spawnAreas[team];
+
+		AddUnit(player, UnitType.Courier, spawnArea.GetSpawnPosition(0), 0);
+
+		for (int i = 0; i < units.Length; i++)
 		{
-			Unit unit = new Unit(player.user.id);
-
-			unit.type = (UnitType)(i % 3);
-			UnitData unitData = UnitDataManager.GetUnitDataByType(unit.type);
-
-			unit.isMVP = i == 3;
-			unit.hp = unitData.stats.maxHp;
-			unit.ownerID = player.user.id;
-
-			Vector2Int spawnPos = spawnArea.GetSpawnPosition(i);
-
-			unit.SetPosition(spawnPos.x, spawnPos.y);
-			player.units[i] = unit;
+			AddUnit(player, units[i], spawnArea.GetSpawnPosition(i + 1), i + 1);
 		}
 
 		Debug.Log("Created player " + player.user.username + " on team " + team);

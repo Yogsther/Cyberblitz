@@ -27,21 +27,29 @@ public abstract class MatchEvent
 
 public class ShootEvent : MatchEvent
 {
-	public UnitID affectedUnit;
-	public ShootEvent(UnitID actorUnitId, UnitID affectedUnit, float time) : base(actorUnitId, time)
+	public UnitID affectedUnitId;
+	public bool isHit;
+	public ShootEvent(UnitID actorUnitId, UnitID affectedUnitId, bool isHit, float time) : base(actorUnitId, time)
 	{
 		type = MatchEventType.Shoot;
+		this.affectedUnitId = affectedUnitId;
+		this.isHit = isHit;
 	}
 
 	public override void PlaybackEffect(Match simulatedMatch)
 	{
-		VisualUnit shooterVisualUnit = VisualUnitManager.GetVisualUnitById(actorUnitId);
+		VisualUnit shooter = VisualUnitManager.GetVisualUnitById(actorUnitId);
+		VisualUnit victim = VisualUnitManager.GetVisualUnitById(affectedUnitId);
 
-		shooterVisualUnit.animator.SetTrigger("FireTrigger");
-		/*Debug.Log("Playing fire animation");*/
-		/*shooterVisualUnit.animator.ResetTrigger("Fire");
-		 
-		shooterVisualUnit.animator.SetTrigger("Fire");*/
+		Vector3 shooterPos = shooter.mainModel.position;
+		Vector3 victimPos = victim.mainModel.position;
+
+		Vector3 fromShooterToVictim = (victimPos - shooterPos).Flatten();
+
+		shooter.SetTargetForward(fromShooterToVictim);
+
+
+		shooter.animator.SetTrigger("FireTrigger");
 	}
 }
 
@@ -71,9 +79,6 @@ public class DeathEvent : MatchEvent
 
 	public override void PlaybackEffect(Match simulatedMatch)
 	{
-		VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(actorUnitId);
-		visualUnit.SetRagdollEnabled(true);
-		visualUnit.isSelectable = false;
-		/*visualUnit.gameObject.SetActive(false);*/
+		VisualUnit.OnDeath?.Invoke(actorUnitId);
 	}
 }

@@ -14,13 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   name: Titan
-  stats:
-    maxHp: 5
-    speed: 2
-    damage: 3
-    firerate: 1
-    range: 5
-    spread: 45
+  stats: {fileID: 11400000, guid: 990ffbfd182c2fa40ab0f4a4e76d787c, type: 2}
   description: Heavy tank class
   story: Just like the old world's tanks, the TITAN has reactive armor. The thin
     layer of the reactive armor makes the armor very resistant to explosive damage,

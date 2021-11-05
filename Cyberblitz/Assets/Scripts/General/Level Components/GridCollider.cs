@@ -19,6 +19,8 @@ public class GridCollider : LevelElement
 
     public float height => (float)type * .5f;
 
+    public Rect collisionRect => new Rect(center - (gridTransform.size.ToVector2() * .5f), gridTransform.size);
+
     public override GameObject Spawn(Transform parent)
     {
         GameObject gameObject = base.Spawn(parent);

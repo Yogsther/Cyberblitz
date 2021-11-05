@@ -97,8 +97,4 @@ public static class ExtensionMethods
 
         return vector3s;
     }
-
-    
-
-
 }
