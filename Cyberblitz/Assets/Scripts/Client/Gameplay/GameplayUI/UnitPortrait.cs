@@ -5,12 +5,23 @@ using UnityEngine.UI;
 
 public class UnitPortrait : MonoBehaviour
 {
-	public Image crown, roleIcon, unitImage, portraitFrame, deathCross, selectedFrame;
+	public Button selectButton;
+	public Image crown, roleIcon, unitImage, portraitFrame, deathCross, selectedFrame, highlightedFrame;
 	public Transform healthBlobs;
 	public Color32 deadColor;
+	public UnitID unitID = new UnitID("NOT_ASSIGNED");
 
-	public void Setup(UnitType type)
+	void Start()
 	{
+		selectButton.onClick.AddListener(() =>
+		{
+			VisualUnitManager.GetVisualUnitById(unitID).SetSelected(true);
+		});
+	}
+
+	public void Setup(UnitType type, UnitID unitID)
+	{
+		this.unitID = unitID;
 		crown.enabled = type == UnitType.Courier;
 		roleIcon.enabled = type != UnitType.Courier;
 
@@ -21,12 +32,20 @@ public class UnitPortrait : MonoBehaviour
 
 		SetMaxHp(unitData.stats.maxHp);
 		SetSelected(false);
+		SetHighlighted(false);
 		SetAlive();
+
+
 	}
 
 	public void SetSelected(bool selected)
 	{
 		selectedFrame.enabled = selected;
+	}
+
+	public void SetHighlighted(bool selected)
+	{
+		highlightedFrame.enabled = selected;
 	}
 
 	void SetMaxHp(float hp)
