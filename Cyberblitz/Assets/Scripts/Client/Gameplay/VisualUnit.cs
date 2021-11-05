@@ -86,30 +86,8 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 	}
 
 	public void SetTargetForward(Vector3 newTargetForward)
-	{
-
-		targetForward = Quaternion.AngleAxis(rotationOffset, Vector3.down) * newTargetForward;
-
-	}
-
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="targetRotation"></param>
-	/// <param name="time">Time in seconds.</param>
-	/// <returns></returns>
-	public IEnumerator RotationToOverTime(Quaternion targetRotation, float time)
-	{
-		Quaternion startRotation = mainModel.transform.rotation;
-
-		for (float t = 0f; t < 1f && !isDead; t += Time.deltaTime / time)
-		{
-			mainModel.transform.rotation = Quaternion.Lerp(startRotation, targetRotation, t);
-
-			Debug.Log(t);
-
-			yield return null;
-		}
+    {
+		targetForward = newTargetForward;
 	}
 
 	public void SetRagdollEnabled(bool enabled)

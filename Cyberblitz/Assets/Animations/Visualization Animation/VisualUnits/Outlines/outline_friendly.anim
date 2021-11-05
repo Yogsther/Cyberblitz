@@ -22,7 +22,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.73564124
+        value: 0.73800004
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -41,7 +41,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 2.2540498
+        value: 0.732096
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -71,6 +71,25 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: color.a
+    path: 
+    classID: 114
+    script: {fileID: 11500000, guid: fac035764638e4d4d85fb97e2afc400c, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.07084802
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: color.r
     path: 
     classID: 114
     script: {fileID: 11500000, guid: fac035764638e4d4d85fb97e2afc400c, type: 3}
@@ -103,6 +122,13 @@ AnimationClip:
       typeID: 114
       customType: 0
       isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 0
+      attribute: 57601170
+      script: {fileID: 11500000, guid: fac035764638e4d4d85fb97e2afc400c, type: 3}
+      typeID: 114
+      customType: 0
+      isPPtrCurve: 0
     pptrCurveMapping: []
   m_AnimationClipSettings:
     serializedVersion: 2
@@ -130,7 +156,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.73564124
+        value: 0.73800004
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -149,7 +175,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 2.2540498
+        value: 0.732096
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -179,6 +205,25 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: color.a
+    path: 
+    classID: 114
+    script: {fileID: 11500000, guid: fac035764638e4d4d85fb97e2afc400c, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.07084802
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: color.r
     path: 
     classID: 114
     script: {fileID: 11500000, guid: fac035764638e4d4d85fb97e2afc400c, type: 3}

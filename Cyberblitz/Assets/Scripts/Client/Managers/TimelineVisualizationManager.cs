@@ -194,8 +194,7 @@ public class TimelineVisualizationManager : MonoBehaviour
 			{
 				GuardBlock guardBlock = (GuardBlock)selectedBlock;
 				float inputDirection = 0;
-				int groundLayer = 6;
-				if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(groundLayer, out RaycastHit groundHit))
+				if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), out RaycastHit groundHit))
 				{
 
 					Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();

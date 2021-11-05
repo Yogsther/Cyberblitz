@@ -37,12 +37,10 @@ public class VisionConeEditor : InGameEditor
 
 		Debug.Log("[VisionConeEditor] - Started editing a cone");
 
-		int groundLayer = 6;
-
 		while (selectedVisionCone == visionCone)
 		{
 
-			if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(groundLayer, out RaycastHit groundHit))
+			if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), LayerMask.GetMask("UI"), out RaycastHit groundHit))
 			{
 
 				Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();

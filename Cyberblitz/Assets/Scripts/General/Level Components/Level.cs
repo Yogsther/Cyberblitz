@@ -32,7 +32,7 @@ public class Level : MonoBehaviour
 		groundCollider.size = levelGridSize.ToFlatVector3() * 3f;
 
 		groundCollider.transform.parent = transform;
-		groundCollider.gameObject.layer = 6; // Ground
+		groundCollider.gameObject.layer = LayerMask.NameToLayer("Ground"); // Ground
 		foreach (LevelElement element in levelElements)
 		{
 			Transform elementTransform = element.Spawn(transform).transform;
