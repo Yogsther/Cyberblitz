@@ -35,14 +35,11 @@ public class AutoGridPathEditor : InGameEditor
 
         Debug.Log("[GridPathEditor] - Started editing a path");
 
-
-        int groundLayer = 6;
-
         while (selectedGridPath == gridPath)
         {
 
 
-            if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(groundLayer, out RaycastHit groundHit) && InputManager.pointerIsHeld)
+            if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), LayerMask.GetMask("UI"), out RaycastHit groundHit) && InputManager.pointerIsHeld)
             {
 
 

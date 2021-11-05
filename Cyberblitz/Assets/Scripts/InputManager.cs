@@ -20,6 +20,8 @@ public class InputManager : MonoBehaviour
 	public static bool rightButtonIsHeld;
 	public static bool rightButtonIsReleased;
 
+	public static Ray pointerRay;
+
 	public LayerMask pointerLayers;
 
 	public Camera mainCamera;
@@ -62,7 +64,7 @@ public class InputManager : MonoBehaviour
 	private void PerformPointerRaycast()
 	{
 
-		Ray pointerRay = mainCamera.ScreenPointToRay(pointerScreenPosition);
+		pointerRay = mainCamera.ScreenPointToRay(pointerScreenPosition);
 
 		pointerHit = Physics.Raycast(pointerRay, out pointerHitInfo, 100f, pointerLayers);
 		pointerHitInfos = Physics.RaycastAll(pointerRay, 100f, pointerLayers);
@@ -77,7 +79,7 @@ public class InputManager : MonoBehaviour
 			foreach (RaycastHit hit in pointerHitInfos)
 			{
 
-				bool hitObjectIsInLayerMask = layerMask == hit.collider.gameObject.layer;
+				bool hitObjectIsInLayerMask = layerMask == (layerMask | (1 << hit.collider.gameObject.layer));
 
 				if (hitObjectIsInLayerMask)
 				{
@@ -85,6 +87,38 @@ public class InputManager : MonoBehaviour
 
 					return true;
 				}
+			}
+		}
+
+		raycastHit = new RaycastHit();
+
+		return false;
+	}
+
+	public static bool TryGetPointerHitLayer(LayerMask targetLayers, LayerMask blockingLayers, out RaycastHit raycastHit)
+    {
+		raycastHit = new RaycastHit();
+
+		if (pointerHitInfos != null)
+		{
+
+			foreach (RaycastHit hit in pointerHitInfos)
+			{
+				bool hitObjectIsBlocking = blockingLayers == (blockingLayers | (1 << hit.collider.gameObject.layer));
+
+				bool hitObjectIsTarget = targetLayers == (targetLayers | (1 << hit.collider.gameObject.layer));
+
+				if (hitObjectIsTarget)
+				{
+					raycastHit = hit;
+
+					return true;
+				}
+
+                if (hitObjectIsBlocking)
+                {
+					return false;
+                }
 			}
 		}
 

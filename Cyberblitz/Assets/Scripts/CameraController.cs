@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
 		if (LevelManager.instance.currentLevel != null)
 		{
 
-			if (InputManager.TryGetPointerHitLayer(6, out RaycastHit groundHit))
+			if (InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), out RaycastHit groundHit))
 			{
 				if (InputManager.rightButtonIsHeld)
 				{

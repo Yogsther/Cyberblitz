@@ -74,6 +74,9 @@ public class VisualUnitManager : MonoBehaviour
 					visualUnitInstance.id = unit.id;
 					visualUnitInstance.friendly = friendlyPlayer;
 					GameObject model = Instantiate(unitData.model, visualUnitInstance.mainModel);
+					model.transform.localPosition = Vector3.zero;
+
+					model.transform.localRotation = Quaternion.AngleAxis(visualUnitInstance.rotationOffset, Vector3.down);
 
 					model.layer = 7;
 
