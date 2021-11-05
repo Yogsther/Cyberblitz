@@ -6,7 +6,7 @@ using UnityEngine;
 public class Referee
 {
 	public Match match;
-	public LevelData levelData;
+	public LevelLayout levelLayout;
 	List<UserID> readyPlayers = new List<UserID>();
 
 	void MatchStep()
@@ -153,25 +153,13 @@ public class Referee
 	{
 		match = new Match();
 		match.level = "Test Level";
+		DataManager.levelLayouts.TryGetLevelLayout(match.level, out levelLayout);
 		match.state = Match.GameState.Starting;
 		match.round = 0;
 
 		match.players = new Player[2];
 
 		StartListening();
-	}
-
-	public void LoadLevel()
-	{
-		bool gotLevel = LevelManager.levelDataDict.TryGetValue(match.level, out levelData);
-
-		if (gotLevel)
-		{
-			Debug.Log($"Loaded LevelData - {match.level}");
-		} else
-		{
-			Debug.Log($"Failed to load LevelData - {match.level}");
-		}
 	}
 
 	public void AddPlayer(User user, UnitType[] units)
@@ -212,22 +200,23 @@ public class Referee
 
 		unit.type = type;
 
-		UnitData unitData = UnitDataManager.GetUnitDataByType(unit.type);
+		DataManager.unitStats.TryGetUnitStatsByType(unit.type, out UnitStats unitStats);
 
 		unit.isMVP = type == UnitType.Courier;
-		unit.hp = unitData.stats.maxHp;
+		unit.hp = unitStats.maxHp;
 		unit.ownerID = player.user.id;
 
 		unit.SetPosition(spawn.x, spawn.y);
 		player.units[index] = unit;
 	}
+			
 
 	Player CreatePlayer(User user, int team, UnitType[] units)
 	{
 		Player player = new Player(user, team);
 
 
-		SpawnArea spawnArea = levelData.levelPrefab.spawnAreas[team];
+		SpawnArea spawnArea = levelLayout.spawnAreas[team];
 
 		AddUnit(player, UnitType.Courier, spawnArea.GetSpawnPosition(0), 0);
 

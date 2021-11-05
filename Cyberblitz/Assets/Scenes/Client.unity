@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1049.4463, g: 1300.3135, b: 1721.0547, a: 1}
+  m_IndirectSpecularColor: {r: 4604.0576, g: 2945.7227, b: 2187.75, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -409,9 +409,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameplayUIManager: {fileID: 404477402}
-  LevelManager: {fileID: 2079753514}
-  UnitDataManager: {fileID: 1304840207}
-  VisualUnitManager: {fileID: 1786339221}
   TimelineEditor: {fileID: 1016662065}
   CameraController: {fileID: 913508001}
   blockPathfinderMask:
@@ -1315,17 +1312,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6477189507577363632, guid: 0e38b7b7a4bc7e04eba1eb4839799e3f, type: 3}
   m_PrefabInstance: {fileID: 6477189508479546558}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1304840207 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6477189507577363633, guid: 0e38b7b7a4bc7e04eba1eb4839799e3f, type: 3}
-  m_PrefabInstance: {fileID: 6477189508479546558}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86d8404298110244b8b304fb740c5cd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1369668246
 GameObject:
   m_ObjectHideFlags: 3
@@ -2014,7 +2000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd80750c5b4ad343aa76f6164f55da5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timelineEditor: {fileID: 0}
+  timelineEditor: {fileID: 1016662065}
 --- !u!1 &1484107781
 GameObject:
   m_ObjectHideFlags: 0
@@ -2967,17 +2953,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3046515893002449962, guid: 576d0f3863db09a419496cd3ce0620d0, type: 3}
   m_PrefabInstance: {fileID: 3046515892902473987}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2079753514 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3046515893002449961, guid: 576d0f3863db09a419496cd3ce0620d0, type: 3}
-  m_PrefabInstance: {fileID: 3046515892902473987}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6171fea8b0de7b24fb0ee41c2888db2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2127092747
 GameObject:
   m_ObjectHideFlags: 0

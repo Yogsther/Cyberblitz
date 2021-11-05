@@ -17,10 +17,11 @@ public class GuardBlock : Block
 
 		int ownerTeam = simulatedMatch.GetUnitTeam(ownerId);
 
-		UnitStats ownerUnitStats = UnitDataManager.GetUnitDataByType(ownerUnit.type).stats;
+		DataManager.unitStats.TryGetUnitStatsByType(ownerUnit.type, out UnitStats ownerUnitStats);
 
 		foreach (Unit otherUnit in simulatedMatch.GetAllUnits())
 		{
+			if (otherUnit.IsDead()) continue;
 
 			int otherUnitTeam = simulatedMatch.GetUnitOwner(otherUnit.id).team;
 
@@ -28,24 +29,45 @@ public class GuardBlock : Block
 
 			if (otherUnitTeam != ownerTeam && otherUnitIsWithinAimCone)
 			{
-				if (otherUnit.IsDead()) continue;
-				float shotsPerSecond = 1f / ownerUnitStats.firerate;
+				
+				float shotCooldown = 1f / ownerUnitStats.firerate;
 				float secondsSinceLastShot = localTime - ownerUnit.lastShot;
-				bool canShoot = ownerUnit.lastShot == -1 || secondsSinceLastShot >= shotsPerSecond;
+				bool canShoot = ownerUnit.lastShot == -1 || secondsSinceLastShot >= shotCooldown;
 
 
-				if (canShoot && !otherUnit.IsDead())
+				if (canShoot)
 				{
-
+					
 
 					float effectAnimationDelay = .2f;
 					float effectTime = ownerUnit.timeline.GetStartTimeOfBlock(this) + localTime;
 
-					ShootEvent shootEvent = new ShootEvent(ownerUnit.id, otherUnit.id, effectTime);
+					float hitChance = 1f;
+
+					if(DataManager.levelLayouts.TryGetLevelLayout(simulatedMatch.level, out LevelLayout levelLayout)){
+						hitChance = CalculateHitChance(otherUnit, levelLayout);
+					}
+					else
+                    {
+						Debug.Log("No level layout found, skipping hitChance calculation");
+                    }
+
+					
+
+					Debug.Log($"[GuardBlock] - HIT CHANCE: {hitChance}");
+
+					bool isHit = hitChance > Random.value;
+
+					ShootEvent shootEvent = new ShootEvent(ownerUnit.id, otherUnit.id, isHit, effectTime);
 					simulatedMatch.events.Enqueue(shootEvent);
 
+                    
 					ownerUnit.lastShot = localTime;
-					otherUnit.hp -= ownerUnitStats.damage;
+
+					if (isHit)
+					{
+						otherUnit.hp -= ownerUnitStats.damage;
+					}
 
 					if (otherUnit.hp <= 0)
 					{
@@ -63,14 +85,55 @@ public class GuardBlock : Block
 		}
 	}
 
-	public override void Playback(Match simulatedMatch, float localTime)
+	private float CalculateHitChance(Unit targetUnit, LevelLayout levelLayout)
+    {
+		float hitChance = 1f;
+
+		Vector2 originPosition = aimCone.origin.point;
+		Vector2 targetPosition = targetUnit.position.ToVector2();
+
+		Vector3 rayOrigin = originPosition.ToFlatVector3(.25f);
+		Vector3 rayDirection = (targetPosition - originPosition).ToFlatVector3(.25f);
+
+		Ray shootRay = new Ray(rayOrigin, rayDirection);
+
+		float distanceToTarget = Vector2.Distance(originPosition, targetPosition);
+
+		foreach(GridCollider gridCollider in levelLayout.gridColliders)
+        {
+			if(LineIntersectionTest.Intersect(originPosition, targetPosition, gridCollider.collisionRect))
+            {
+				Debug.Log(gridCollider.type);
+
+				if (gridCollider.type == ColliderType.Full)
+				{
+					return 0f;
+				}
+
+				if (gridCollider.type == ColliderType.Half)
+				{
+					hitChance = .5f;
+				}
+			}
+        }
+
+		return hitChance;
+	}
+
+	public override void OnPlaybackStart(Match simulatedMatch)
 	{
 		VisualUnit ownerVisualUnit = VisualUnitManager.GetVisualUnitById(ownerId);
 		ownerVisualUnit.animator.SetTrigger("Stop");
 
-		Transform ownerTransform = ownerVisualUnit.mainModel;
+		Quaternion targetRotation = Quaternion.AngleAxis(aimCone.direction, Vector3.down);
 
-		ownerTransform.rotation = Quaternion.AngleAxis(aimCone.direction, Vector3.down);
+		ownerVisualUnit.SetTargetForward(targetRotation * Vector3.forward);
 	}
 
+	public override void Playback(Match simulatedMatch, float localTime)
+	{
+		
+	}
+
+   
 }

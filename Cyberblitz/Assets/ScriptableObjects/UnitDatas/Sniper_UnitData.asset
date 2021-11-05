@@ -14,13 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   name: Sniper
-  stats:
-    maxHp: 2
-    speed: 3
-    damage: 5
-    firerate: 1
-    range: 15
-    spread: 15
+  stats: {fileID: 11400000, guid: d21013bd91ef6e44ca14e2c6301e58c6, type: 2}
   description: Long-range marksman
   story: The Sniper undergoes one of the most brutal surgery, with the patient's
     eyes removed. Instead, several hi-tech cameras are installed and fastened directly

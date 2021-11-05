@@ -93,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   friendly: 0
   mainModel: {fileID: 6981174404635103774}
+  rotationOffset: -50
   outlineAnimator: {fileID: 2653236648001534482}
   outlineController: {fileID: 2935608566055494640}
   animator: {fileID: 0}

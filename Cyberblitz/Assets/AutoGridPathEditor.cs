@@ -47,6 +47,12 @@ public class AutoGridPathEditor : InGameEditor
 
 
                 Vector2 mousePoint = groundHit.point.FlatVector3ToVector2();
+
+                Vector2Int levelGridSize = LevelManager.instance.currentLevel.levelGridSize;
+
+                mousePoint.x = Mathf.Clamp(mousePoint.x, 0f, levelGridSize.x - 1);
+                mousePoint.y = Mathf.Clamp(mousePoint.y, 0f, levelGridSize.y - 1);
+
                 Vector2Int point = mousePoint.RoundToVector2Int();
 
                 Vector2Int originToCurrentTarget = gridPath.target.point - gridPath.origin.point;

@@ -50,8 +50,8 @@ public class CameraController : MonoBehaviour
 
 			Vector3 clampedPos = transform.position;
 
-			clampedPos.x = Mathf.Clamp(clampedPos.x, 0f, LevelManager.instance.currentLevel.levelGridSize.x);
-			clampedPos.z = Mathf.Clamp(clampedPos.z, 0f, LevelManager.instance.currentLevel.levelGridSize.y);
+			clampedPos.x = Mathf.Clamp(clampedPos.x, 5f, LevelManager.instance.currentLevel.levelGridSize.x - 5f);
+			clampedPos.z = Mathf.Clamp(clampedPos.z, 5f, LevelManager.instance.currentLevel.levelGridSize.y - 5f);
 
 			transform.position = clampedPos;
 		}

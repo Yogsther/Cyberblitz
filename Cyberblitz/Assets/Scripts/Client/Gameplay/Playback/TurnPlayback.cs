@@ -73,6 +73,11 @@ public class TurnPlayback : MonoBehaviour
 
 				if (unit.timeline.TryGetBlockAtTime(time, out Block block))
 				{
+                    if (block.firstPlaybackTick)
+                    {
+						block.OnPlaybackStart(match);
+						block.firstPlaybackTick = false;
+                    }
 
 					float blockStartTime = unit.timeline.GetStartTimeOfBlockAtIndex(block.timelineIndex);
 
