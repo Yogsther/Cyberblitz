@@ -14,13 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   name: Scout
-  stats:
-    maxHp: 2
-    speed: 5
-    damage: 0.2
-    firerate: 4
-    range: 8
-    spread: 30
+  stats: {fileID: 11400000, guid: d7f25bc30982c2b4586a72a1dcf5bdb8, type: 2}
   description: Quick and agile pathfinder
   story: The Scout's combat modifications focus mainly on the legs and lungs. The
     legs are replaced with ultralight carbon blades, saving weight and increasing

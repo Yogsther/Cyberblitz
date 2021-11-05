@@ -70,7 +70,7 @@ public class VisualUnitManager : MonoBehaviour
 				{
 					GameObject go = Instantiate(visualUnitPrefab, visualUnitContainer);
 					VisualUnit visualUnitInstance = go.GetComponent<VisualUnit>();
-					visualUnitInstance.name = $"VisualUnit {(friendlyPlayer ? "Friendly" : "Enemy")} - {unitData.type} - {unit.id.Short()}";
+					visualUnitInstance.name = $"VisualUnit {(friendlyPlayer ? "Friendly" : "Enemy")} - {unitData.type} - {unit.id}";
 					visualUnitInstance.id = unit.id;
 					visualUnitInstance.friendly = friendlyPlayer;
 					GameObject model = Instantiate(unitData.model, visualUnitInstance.mainModel);
@@ -80,7 +80,7 @@ public class VisualUnitManager : MonoBehaviour
 					visualUnitInstance.isSelectable = false;
 
 					visualUnitInstance.mainModel.position = unit.position.ToVector2().ToFlatVector3();
-					visualUnitInstance.mainModel.rotation = spawnArea.cameraRotation;
+					visualUnitInstance.SetTargetForward(spawnArea.cameraRotation * Vector3.forward);
 
 					userVisualUnits.Add(visualUnitInstance);
 				}
@@ -122,7 +122,7 @@ public class VisualUnitManager : MonoBehaviour
 			return result;
 		}
 
-		Debug.Log($"Could not find VisualUnit with id {id.Short()}");
+		Debug.Log($"Could not find VisualUnit with id {id}");
 
 		return null;
 	}

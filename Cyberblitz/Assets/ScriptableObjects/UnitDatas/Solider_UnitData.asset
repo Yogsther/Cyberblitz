@@ -14,13 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 4
   name: Soldier
-  stats:
-    maxHp: 2
-    speed: 3
-    damage: 0.5
-    firerate: 4
-    range: 15
-    spread: 15
+  stats: {fileID: 11400000, guid: 0913d96628ff3cc41b0eb692c892bf5a, type: 2}
   description: Versatile operator
   story: The Soldier is the backbone of all kill squads and the most commonly picked
     operator. The combat implants are cheap and average in every aspect but fill
