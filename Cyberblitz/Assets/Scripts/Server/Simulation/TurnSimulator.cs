@@ -26,15 +26,18 @@ public static class TurnSimulator
 		{
 			foreach (Unit unit in match.GetAllUnits())
 			{
-
-				Block block = unit.timeline.GetBlockAtTime(time);
-				if (block != null)
+				if (!unit.IsDead())
 				{
-					float blockStartTime = unit.timeline.GetStartTimeOfBlockAtIndex(block.timelineIndex);
 
-					float blockLocalTime = time - blockStartTime;
+					Block block = unit.timeline.GetBlockAtTime(time);
+					if (block != null)
+					{
+						float blockStartTime = unit.timeline.GetStartTimeOfBlockAtIndex(block.timelineIndex);
 
-					block.Simulate(match, blockLocalTime);
+						float blockLocalTime = time - blockStartTime;
+
+						block.Simulate(match, blockLocalTime);
+					}
 				}
 			}
 		}

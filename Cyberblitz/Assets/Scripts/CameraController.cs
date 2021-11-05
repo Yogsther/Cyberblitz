@@ -5,6 +5,11 @@ public class CameraController : MonoBehaviour
 	private Vector3 refpoint;
 	private bool isDragging;
 
+	private Vector3 targetPosition;
+
+	private Vector3 smoothVelocity;
+
+
 	public void InitCamera(Level level)
 	{
 		if(MatchManager.TryGetLocalPlayer(out Player localPlayer))
@@ -16,6 +21,8 @@ public class CameraController : MonoBehaviour
 			transform.position = spawnArea.center.ToFlatVector3();
 
 			transform.Rotate(Vector3.up, spawnArea.cameraRotationForTeam, Space.World);// *= spawnArea.cameraRotation;    
+
+			targetPosition = transform.position;
 		}
 		   
 	}
@@ -37,7 +44,7 @@ public class CameraController : MonoBehaviour
 					}
 					Vector3 diff = (refpoint - groundHit.point).Flatten();
 
-					transform.position += diff;
+					targetPosition += diff;
 
 				}
 			}
@@ -48,12 +55,16 @@ public class CameraController : MonoBehaviour
 				isDragging = false;
 			}
 
-			Vector3 clampedPos = transform.position;
+			Vector3 clampedPos = targetPosition;
 
 			clampedPos.x = Mathf.Clamp(clampedPos.x, 5f, LevelManager.instance.currentLevel.levelGridSize.x - 5f);
 			clampedPos.z = Mathf.Clamp(clampedPos.z, 5f, LevelManager.instance.currentLevel.levelGridSize.y - 5f);
 
-			transform.position = clampedPos;
+			targetPosition = clampedPos;
+
+
+
+			transform.position = targetPosition; //Vector3.MoveTowards(transform.position, targetPosition, .1f); //Vector3.SmoothDamp(transform.position, targetPosition, ref smoothVelocity, .2f);
 		}
 	}
 
