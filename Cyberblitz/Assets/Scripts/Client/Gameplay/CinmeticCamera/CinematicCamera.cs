@@ -95,7 +95,7 @@ public class CinematicCamera : MonoBehaviour
 					focusGroup.Add(focus);
 				}
 
-
+			Debug.Log("Creating clips from amount of events: " + match.events.Count);
 			foreach (MatchEvent matchEvent in match.events)
 			{
 				if (notableEvents.Contains(matchEvent.type))
@@ -115,13 +115,22 @@ public class CinematicCamera : MonoBehaviour
 			}
 
 
+			Debug.Log("Total clips: " + actionClips.Count);
 			// Checks for overlapping actions clips and removes them
 			ValidateActionClips();
-
+			Debug.Log("After validation Total clips: " + actionClips.Count);
 			// Merges action clips if they are performed by the same unit
 			MergeActionClips();
+			Debug.Log("After merge Total clips: " + actionClips.Count);
 			// Remove unrunnable clips that may have been modified with the merge action
 			RemoveUnrunnableActionClips();
+			Debug.Log("After clean up Total clips: " + actionClips.Count);
+
+			foreach (ActionClip clip in actionClips)
+			{
+				if (clip.canRun) Debug.Log("ACTION CLIP START: " + clip.start + " ACTION CLIP END: " + clip.end);
+				else Debug.Log("Found clip that cant run");
+			}
 
 			inPlaybackMode = true;
 			playbackStart = Time.time;
@@ -179,7 +188,7 @@ public class CinematicCamera : MonoBehaviour
 			float time = GetTimePassed();
 			foreach (ActionClip clip in actionClips)
 			{
-				if (time >= clip.start && !clip.hasStarted)
+				if (time >= clip.start && !clip.hasStarted && clip.canRun)
 				{
 					clip.hasStarted = true;
 					VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(clip.unit);
@@ -190,7 +199,7 @@ public class CinematicCamera : MonoBehaviour
 					Debug.Log("Starting action clip: " + time);
 					CreateZoomPath(visualUnit.transform);
 				}
-				if (time >= clip.end && !clip.hasEnded)
+				if (time >= clip.end && !clip.hasEnded && clip.canRun)
 				{
 					Debug.Log("Stopping action clip: " + time);
 					clip.hasEnded = true;
