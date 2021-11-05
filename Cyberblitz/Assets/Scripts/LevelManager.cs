@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using WayStarPathfinding;
 
 public class LevelManager : MonoBehaviour
 {
@@ -41,6 +42,12 @@ public class LevelManager : MonoBehaviour
 	private void Start()
 	{
 
+		OnLevelLoaded += (level) =>
+		{
+			PathFinder.gridSize = level.levelGridSize;
+			Debug.Log($"[LevelManager] - Level loaded: {level.name}");
+		};
+
 		QueueSystem.Subscribe("MATCH_START", () =>
 		{
 			LoadLevel(MatchManager.match.level);
@@ -59,7 +66,9 @@ public class LevelManager : MonoBehaviour
 
 	public void LoadLevel(string name)
 	{
-		Debug.Log("Loading level");
+		UnloadLevel();
+
+		Debug.Log($"[LevelManager] - Loading level: {name}");
 		if (levelDataDict.TryGetValue(name, out LevelData levelData))
 		{
 			currentLevelData = levelData;
@@ -67,11 +76,10 @@ public class LevelManager : MonoBehaviour
 
 			currentLevel.SetupLevel();
 
-			Debug.Log($"Loaded Level: {levelData.name}");
 			OnLevelLoaded?.Invoke(currentLevel);
 		} else
 		{
-			Debug.LogWarning($"Could not find a LevelData with the name \"{name}\"");
+			Debug.LogWarning($"[LevelManager] - Could not find a LevelData with the name \"{name}\"");
 		}
 	}
 

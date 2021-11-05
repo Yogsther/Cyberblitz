@@ -46,7 +46,7 @@ public class VisualUnitManager : MonoBehaviour
 	{
 		Match match = MatchManager.match;
 		foreach (VisualUnit visualUnit in visualUnits)
-			if (match.IsOwnerOfUnit(ClientLogin.user.id, visualUnit.id))
+			if (match.IsOwnerOfUnit(ClientLogin.user.id, visualUnit.id) && !visualUnit.isDead)
 				visualUnit.isSelectable = selectable;
 	}
 
@@ -70,18 +70,17 @@ public class VisualUnitManager : MonoBehaviour
 				{
 					GameObject go = Instantiate(visualUnitPrefab, visualUnitContainer);
 					VisualUnit visualUnitInstance = go.GetComponent<VisualUnit>();
-					visualUnitInstance.name = $"VisualUnit {(friendlyPlayer ? "Friendly" : "Enemy")} - {unitData.type.ToString()} - {unit.id}";
+					visualUnitInstance.name = $"VisualUnit {(friendlyPlayer ? "Friendly" : "Enemy")} - {unitData.type} - {unit.id}";
 					visualUnitInstance.id = unit.id;
+					visualUnitInstance.friendly = friendlyPlayer;
 					GameObject model = Instantiate(unitData.model, visualUnitInstance.mainModel);
 
 					model.layer = 7;
 
-					Instantiate(unitData.model, visualUnitInstance.ghostModel);
-
 					visualUnitInstance.isSelectable = false;
 
 					visualUnitInstance.mainModel.position = unit.position.ToVector2().ToFlatVector3();
-					visualUnitInstance.mainModel.rotation = spawnArea.cameraRotation;
+					visualUnitInstance.SetTargetForward(spawnArea.cameraRotation * Vector3.forward);
 
 					userVisualUnits.Add(visualUnitInstance);
 				}

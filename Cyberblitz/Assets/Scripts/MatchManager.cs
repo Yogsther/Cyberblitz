@@ -62,29 +62,7 @@ public class MatchManager : MonoBehaviour
 	void SendUnits(NetworkPacket packet)
 	{
 		OnPlanningEnd?.Invoke();
-		/*foreach (Player player in match.players)
-		{
-			foreach (Unit unit in player.units)
-			{
-				if (unit.timeline.GetSize() > 0)
-				{
-					Debug.Log("Player " + player.team + " , unit : " + unit.id);
-					Debug.Log(unit.timeline.GetSize());
-					MoveBlock block = (MoveBlock)unit.timeline.blocks[0];
-					foreach (Vector2Int point in block.movementPath.GetPoints())
-					{
-						Debug.Log("POINT: " + point);
-					}
-
-					NetworkPacket test_packet = new NetworkPacket("test", unit);
-					Debug.Log(test_packet.content);
-				}
-
-			}
-		}*/
-
 		ClientConnection.Emit("UNITS", match);
-
 	}
 
 
@@ -106,19 +84,19 @@ public class MatchManager : MonoBehaviour
 
 
 	public static bool TryGetLocalPlayer(out Player localPlayer)
-    {
+	{
 		localPlayer = null;
 
-		foreach(Player player in match.players)
-        {
+		foreach (Player player in match.players)
+		{
 			if (player.user.id == ClientLogin.user.id)
-            {
+			{
 				localPlayer = player;
-            }
-        }
+			}
+		}
 
 		return localPlayer != null;
-    }
+	}
 
 	public static Unit GetUnit(UnitID id)
 	{

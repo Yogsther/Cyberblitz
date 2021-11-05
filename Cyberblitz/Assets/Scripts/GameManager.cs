@@ -7,15 +7,13 @@ public class GameManager : MonoBehaviour
 	public static GameManager instance { get; private set; }
 
 	public GameplayUIManager GameplayUIManager;
-	public LevelManager LevelManager;
-	public UnitDataManager UnitDataManager;
-	public VisualUnitManager VisualUnitManager;
 
 	public TimelineEditor TimelineEditor;
 	public CameraController CameraController;
 
 	public LayerMask blockPathfinderMask;
-	private void Awake()
+
+    private void Awake()
 	{
 		if (instance != null && instance != this)
 		{
@@ -27,18 +25,4 @@ public class GameManager : MonoBehaviour
 
 		LevelManager.OnLevelLoaded += CameraController.InitCamera;
 	}
-
-	/*private void Start()
-	{
-		*//*ClientLogin.OnLogin += user =>
-		{
-			ClientConnection.Emit("START_MATCH");
-		};*//*
-	}*/
-
-	/*[ContextMenu("Testing/Signal Ready")]
-	public void SignalReadyTest()
-	{
-		MatchManager.SignalReady();
-	}*/
 }

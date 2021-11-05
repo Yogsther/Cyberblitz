@@ -20,7 +20,7 @@ public class Level : MonoBehaviour
 	public bool showGameObjectsInEditor;
 	[HideInInspector] public bool isShowingGameObjects;
 
-	public void SetupLevel()
+	public void SetupLevel(bool client = true)
 	{
 		UpdateLevelElements();
 
@@ -29,7 +29,7 @@ public class Level : MonoBehaviour
 		BoxCollider groundCollider = new GameObject("Ground").AddComponent<BoxCollider>();
 
 		groundCollider.center = (levelGridSize - Vector2.one).ToFlatVector3() * .5f;
-		groundCollider.size = levelGridSize.ToFlatVector3();
+		groundCollider.size = levelGridSize.ToFlatVector3() * 3f;
 
 		groundCollider.transform.parent = transform;
 		groundCollider.gameObject.layer = 6; // Ground

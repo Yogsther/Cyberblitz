@@ -14,13 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   name: Courier
-  stats:
-    maxHp: 3
-    speed: 3
-    damage: 2
-    firerate: 2
-    range: 15
-    spread: 15
+  stats: {fileID: 11400000, guid: 5016672fb1d493b4bbd7902548975844, type: 2}
   description: V.I.P and Support class
   story: As the new method of "Deathmatch" was implemented by countries to avoid
     war, regulators quickly realized a flaw. With nothing to lose the duels started
@@ -31,3 +25,5 @@ MonoBehaviour:
   canGuard: 1
   model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
   image: {fileID: 397736350623959575, guid: 27d75b41d9fc5c84caa6bc684e89ff1c, type: 3}
+  portrait: {fileID: 6053246153437315200, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
+  roleIcon: {fileID: 7149892210239447775, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}

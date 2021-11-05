@@ -40,9 +40,9 @@ public class TimelineEditor : InGameEditor
 	public Block selectedBlock;
 
 	public static Action<Block> OnBlockSelected;
-	public static Action<Unit> OnUnitSelected;
 	public static Action<Block> OnBlockUpdate;
-	public static Action OnUnitDeselect;
+	public static Action<UnitID> OnUnitSelected;
+	public static Action<UnitID> OnUnitDeselect;
 	public static Action OnBlockDeselected;
 
 	private void Start()
@@ -166,9 +166,8 @@ public class TimelineEditor : InGameEditor
 			SetTimelineVisibility(true);
 			ClearTimeline();
 			selectedUnit = unit;
-
 			LoadTimeline();
-			OnUnitSelected?.Invoke(selectedUnit);
+			OnUnitSelected?.Invoke(GetSelectedUnitID());
 		}
 	}
 
@@ -352,11 +351,11 @@ public class TimelineEditor : InGameEditor
 
 	public void DeselectUnit()
 	{
-		blockEditor.StopEditing();
+		OnUnitDeselect?.Invoke(GetSelectedUnitID());
 		selectedUnit = null;
+		blockEditor.StopEditing();
 		DeselectBlockSafe();
 		ClearTimeline();
 		SetTimelineVisibility(false);
-		OnUnitDeselect?.Invoke();
 	}
 }

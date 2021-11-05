@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4e0a088c796714c972d99f4f20d790, type: 3}
+  m_Name: Soldier_UnitData
+  m_EditorClassIdentifier: 
+  type: 4
+  name: Soldier
+  stats: {fileID: 11400000, guid: 0913d96628ff3cc41b0eb692c892bf5a, type: 2}
+  description: Versatile operator
+  story: The Soldier is the backbone of all kill squads and the most commonly picked
+    operator. The combat implants are cheap and average in every aspect but fill
+    an important role. The procedure for the combat implants is not as gruesome as
+    many of the other implants but death is still expected within 48h.
+  canGuard: 1
+  model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
+  image: {fileID: 8602049787728755569, guid: 5f3b721ddc86716439ec7b2aff4ec123, type: 3}
+  portrait: {fileID: 9013192901287847514, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
+  roleIcon: {fileID: -5999590672767869049, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}

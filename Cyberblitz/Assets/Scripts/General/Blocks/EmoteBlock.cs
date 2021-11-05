@@ -14,6 +14,11 @@ public class EmoteBlock : Block
 
 	}
 
+	public override void OnPlaybackStart(Match simulatedMatch)
+	{
+
+	}
+
 	public override void Playback(Match simulatedMatch, float localTime)
 	{
 

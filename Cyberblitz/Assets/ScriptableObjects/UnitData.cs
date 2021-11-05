@@ -11,19 +11,6 @@ public enum UnitType
 	Solider
 }
 
-[System.Serializable]
-public class UnitStats
-{
-	public float maxHp = 2f;
-	public float speed = 2f;
-	public float damage = 2f;
-	// Shots per second
-	public float firerate = 2f;
-	public float range = 5f;
-	public float spread = 45f;
-}
-
-
 [CreateAssetMenu(fileName = "new_UnitData", menuName = "Unit/Data")]
 public class UnitData : ScriptableObject
 {
@@ -35,4 +22,5 @@ public class UnitData : ScriptableObject
 	public bool canGuard = true;
 	public GameObject model;
 	public GameObject image;
+	public Sprite portrait, roleIcon;
 }

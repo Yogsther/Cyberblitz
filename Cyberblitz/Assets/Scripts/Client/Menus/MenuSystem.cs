@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -13,6 +14,14 @@ public class MenuScreen
 }
 public class MenuSystem : MonoBehaviour
 {
+	public GameObject gameUI;
+	public GameObject menuBackground;
+
+	public LobbyCamera lobbyCamera;
+	public Camera planningCamera;
+	public GameObject lobbyWorld;
+
+	string currentlyLoadingScreen = null;
 
 	[HideInInspector]
 	MenuScreen selectedMenuScreen = null;
@@ -29,6 +38,13 @@ public class MenuSystem : MonoBehaviour
 
 	public Dictionary<string, Action> OnPageLoad = new Dictionary<string, Action>();
 
+	public CustomPassVolume outlineVolume;
+
+	public void SetOutlineVisibility(bool enabled)
+	{
+		outlineVolume.enabled = enabled;
+	}
+
 	public MenuScreen GetScreen(string name)
 	{
 		foreach (MenuScreen screen in menuScreens)
@@ -39,15 +55,71 @@ public class MenuSystem : MonoBehaviour
 		return null;
 	}
 
+	private void Awake()
+	{
+		MatchManager.OnMatchStart += match =>
+		{
+			DisplayGameUI(true);
+			lobbyCamera.lobbyCamera.enabled = false;
+			SetOutlineVisibility(true);
+			lobbyWorld.SetActive(false);
+			Debug.Log("Test");
+		};
+	}
+
+	public void DisplayGameUI(bool show)
+	{
+		gameUI.SetActive(show);
+	}
+
 	public void LoadScreen(string name)
 	{
+
+		if (currentlyLoadingScreen != null) return;
+
+		if (selectedMenuScreen == null || name != selectedMenuScreen.name)
+		{
+			if (selectedMenuScreen != null && selectedMenuScreen.name == "play")
+			{
+				currentlyLoadingScreen = name;
+				lobbyCamera.AnimateOut(() =>
+				{
+					LoadScreenElements(name);
+				});
+			} else if (name == "play")
+			{
+				LoadScreenElements(name);
+				currentlyLoadingScreen = name;
+				lobbyCamera.AnimateIn(() =>
+				{
+					currentlyLoadingScreen = null;
+				});
+			} else
+			{
+				LoadScreenElements(name);
+			}
+		}
+
+	}
+
+
+	void LoadScreenElements(string name)
+	{
+		currentlyLoadingScreen = null;
+		lobbyWorld.SetActive(true);
+		planningCamera.enabled = false;
+		lobbyCamera.lobbyCamera.enabled = true;
+		SetOutlineVisibility(false);
+
+		if (!menuBackground.activeSelf) menuBackground.SetActive(true);
+
 		ClearSubHeader();
 		if (selectedMenuScreen != null) selectedMenuScreen.screen.SetActive(false);
 		selectedMenuScreen = GetScreen(name);
 		selectedMenuScreen.screen.SetActive(true);
 		if (OnPageLoad.ContainsKey(name)) OnPageLoad[name]();
-
 		OnScreenLoaded?.Invoke(name);
+		DisplayGameUI(false);
 	}
 
 	public void ClearSubHeader()
@@ -61,15 +133,14 @@ public class MenuSystem : MonoBehaviour
 		Button button = Instantiate(subHeaderButton, subHeader).GetComponent<Button>();
 		button.onClick.AddListener(() =>
 		{
-			Debug.Log("Pressed");
 			func();
 		});
 		button.GetComponentInChildren<TMP_Text>().text = title;
 	}
 
-	void Awake()
+	private void Start()
 	{
-		/*OnPageLoad["units"] = OnUnitPage;*/
+		LoadScreen("play");
 	}
 
 
@@ -78,8 +149,4 @@ public class MenuSystem : MonoBehaviour
 		mainMenu.SetActive(visible);
 	}
 
-	void Update()
-	{
-
-	}
 }
