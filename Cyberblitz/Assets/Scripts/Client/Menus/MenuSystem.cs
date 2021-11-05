@@ -63,7 +63,6 @@ public class MenuSystem : MonoBehaviour
 			lobbyCamera.lobbyCamera.enabled = false;
 			SetOutlineVisibility(true);
 			lobbyWorld.SetActive(false);
-			Debug.Log("Test");
 		};
 	}
 

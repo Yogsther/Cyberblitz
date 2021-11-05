@@ -53,7 +53,7 @@ public class UnitPortrait : MonoBehaviour
 		for (int i = 0; i < healthBlobs.childCount; i++)
 		{
 			Image blob = healthBlobs.GetChild(i).GetComponent<Image>();
-			blob.enabled = hp >= i;
+			blob.enabled = hp > i;
 		}
 	}
 	public void SetAlive()
@@ -78,7 +78,7 @@ public class UnitPortrait : MonoBehaviour
 		for (int i = 0; i < healthBlobs.childCount; i++)
 		{
 			Image blob = healthBlobs.GetChild(i).GetComponent<Image>();
-			blob.color = hp >= i ? Color.white : Color.black;
+			blob.color = hp > i ? Color.white : Color.black;
 		}
 	}
 }

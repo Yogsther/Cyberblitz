@@ -10,7 +10,7 @@ public class ReadyButton : MonoBehaviour
 	public Button readyButton;
 	public Text stateText, timerText;
 
-	void Start()
+	void Awake()
 	{
 		MatchManager.OnMatchUpdate += OnMatchUpdate;
 		readyButton.onClick.AddListener(() => ReadyUp());
