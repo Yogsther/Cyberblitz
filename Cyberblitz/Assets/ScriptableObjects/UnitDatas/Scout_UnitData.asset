@@ -22,7 +22,7 @@ MonoBehaviour:
     and scouting ahead. Together with the heavy blade, the Scout can be a dangerous
     foe if you let yourself get flanked.
   canGuard: 1
-  model: {fileID: 2913493002124985741, guid: 64799838e3439f1419c1eeb1e8439dde, type: 3}
+  model: {fileID: 6164975469488315742, guid: 6e2e775bd7c3bdd4fbb2c04615c52be4, type: 3}
   image: {fileID: 83415280419826830, guid: f20f5ba6960f34142aa61154be0664f9, type: 3}
   portrait: {fileID: 4032366474542510044, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
   roleIcon: {fileID: 7234161794655295419, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}

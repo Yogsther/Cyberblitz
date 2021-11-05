@@ -23,7 +23,7 @@ MonoBehaviour:
     or otherwise important person. The Courier is seen as the only operator of any
     value.
   canGuard: 1
-  model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
+  model: {fileID: 8257088397716445797, guid: 35c28c4f42e80554592909c6b2c5ba1d, type: 3}
   image: {fileID: 397736350623959575, guid: 27d75b41d9fc5c84caa6bc684e89ff1c, type: 3}
   portrait: {fileID: 6053246153437315200, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
   roleIcon: {fileID: 7149892210239447775, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}

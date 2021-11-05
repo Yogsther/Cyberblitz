@@ -22,7 +22,7 @@ MonoBehaviour:
     with the help of a second synthetic heart that produces healing agents to the
     bloodstream. The TITAN is a formidable foe that's hard to eliminate.
   canGuard: 1
-  model: {fileID: 497778076058119406, guid: e05d898cc6aba114396405df1ca13d4b, type: 3}
+  model: {fileID: 497778076058119406, guid: ebb496d53b3f13b41a80c8087913c2ff, type: 3}
   image: {fileID: 4170728524077081871, guid: 6e50609d59b5018488917e49b9bb2f36, type: 3}
   portrait: {fileID: -2908793640980498929, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
   roleIcon: {fileID: 4822167117713438496, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
