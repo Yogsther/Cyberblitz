@@ -21,15 +21,15 @@ public class UnitPortrait : MonoBehaviour
 
 	public void Setup(UnitType type, UnitID unitID)
 	{
+		Debug.Log("Setting up Unit: " + type.ToString());
 		this.unitID = unitID;
 		crown.enabled = type == UnitType.Courier;
 		roleIcon.enabled = type != UnitType.Courier;
 
 		UnitData unitData = UnitDataManager.GetUnitDataByType(type);
-
+		Debug.Log((unitData == null) + "; UNIT DATA IS NULL?  <<<");
 		roleIcon.sprite = unitData.roleIcon;
 		unitImage.sprite = unitData.portrait;
-
 		SetMaxHp(unitData.stats.maxHp);
 		SetSelected(false);
 		SetHighlighted(false);
@@ -58,6 +58,7 @@ public class UnitPortrait : MonoBehaviour
 	}
 	public void SetAlive()
 	{
+		Debug.Log("Set portrait to ALIVE");
 		deathCross.enabled = false;
 		crown.color = Color.white;
 		roleIcon.color = Color.white;

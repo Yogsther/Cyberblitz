@@ -7,7 +7,7 @@ public class UnitPortraits : MonoBehaviour
 	public UnitPortrait[] portraits;
 
 
-	void Start()
+	void Awake()
 	{
 		MatchManager.OnMatchStart += OnMatchStart;
 		MatchManager.OnMatchUpdate += OnMatchUpdate;
@@ -59,9 +59,12 @@ public class UnitPortraits : MonoBehaviour
 
 	void OnMatchStart(Match match)
 	{
+		Debug.Log("ON MATCH STARTED, SETTING UP PORTRAITS!");
 		Unit[] units = match.GetAllUnits(match.GetLocalTeam());
+		Debug.Log("GOT UNITS: " + units.Length);
 		for (int i = 0; i < units.Length; i++)
 		{
+			Debug.Log("SET UP PORTRAIT FOR UNIT");
 			portraits[i].Setup(units[i].type, units[i].id);
 		}
 	}

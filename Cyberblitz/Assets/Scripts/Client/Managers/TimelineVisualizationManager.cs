@@ -16,7 +16,7 @@ public class TimelineVisualizationManager : MonoBehaviour
 
 	List<Waypoint> waypoints = new List<Waypoint>();
 
-	void Start()
+	void Awake()
 	{
 		TimelineEditor.OnBlockUpdate += OnBlockUpdated;
 		TimelineEditor.OnUnitSelected += OnUnitSelected;
