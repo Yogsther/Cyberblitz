@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UnitPortrait : MonoBehaviour
 {
-	public Image crown, roleIcon, unitImage, portraitFrame;
+	public Image crown, roleIcon, unitImage, portraitFrame, deathCross, selectedFrame;
 	public Transform healthBlobs;
 	public Color32 deadColor;
 
@@ -20,6 +20,13 @@ public class UnitPortrait : MonoBehaviour
 		unitImage.sprite = unitData.portrait;
 
 		SetMaxHp(unitData.stats.maxHp);
+		SetSelected(false);
+		SetAlive();
+	}
+
+	public void SetSelected(bool selected)
+	{
+		selectedFrame.enabled = selected;
 	}
 
 	void SetMaxHp(float hp)
@@ -30,9 +37,17 @@ public class UnitPortrait : MonoBehaviour
 			blob.enabled = hp >= i;
 		}
 	}
+	public void SetAlive()
+	{
+		deathCross.enabled = false;
+		crown.color = Color.white;
+		roleIcon.color = Color.white;
+		unitImage.color = Color.white;
+	}
 
 	public void SetDead()
 	{
+		deathCross.enabled = true;
 		crown.color = deadColor;
 		roleIcon.color = deadColor;
 		unitImage.color = deadColor;
