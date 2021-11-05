@@ -200,23 +200,23 @@ public class Referee
 
 		unit.type = type;
 
-		UnitData unitData = UnitDataManager.GetUnitDataByType(unit.type);
+		DataManager.unitStats.TryGetUnitStatsByType(unit.type, out UnitStats unitStats);
 
 		unit.isMVP = type == UnitType.Courier;
-		unit.hp = unitData.stats.maxHp;
+		unit.hp = unitStats.maxHp;
 		unit.ownerID = player.user.id;
 
 		unit.SetPosition(spawn.x, spawn.y);
 		player.units[index] = unit;
 	}
-			DataManager.unitStats.TryGetUnitStatsByType(unit.type, out UnitStats unitStats);
+			
 
 	Player CreatePlayer(User user, int team, UnitType[] units)
 	{
 		Player player = new Player(user, team);
 
 
-		SpawnArea spawnArea = levelData.levelPrefab.spawnAreas[team];
+		SpawnArea spawnArea = levelLayout.spawnAreas[team];
 
 		AddUnit(player, UnitType.Courier, spawnArea.GetSpawnPosition(0), 0);
 

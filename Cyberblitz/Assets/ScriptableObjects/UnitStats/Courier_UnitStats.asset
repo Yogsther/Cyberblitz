@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Courier_UnitStats
   m_EditorClassIdentifier: 
   unitType: 3
-  maxHp: 2
-  speed: 2
-  damage: 2
-  firerate: 2
-  range: 5
-  spread: 45
+  maxHp: 3
+  speed: 3
+  damage: 1
+  firerate: 1
+  range: 15
+  spread: 90
