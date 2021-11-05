@@ -137,12 +137,12 @@ public static class ServerCore
 
 	static void StartGameWIthPlayers(NetworkPacket packet)
 	{
+		PlayRequest playRequest = packet.Parse<PlayRequest>();
 
 		ConnectedUser user1 = GetConnectedUser(packet.user.id);
-		ConnectedUser user2 = GetConnectedUser(packet.Parse<UserID>());
+		ConnectedUser user2 = GetConnectedUser(playRequest.opponent);
 
 		// TEMPORARY BOTH PLAYERS GET PLAYER 1 UNIT CHOICES
-		PlayRequest playRequest = packet.Parse<PlayRequest>();
 
 		if (user1 != null && user2 != null)
 		{
