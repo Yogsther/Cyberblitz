@@ -9,14 +9,15 @@ public class LobbyCamera : MonoBehaviour
 	public Quaternion cameraDownAngle;
 	public Camera lobbyCamera;
 
+
 	public float animationSmoothingIn, animationSmoothingOut;
 	Vector3 smoothCameraVel;
 
 
-	public void AnimateIn()
+	public void AnimateIn(Action callback)
 	{
 		lobbyCamera.transform.rotation = cameraUpAngle;
-		StartCoroutine(AnimateCamera(cameraDownAngle, animationSmoothingIn));
+		StartCoroutine(AnimateCamera(cameraDownAngle, animationSmoothingIn, callback));
 	}
 
 	public void AnimateOut(Action callback)
@@ -29,7 +30,6 @@ public class LobbyCamera : MonoBehaviour
 	{
 		while (Quaternion.Angle(target, lobbyCamera.transform.rotation) > .5f)
 		{
-			Debug.Log("Angle: " + Quaternion.Angle(target, lobbyCamera.transform.rotation));
 			lobbyCamera.transform.rotation = SmoothDampQuaternion(lobbyCamera.transform.rotation, target, ref smoothCameraVel, smoothing);
 			yield return new WaitForEndOfFrame();
 		}
