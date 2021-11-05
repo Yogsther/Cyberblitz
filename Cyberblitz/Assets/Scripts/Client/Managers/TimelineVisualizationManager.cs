@@ -16,7 +16,7 @@ public class TimelineVisualizationManager : MonoBehaviour
 
 	List<Waypoint> waypoints = new List<Waypoint>();
 
-	void Start()
+	void Awake()
 	{
 		TimelineEditor.OnBlockUpdate += OnBlockUpdated;
 		TimelineEditor.OnUnitSelected += OnUnitSelected;
@@ -152,9 +152,9 @@ public class TimelineVisualizationManager : MonoBehaviour
 		CreateNewWaypoint(block);
 	}
 
-	void OnUnitSelected(Unit unit)
+	void OnUnitSelected(UnitID id)
 	{
-		selectedUnit = unit;
+		selectedUnit = MatchManager.GetUnit(id);
 		OnBlockUpdated();
 	}
 

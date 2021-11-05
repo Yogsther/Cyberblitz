@@ -46,7 +46,7 @@ public class VisualUnitManager : MonoBehaviour
 	{
 		Match match = MatchManager.match;
 		foreach (VisualUnit visualUnit in visualUnits)
-			if (match.IsOwnerOfUnit(ClientLogin.user.id, visualUnit.id))
+			if (match.IsOwnerOfUnit(ClientLogin.user.id, visualUnit.id) && !visualUnit.isDead)
 				visualUnit.isSelectable = selectable;
 	}
 

@@ -22,4 +22,5 @@ public class UnitData : ScriptableObject
 	public bool canGuard = true;
 	public GameObject model;
 	public GameObject image;
+	public Sprite portrait, roleIcon;
 }

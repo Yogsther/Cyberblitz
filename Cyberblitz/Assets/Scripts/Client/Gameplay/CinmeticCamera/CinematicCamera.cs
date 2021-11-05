@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,12 @@ public class CinematicCamera : MonoBehaviour
 
 	public float eventPaddingBefore = 2f;
 	public float eventPaddingAfter = 2f;
+
+	public static Action<UnitID> OnActionCameraIn;
+	public static Action<UnitID> OnActionCameraOut;
+
+	UnitID activeActionActor;
+
 
 	public Transform focusPoint;
 	public new Camera camera;
@@ -178,6 +185,9 @@ public class CinematicCamera : MonoBehaviour
 					VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(clip.unit);
 					focusedUnit = visualUnit.mainModel;
 
+					activeActionActor = visualUnit.id;
+					OnActionCameraIn?.Invoke(activeActionActor);
+
 					CreateZoomPath(visualUnit.transform);
 				}
 				if (time >= clip.end && !clip.hasEnded)
@@ -322,7 +332,11 @@ public class CinematicCamera : MonoBehaviour
 	[ContextMenu("Start circle")]
 	public void StartCircling()
 	{
-
+		if (activeActionActor != null)
+		{
+			OnActionCameraOut?.Invoke(activeActionActor);
+			activeActionActor = null;
+		}
 		if (actionCamera != null) actionCamera.camera.enabled = false;
 		camera.enabled = true;
 

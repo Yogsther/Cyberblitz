@@ -16,6 +16,7 @@ public class PlayPage : MonoBehaviour
 
 	public VisualEffect[] spawnEffects;
 
+
 	class SelectedUnit
 	{
 		public UnitType type;
@@ -102,7 +103,6 @@ public class PlayPage : MonoBehaviour
 			panel.ClosePanel();
 		}
 		menuSystem.menuBackground.SetActive(false);
-		menuSystem.lobbyCamera.AnimateIn();
 	}
 
 	public void OpenPanel(AddUnitPanel panelToOpen)
