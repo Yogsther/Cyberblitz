@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 191139297}
   - component: {fileID: 191139296}
   m_Layer: 0
-  m_Name: Global Volume
+  m_Name: Global Volume Daytime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -669,7 +669,7 @@ GameObject:
   - component: {fileID: 918293740}
   - component: {fileID: 918293739}
   m_Layer: 0
-  m_Name: Sky and Fog Volume
+  m_Name: Sky and Fog Volume Daytime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
