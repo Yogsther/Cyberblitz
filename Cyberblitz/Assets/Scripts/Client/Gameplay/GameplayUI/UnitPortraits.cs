@@ -13,6 +13,18 @@ public class UnitPortraits : MonoBehaviour
 		MatchManager.OnMatchUpdate += OnMatchUpdate;
 		TimelineEditor.OnUnitSelected += OnUnitSelected;
 		TimelineEditor.OnUnitDeselect += OnUnitDeselected;
+		CinematicCamera.OnActionCameraIn += OnActionCameraIn;
+		CinematicCamera.OnActionCameraOut += OnActionCameraOut;
+	}
+
+	void OnActionCameraIn(UnitID id)
+	{
+		SetPortraitHighlighted(id, true);
+	}
+
+	void OnActionCameraOut(UnitID id)
+	{
+		SetPortraitHighlighted(id, false);
 	}
 
 	void OnUnitSelected(UnitID id)
@@ -35,14 +47,22 @@ public class UnitPortraits : MonoBehaviour
 		}
 	}
 
-
+	void SetPortraitHighlighted(UnitID id, bool highlighted)
+	{
+		Match match = MatchManager.match;
+		Unit[] units = match.GetAllUnits(match.GetLocalTeam());
+		for (int i = 0; i < units.Length; i++)
+		{
+			if (units[i].id == id) portraits[i].SetHighlighted(highlighted);
+		}
+	}
 
 	void OnMatchStart(Match match)
 	{
 		Unit[] units = match.GetAllUnits(match.GetLocalTeam());
 		for (int i = 0; i < units.Length; i++)
 		{
-			portraits[i].Setup(units[i].type);
+			portraits[i].Setup(units[i].type, units[i].id);
 		}
 	}
 
