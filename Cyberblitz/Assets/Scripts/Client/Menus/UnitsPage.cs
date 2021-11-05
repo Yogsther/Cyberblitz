@@ -21,21 +21,13 @@ public class UnitsPage : MonoBehaviour
 
 	GameObject unitImageDisplay = null;
 
-	void Start()
-	{
-		unitTypeList = new List<UnitType>(UnitDataManager.unitDataDict.Keys);
-		if (unitTypeList.Count == 0) Debug.LogError("Unit list is empty!");
-		else selectedUnitType = unitTypeList[selectedUnitIndex];
-		LoadUnit();
-	}
+
 
 	public void SelectUnit(UnitType type)
 	{
-		Debug.Log("Selecting unit");
 		for (int i = 0; i < unitTypeList.Count; i++)
 			if (unitTypeList[i] == type)
 			{
-				Debug.Log("Found unit");
 				selectedUnitIndex = i;
 				LoadUnit();
 			}
@@ -43,6 +35,11 @@ public class UnitsPage : MonoBehaviour
 
 	void Awake()
 	{
+		unitTypeList = new List<UnitType>(UnitDataManager.unitDataDict.Keys);
+		if (unitTypeList.Count == 0) Debug.LogError("Unit list is empty!");
+		else selectedUnitType = unitTypeList[selectedUnitIndex];
+		LoadUnit();
+
 		MenuSystem.OnScreenLoaded += name =>
 		{
 			if (name == "units") LoadUnit();

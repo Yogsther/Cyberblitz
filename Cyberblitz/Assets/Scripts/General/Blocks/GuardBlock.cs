@@ -80,13 +80,9 @@ public class GuardBlock : Block
 						DamageEvent damageEvent = new DamageEvent(otherUnit.id, ownerUnitStats.damage, effectTime + effectAnimationDelay);
 						simulatedMatch.events.Enqueue(damageEvent);
 					}
-
 				}
 			}
-
-
 		}
-
 	}
 
 	private float CalculateHitChance(Unit targetUnit, LevelLayout levelLayout)

@@ -8,6 +8,6 @@ public class Player
 		this.team = team;
 	}
 	public User user;
-	public Unit[] units;
+	public Unit[] units = new Unit[4];
 	public int team;
 }

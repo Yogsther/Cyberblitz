@@ -141,23 +141,26 @@ public static class ServerCore
 		ConnectedUser user1 = GetConnectedUser(packet.user.id);
 		ConnectedUser user2 = GetConnectedUser(packet.Parse<UserID>());
 
+		// TEMPORARY BOTH PLAYERS GET PLAYER 1 UNIT CHOICES
+		PlayRequest playRequest = packet.Parse<PlayRequest>();
+
 		if (user1 != null && user2 != null)
 		{
 			Referee referee = new Referee();
 			games.Add(referee);
 
 			referee.Init();
-			referee.AddPlayer(user1.user);
-			referee.AddPlayer(user2.user);
+			referee.AddPlayer(user1.user, playRequest.units);
+			referee.AddPlayer(user2.user, playRequest.units);
 			referee.Start();
 
 			UpdateUserList();
 		}
-
 	}
 
 	static void StartGameWithBot(NetworkPacket packet)
 	{
+		PlayRequest playRequest = packet.Parse<PlayRequest>();
 		if (packet.user == null)
 		{
 			Debug.Log("WARNING USER NOT LOGGED IN TRIED TO START GAME!");
@@ -168,7 +171,7 @@ public static class ServerCore
 		games.Add(referee);
 
 		referee.Init();
-		referee.AddPlayer(packet.user);
+		referee.AddPlayer(packet.user, playRequest.units);
 		referee.AddBot();
 		referee.Start();
 
