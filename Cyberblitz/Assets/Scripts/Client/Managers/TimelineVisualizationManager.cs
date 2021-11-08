@@ -7,14 +7,20 @@ public class TimelineVisualizationManager : MonoBehaviour
 {
 
 	public LineRenderer moveBlockLine, tempCone, lockedConePrefab;
+	public MoveBlockVisual moveBlockVisualPrefab;
 	public Waypoint waypointPrefab;
 	public Camera camera;
-	public Transform waypointParent, lockedConesParent;
+	public Transform blockVisualsParent, waypointParent, lockedConesParent;
 
 	Unit selectedUnit;
 	Block selectedBlock;
 
+	List<BlockVisual> blockVisuals;
+
 	List<Waypoint> waypoints = new List<Waypoint>();
+
+	private List<Vector3> linePositions = new List<Vector3>();
+	private List<Vector3> targetLinePositions = new List<Vector3>();
 
 	void Awake()
 	{
@@ -53,7 +59,30 @@ public class TimelineVisualizationManager : MonoBehaviour
 		waypoints.Add(waypoint);
 	}
 
-	
+
+	private void UpdateTargetLinePositions(Unit unit)
+	{
+		Timeline timeline = unit.timeline;
+		float lineHeight = 0.21f;
+
+		foreach (Block block in timeline.blocks)
+		{
+			if (block.type == BlockType.Move)
+			{
+				MoveBlock moveBlock = (MoveBlock)block;
+				if (moveBlock.movementPath != null)
+				{
+
+					List<Vector2Int> points = moveBlock.movementPath.GetPoints();
+
+					targetLinePositions = points.ToFlatVector3(lineHeight);
+
+					
+				}
+			}
+		}
+	}
+
 	void DrawPath(Unit unit)
 	{
 		Timeline timeline = unit.timeline;
@@ -74,33 +103,29 @@ public class TimelineVisualizationManager : MonoBehaviour
 				if (moveBlock.movementPath != null)
 				{
 
-					List<Vector2Int> points = moveBlock.movementPath.GetPoints();
+					int newPositions = targetLinePositions.Count - moveBlockLine.positionCount;
+					int newPositionsStartIndex = targetLinePositions.Count - newPositions - 1;
 
-					moveBlockLine.positionCount = points.Count;
+					moveBlockLine.positionCount = targetLinePositions.Count;
 
-					for(int i = 0; i < points.Count; i++)
+					for(int i = targetLinePositions.Count - 1; i > newPositionsStartIndex; i--)
                     {
-						Vector2Int thisSection = points[i];
+						moveBlockLine.SetPosition(i, targetLinePositions[targetLinePositions.Count - 1]);
+                    }
 
-						Vector2 oldPos = moveBlockLine.GetPosition(i).FlatVector3ToVector2();
+					for (int i = 0; i < targetLinePositions.Count; i++)
+                    {
+						/*if(linePositions.Count - 1 < i)
+                        {
+							linePositions.Add(targetLinePositions[i]);
+						}*/
 
-						if (oldPos == Vector2.zero) oldPos = thisSection;
-
-						Vector2 newPos = Vector2.Lerp(oldPos, thisSection, .1f);
-
-						moveBlockLine.SetPosition(i, newPos.ToFlatVector3(lineHeight));
-						/*moveBlockLine.positionCount++;
-						moveBlockLine.SetPosition(moveBlockLine.positionCount - 1, section.Lerp(.5f).ToFlatVector3(lineHeight));*/
+						moveBlockLine.SetPosition(i, Vector3.LerpUnclamped(moveBlockLine.GetPosition(i), targetLinePositions[i], 10f * Time.deltaTime));
 					}
-					/*foreach (AutoGridPath.Section section in moveBlock.movementPath.GetSections())
-					{
-						for (float i = 0f; i < 1f; i += .1f)
-						{
-							// Add line point for movement block target
-							moveBlockLine.positionCount++;
-							moveBlockLine.SetPosition(moveBlockLine.positionCount - 1, section.Lerp(.5f).ToFlatVector3(lineHeight));
-						}
-					}*/
+
+					
+
+					//moveBlockLine.SetPositions(linePositions.GetRange(0, targetLinePositions.Count).ToArray());
 				}
 
 
@@ -115,10 +140,11 @@ public class TimelineVisualizationManager : MonoBehaviour
 	{
 		tempCone.positionCount = 0;
 		//moveBlockLine.positionCount = 0;
-
+		ClearTransform(blockVisualsParent);
 		ClearTransform(waypointParent);
 		ClearTransform(lockedConesParent);
 
+		blockVisuals.Clear();
 		waypoints.Clear();
 	}
 
@@ -175,6 +201,12 @@ public class TimelineVisualizationManager : MonoBehaviour
 
 	void LoadMoveBlock(MoveBlock block)
 	{
+		MoveBlockVisual moveBlockVisual = Instantiate(moveBlockVisualPrefab, blockVisualsParent);
+		moveBlockVisual.ownerUnitId = block.ownerId;
+		moveBlockVisual.visualizedMoveBlock = block;
+
+		blockVisuals.Add(moveBlockVisual);
+
 		CreateNewWaypoint(block);
 	}
 
@@ -209,8 +241,23 @@ public class TimelineVisualizationManager : MonoBehaviour
 			}
 		}
 
-		DrawPath(selectedUnit);
+		foreach(BlockVisual blockVisual in GetUnitBlockVisuals(selectedUnit))
+        {
+			blockVisual.UpdateVisuals();
+        }
 	}
+
+	List<BlockVisual> GetUnitBlockVisuals(Unit unit)
+    {
+		List<BlockVisual> unitBlockVisuals = new List<BlockVisual>();
+
+		foreach(BlockVisual blockVisual in blockVisuals)
+        {
+			if (blockVisual.ownerUnitId == unit.id) unitBlockVisuals.Add(blockVisual);
+        }
+
+		return unitBlockVisuals;
+    }
 
 	private void Update()
 	{
