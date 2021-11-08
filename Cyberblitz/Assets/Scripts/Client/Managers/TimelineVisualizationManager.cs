@@ -53,14 +53,18 @@ public class TimelineVisualizationManager : MonoBehaviour
 		waypoints.Add(waypoint);
 	}
 
+	
 	void DrawPath(Unit unit)
 	{
 		Timeline timeline = unit.timeline;
 		float lineHeight = 0.21f;
 
 		// Set the first position to current unit position
-		moveBlockLine.positionCount = 1;
-		moveBlockLine.SetPosition(0, unit.position.ToVector2().ToFlatVector3(lineHeight));
+		/*if (moveBlockLine.positionCount == 0)
+		{
+			moveBlockLine.positionCount = 1;
+			moveBlockLine.SetPosition(0, unit.position.ToVector2().ToFlatVector3(lineHeight));
+		}*/
 
 		foreach (Block block in timeline.blocks)
 		{
@@ -69,12 +73,34 @@ public class TimelineVisualizationManager : MonoBehaviour
 				MoveBlock moveBlock = (MoveBlock)block;
 				if (moveBlock.movementPath != null)
 				{
-					foreach (Vector2Int point in moveBlock.movementPath.GetPoints())
-					{
-						// Add line point for movement block target
-						moveBlockLine.positionCount++;
-						moveBlockLine.SetPosition(moveBlockLine.positionCount - 1, point.ToFlatVector3(lineHeight));
+
+					List<Vector2Int> points = moveBlock.movementPath.GetPoints();
+
+					moveBlockLine.positionCount = points.Count;
+
+					for(int i = 0; i < points.Count; i++)
+                    {
+						Vector2Int thisSection = points[i];
+
+						Vector2 oldPos = moveBlockLine.GetPosition(i).FlatVector3ToVector2();
+
+						if (oldPos == Vector2.zero) oldPos = thisSection;
+
+						Vector2 newPos = Vector2.Lerp(oldPos, thisSection, .1f);
+
+						moveBlockLine.SetPosition(i, newPos.ToFlatVector3(lineHeight));
+						/*moveBlockLine.positionCount++;
+						moveBlockLine.SetPosition(moveBlockLine.positionCount - 1, section.Lerp(.5f).ToFlatVector3(lineHeight));*/
 					}
+					/*foreach (AutoGridPath.Section section in moveBlock.movementPath.GetSections())
+					{
+						for (float i = 0f; i < 1f; i += .1f)
+						{
+							// Add line point for movement block target
+							moveBlockLine.positionCount++;
+							moveBlockLine.SetPosition(moveBlockLine.positionCount - 1, section.Lerp(.5f).ToFlatVector3(lineHeight));
+						}
+					}*/
 				}
 
 
@@ -88,7 +114,7 @@ public class TimelineVisualizationManager : MonoBehaviour
 	void ClearVisualElements()
 	{
 		tempCone.positionCount = 0;
-		moveBlockLine.positionCount = 0;
+		//moveBlockLine.positionCount = 0;
 
 		ClearTransform(waypointParent);
 		ClearTransform(lockedConesParent);
@@ -210,6 +236,8 @@ public class TimelineVisualizationManager : MonoBehaviour
 					tempCone.positionCount = 0;
 				}
 			}
+
+			DrawPath(selectedUnit);
 		}
 
 	}
