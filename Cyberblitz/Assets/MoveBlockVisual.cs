@@ -12,9 +12,18 @@ public class MoveBlockVisual : BlockVisual
 
     private List<Vector3> targetLinePositions = new List<Vector3>();
 
+    public void Init()
+    {
+        if (moveBlock.movementPath == null) return;
+        waypoint.block = block;
+        waypoint.SetSelected(selected);
+    }
+
     private void Update()
     {
         DrawPath();
+
+        Init();
     }
 
     public override void UpdateVisuals()
@@ -32,11 +41,12 @@ public class MoveBlockVisual : BlockVisual
             targetLinePositions = points.ToFlatVector3(lineHeight);
 
             int newPositions = targetLinePositions.Count - moveLine.positionCount;
-            int newPositionsStartIndex = targetLinePositions.Count - newPositions - 1;
+            int newPositionsStartIndex = Mathf.Max(targetLinePositions.Count - newPositions - 1, 0);
 
+            //moveLine.positionCount = targetLinePositions.Count;
             moveLine.positionCount = targetLinePositions.Count;
 
-            for (int i = moveLine.positionCount - 1; i > newPositionsStartIndex; i--)
+            for (int i = targetLinePositions.Count - 1; i > newPositionsStartIndex; i--)
             {
                 moveLine.SetPosition(i, targetLinePositions[newPositionsStartIndex]);
             }
