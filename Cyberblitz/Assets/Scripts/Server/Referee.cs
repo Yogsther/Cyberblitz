@@ -174,7 +174,7 @@ public class Referee
 		match = new Match();
 		match.level = "Test Level";
 		DataManager.levelLayouts.TryGetLevelLayout(match.level, out levelLayout);
-		match.state = Match.GameState.Starting;
+		match.state = Match.GameState.MapSelection;
 		match.round = 0;
 
 		match.players = new Player[2];
