@@ -6,6 +6,7 @@ using UnityEngine;
 public class Referee
 {
 	public Match match;
+
 	public LevelLayout levelLayout;
 	List<UserID> readyPlayers = new List<UserID>();
 
@@ -29,17 +30,31 @@ public class Referee
 				break;
 		}
 
+
+
 		Debug.Log("Starting new round, phase: " + match.state);
 
 		if (match.state == Match.GameState.Playback)
 			match = TurnSimulator.SimulateTurn(match);
 
+		if (match.state == Match.GameState.Planning)
+		{
+			if (match.winner != null)
+			{
+				match.state = Match.GameState.Ending;
+			}
+		}
+
 
 		if (match.state != Match.GameState.WaitingForUnits) SendGameUpdate();
 		else Broadcast("SEND_UNITS");
 
+		if (match.state == Match.GameState.Ending) Terminate(match.GetUser(match.winner) + " won the game.");
 		ClearReadyPlayers();
 	}
+
+
+
 
 	void PrepareForPlanning()
 	{
@@ -64,8 +79,8 @@ public class Referee
 
 	public void Terminate(string reason)
 	{
-		Debug.Log("Terminated game: " + reason);
 		Broadcast("GAME_TERMINATED", reason);
+		ServerCore.TerminateGame(match.id);
 	}
 
 	void OnPlayerReady(NetworkPacket packet)
@@ -209,7 +224,7 @@ public class Referee
 		unit.SetPosition(spawn.x, spawn.y);
 		player.units[index] = unit;
 	}
-			
+
 
 	Player CreatePlayer(User user, int team, UnitType[] units)
 	{

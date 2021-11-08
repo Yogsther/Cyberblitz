@@ -33,6 +33,14 @@ public class PlayPage : MonoBehaviour
 	private void Awake()
 	{
 		menuSystem.OnPageLoad["play"] = OnPageLoad;
+		MatchManager.OnMatchUnloaded += () =>
+		{
+			foreach (SelectedUnit selectedUnit in selectedUnits)
+			{
+				selectedUnit.loaded = false;
+			}
+			LoadModels();
+		};
 	}
 
 	private void Start()

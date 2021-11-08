@@ -47,8 +47,8 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 		TimelineEditor.OnUnitSelected += id =>
 		{
 			isSelected = id == this.id;
-
-			outlineAnimator.SetBool("Selected", isSelected);
+			// TODO NULL CHECK BECAUSE BUG IF YOU PLAY MORE THAN ONE GAME
+			if (outlineAnimator != null) outlineAnimator.SetBool("Selected", isSelected);
 		};
 
 		OnShoot += (id, direction) =>
@@ -72,6 +72,8 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 		};
 	}
 
+
+
 	private void Update()
 	{
 
@@ -86,7 +88,7 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 	}
 
 	public void SetTargetForward(Vector3 newTargetForward)
-    {
+	{
 		targetForward = newTargetForward;
 	}
 

@@ -74,6 +74,12 @@ public class GuardBlock : Block
 
 							DeathEvent deathEvent = new DeathEvent(otherUnit.id, effectTime + effectAnimationDelay);
 							simulatedMatch.events.Enqueue(deathEvent);
+
+							if (otherUnit.type == UnitType.Courier && simulatedMatch.winner == null)
+							{
+								Debug.Log("REGISTERED WINNER!");
+								simulatedMatch.winner = ownerUnit.ownerID;
+							}
 						} else
 						{
 							DamageEvent damageEvent = new DamageEvent(otherUnit.id, ownerUnitStats.damage, effectTime + effectAnimationDelay);

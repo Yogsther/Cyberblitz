@@ -21,6 +21,8 @@ public class MenuSystem : MonoBehaviour
 	public Camera planningCamera;
 	public GameObject lobbyWorld;
 
+	public GameOverScreen gameOverScreen;
+
 	string currentlyLoadingScreen = null;
 
 	[HideInInspector]
@@ -64,6 +66,11 @@ public class MenuSystem : MonoBehaviour
 			SetOutlineVisibility(true);
 			lobbyWorld.SetActive(false);
 		};
+
+		MatchManager.OnMatchUnloaded += () =>
+		{
+			LoadScreen("play");
+		};
 	}
 
 	public void DisplayGameUI(bool show)
@@ -73,6 +80,9 @@ public class MenuSystem : MonoBehaviour
 
 	public void LoadScreen(string name)
 	{
+		gameOverScreen.HideScreen();
+		DisplayGameUI(false);
+		SetMainMenuVisibility(true);
 
 		if (currentlyLoadingScreen != null) return;
 
@@ -146,6 +156,10 @@ public class MenuSystem : MonoBehaviour
 	public void SetMainMenuVisibility(bool visible)
 	{
 		mainMenu.SetActive(visible);
+		lobbyWorld.SetActive(visible);
+		lobbyCamera.lobbyCamera.enabled = true;
+		planningCamera.enabled = false;
+		SetOutlineVisibility(!visible);
 	}
 
 }

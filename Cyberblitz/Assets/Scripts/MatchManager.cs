@@ -8,6 +8,7 @@ public class MatchManager : MonoBehaviour
 	public static Match match;
 	public TimelineEditor timelineEditor;
 	public static MatchManager Instance;
+	public LevelManager levelManager;
 
 
 	private void Awake()
@@ -21,6 +22,8 @@ public class MatchManager : MonoBehaviour
 	public static Action<Match> OnMatchStart;
 	public static Action<Match> OnMatchUpdate;
 	public static Action OnPlanningEnd;
+	public static Action<Match, string> OnMatchEnd;
+	public static Action OnMatchUnloaded;
 
 	public void Init()
 	{
@@ -32,9 +35,17 @@ public class MatchManager : MonoBehaviour
 		LevelManager.OnLevelLoaded += (level) => SignalReady();
 	}
 
+	public void UnloadMatch()
+	{
+		match = null;
+		levelManager.UnloadLevel();
+		OnMatchUnloaded?.Invoke();
+	}
+
 	void OnGameEnd(NetworkPacket packet)
 	{
 		string reason = packet.content;
+		OnMatchEnd.Invoke(match, reason);
 		Debug.LogWarning("Game terminated: " + reason);
 	}
 

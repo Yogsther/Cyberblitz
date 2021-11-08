@@ -85,10 +85,11 @@ public class LevelManager : MonoBehaviour
 
 	public void UnloadLevel()
 	{
-
-		if (currentLevel != null) Destroy(currentLevel);
+		if (currentLevel != null) Destroy(currentLevel.gameObject);
 		currentLevel = null;
 		currentLevelData = null;
+
+		Debug.Log("Destroyed current level!");
 
 		OnLevelUnloaded?.Invoke();
 	}
