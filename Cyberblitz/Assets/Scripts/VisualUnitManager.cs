@@ -19,6 +19,10 @@ public class VisualUnitManager : MonoBehaviour
 	private void Awake()
 	{
 		visualUnitContainer = new GameObject("Visual Unit Container").transform;
+		MatchManager.OnMatchUnloaded += () =>
+		{
+			DeleteAllVisualUnits();
+		};
 	}
 
 	private void Start()

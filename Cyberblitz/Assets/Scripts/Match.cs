@@ -15,6 +15,7 @@ public class Match
 	public GameState state = GameState.Starting;
 	public MatchRules rules = new MatchRules();
 	public float longestTimelineDuration;
+	public UserID winner = null;
 
 	public bool IsOwnerOfUnit(UserID userId, UnitID unitId)
 	{

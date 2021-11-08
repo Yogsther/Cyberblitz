@@ -21,7 +21,7 @@ MonoBehaviour:
     an important role. The procedure for the combat implants is not as gruesome as
     many of the other implants but death is still expected within 48h.
   canGuard: 1
-  model: {fileID: 360229179349585178, guid: cfc9f9ac54a16f54584727b74e7b68a3, type: 3}
+  model: {fileID: 2913493002124985741, guid: 6e9840c5c7783fe4a9c561fd931435da, type: 3}
   image: {fileID: 8602049787728755569, guid: 5f3b721ddc86716439ec7b2aff4ec123, type: 3}
   portrait: {fileID: 9013192901287847514, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
   roleIcon: {fileID: -5999590672767869049, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}

@@ -12,8 +12,8 @@ public class CameraController : MonoBehaviour
 
 	public void InitCamera(Level level)
 	{
-		if(MatchManager.TryGetLocalPlayer(out Player localPlayer))
-        {
+		if (MatchManager.TryGetLocalPlayer(out Player localPlayer))
+		{
 			int team = localPlayer.team;
 
 			SpawnArea spawnArea = level.spawnAreas[team];
@@ -23,8 +23,11 @@ public class CameraController : MonoBehaviour
 			transform.Rotate(Vector3.up, spawnArea.cameraRotationForTeam, Space.World);// *= spawnArea.cameraRotation;    
 
 			targetPosition = transform.position;
+		} else
+		{
+			Debug.Log("Did not find player");
 		}
-		   
+
 	}
 
 	private void LateUpdate()

@@ -12,11 +12,12 @@ public class CinematicCamera : MonoBehaviour
 
 	public float eventPaddingBefore = 2f;
 	public float eventPaddingAfter = 2f;
+	public float eventPaddingAfterDeath = .4f;
 
 	public static Action<UnitID> OnActionCameraIn;
 	public static Action<UnitID> OnActionCameraOut;
 
-	UnitID activeActionActor;
+	public static UnitID activeActionActor;
 
 
 	public Transform focusPoint;
@@ -76,6 +77,11 @@ public class CinematicCamera : MonoBehaviour
 	private void Awake()
 	{
 		MatchManager.OnMatchUpdate += OnMatchUpdate;
+		MatchManager.OnMatchUnloaded += () =>
+		{
+			planningCamera.enabled = false;
+			camera.enabled = false;
+		};
 	}
 
 	void OnMatchUpdate(Match match)
@@ -95,7 +101,6 @@ public class CinematicCamera : MonoBehaviour
 					focusGroup.Add(focus);
 				}
 
-
 			foreach (MatchEvent matchEvent in match.events)
 			{
 				if (notableEvents.Contains(matchEvent.type))
@@ -103,10 +108,9 @@ public class CinematicCamera : MonoBehaviour
 					Unit actor = match.GetUnit(matchEvent.actorUnitId);
 					if (actor.ownerID == ClientLogin.user.id)
 					{
-						// TODO FIX SO MULTIBLE CLIPS BY THE SAME UNITS MERGE
 						ActionClip clip = new ActionClip();
 						clip.start = matchEvent.time - eventPaddingBefore;
-						clip.end = matchEvent.time + eventPaddingAfter;
+						clip.end = matchEvent.time + (matchEvent.type == MatchEventType.Death ? eventPaddingAfterDeath : eventPaddingAfter);
 						clip.unit = actor.id;
 
 						actionClips.Add(clip);
@@ -115,11 +119,13 @@ public class CinematicCamera : MonoBehaviour
 			}
 
 
+
 			// Checks for overlapping actions clips and removes them
 			ValidateActionClips();
 
 			// Merges action clips if they are performed by the same unit
 			MergeActionClips();
+
 			// Remove unrunnable clips that may have been modified with the merge action
 			RemoveUnrunnableActionClips();
 
@@ -179,7 +185,7 @@ public class CinematicCamera : MonoBehaviour
 			float time = GetTimePassed();
 			foreach (ActionClip clip in actionClips)
 			{
-				if (time >= clip.start && !clip.hasStarted)
+				if (time >= clip.start && !clip.hasStarted && clip.canRun)
 				{
 					clip.hasStarted = true;
 					VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(clip.unit);
@@ -187,11 +193,12 @@ public class CinematicCamera : MonoBehaviour
 
 					activeActionActor = visualUnit.id;
 					OnActionCameraIn?.Invoke(activeActionActor);
-
+					Debug.Log("Starting action clip: " + time);
 					CreateZoomPath(visualUnit.transform);
 				}
-				if (time >= clip.end && !clip.hasEnded)
+				if (time >= clip.end && !clip.hasEnded && clip.canRun)
 				{
+					Debug.Log("Stopping action clip: " + time);
 					clip.hasEnded = true;
 					StartCircling();
 				}
@@ -237,10 +244,9 @@ public class CinematicCamera : MonoBehaviour
 
 	void DisableActionCamera()
 	{
+		Debug.Log("Trying to disable action camera, is null? " + actionCamera);
 		if (actionCamera != null) actionCamera.camera.enabled = false;
 	}
-
-
 
 	[ContextMenu("Create zoom path")]
 	void CreateZoomPath(Transform unit)
@@ -359,29 +365,52 @@ public class CinematicCamera : MonoBehaviour
 		float timePassed = GetTimePassed();
 
 		Vector3 avgFocus = Vector3.zero;
-		for (int i = 0; i < focusGroup.Count; i++)
+		if (focusGroup.Count > 0)
 		{
-			UnitFocus unitFocus = focusGroup[i];
-			if (unitFocus.duration < timePassed) focusGroup.RemoveAt(i);
-			else avgFocus += unitFocus.unitModel.position;
+			for (int i = 0; i < focusGroup.Count; i++)
+			{
+				UnitFocus unitFocus = focusGroup[i];
+				if (unitFocus.duration < timePassed) focusGroup.RemoveAt(i);
+				else avgFocus += unitFocus.unitModel.position;
+			}
+			avgFocus /= focusGroup.Count;
+
+		} else
+		{
+			List<VisualUnit> visualUnits = VisualUnitManager.GetUserVisualUnitsById(ClientLogin.user.id);
+			int aliveUnits = 0;
+			if (visualUnits != null)
+			{
+				foreach (VisualUnit visualUnit in visualUnits)
+				{
+					if (!visualUnit.isDead)
+					{
+						aliveUnits++;
+						avgFocus += visualUnit.mainModel.position;
+					}
+				}
+
+				if (aliveUnits == 0) return Vector3.zero;
+				avgFocus /= aliveUnits;
+			}
+
 		}
 
-		return avgFocus /= focusGroup.Count;
+
+		return avgFocus;
 	}
 
 	IEnumerator CircleEnumerator()
 	{
-		/*focusPoint.position = VisualUnitManager.GetVisualUnitById(unit.id).mainModel.position;*/
+
 		while (circling)
 		{
 
+			// PRODUCES ERROR??? 
 			Vector3 avgFocus = GetAverageFocus();
-			if (focusGroup.Count > 0)
-				focusPoint.position = Vector3.SmoothDamp(focusPoint.position, avgFocus, ref smoothFocusVal, 1f);
+			Debug.Log("Avg focus: " + avgFocus);
+			focusPoint.position = Vector3.SmoothDamp(focusPoint.position, avgFocus, ref smoothFocusVal, 1f);
 
-
-			// TODO FOCUS ON MOVING UNITS
-			/*focusPoint.position = focusedUnit.position;*/
 			dolly.m_PathPosition += Time.deltaTime * dollySpeed;
 			circleCameraProgress = dolly.m_PathPosition;
 			yield return new WaitForEndOfFrame();

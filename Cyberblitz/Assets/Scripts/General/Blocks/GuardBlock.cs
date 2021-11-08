@@ -29,7 +29,7 @@ public class GuardBlock : Block
 
 			if (otherUnitTeam != ownerTeam && otherUnitIsWithinAimCone)
 			{
-				
+
 				float shotCooldown = 1f / ownerUnitStats.firerate;
 				float secondsSinceLastShot = localTime - ownerUnit.lastShot;
 				bool canShoot = ownerUnit.lastShot == -1 || secondsSinceLastShot >= shotCooldown;
@@ -37,56 +37,63 @@ public class GuardBlock : Block
 
 				if (canShoot)
 				{
-					
+
 
 					float effectAnimationDelay = .2f;
 					float effectTime = ownerUnit.timeline.GetStartTimeOfBlock(this) + localTime;
 
 					float hitChance = 1f;
 
-					if(DataManager.levelLayouts.TryGetLevelLayout(simulatedMatch.level, out LevelLayout levelLayout)){
+					if (DataManager.levelLayouts.TryGetLevelLayout(simulatedMatch.level, out LevelLayout levelLayout))
+					{
 						hitChance = CalculateHitChance(otherUnit, levelLayout);
-					}
-					else
-                    {
+					} else
+					{
 						Debug.Log("No level layout found, skipping hitChance calculation");
-                    }
-
-					
+					}
 
 					Debug.Log($"[GuardBlock] - HIT CHANCE: {hitChance}");
 
 					bool isHit = hitChance > Random.value;
 
-					ShootEvent shootEvent = new ShootEvent(ownerUnit.id, otherUnit.id, isHit, effectTime);
-					simulatedMatch.events.Enqueue(shootEvent);
-
-                    
-					ownerUnit.lastShot = localTime;
-
-					if (isHit)
+					if (hitChance > 0)
 					{
-						otherUnit.hp -= ownerUnitStats.damage;
+						ShootEvent shootEvent = new ShootEvent(ownerUnit.id, otherUnit.id, isHit, effectTime);
+						simulatedMatch.events.Enqueue(shootEvent);
+
+						ownerUnit.lastShot = localTime;
+
+						if (isHit)
+						{
+							otherUnit.hp -= ownerUnitStats.damage;
+						}
+
+						if (otherUnit.hp <= 0)
+						{
+							otherUnit.hp = 0;
+
+							DeathEvent deathEvent = new DeathEvent(otherUnit.id, effectTime + effectAnimationDelay);
+							simulatedMatch.events.Enqueue(deathEvent);
+
+							if (otherUnit.type == UnitType.Courier && simulatedMatch.winner == null)
+							{
+								Debug.Log("REGISTERED WINNER!");
+								simulatedMatch.winner = ownerUnit.ownerID;
+							}
+						} else
+						{
+							DamageEvent damageEvent = new DamageEvent(otherUnit.id, ownerUnitStats.damage, effectTime + effectAnimationDelay);
+							simulatedMatch.events.Enqueue(damageEvent);
+						}
 					}
 
-					if (otherUnit.hp <= 0)
-					{
-						otherUnit.hp = 0;
-
-						DeathEvent deathEvent = new DeathEvent(otherUnit.id, effectTime + effectAnimationDelay);
-						simulatedMatch.events.Enqueue(deathEvent);
-					} else
-					{
-						DamageEvent damageEvent = new DamageEvent(otherUnit.id, ownerUnitStats.damage, effectTime + effectAnimationDelay);
-						simulatedMatch.events.Enqueue(damageEvent);
-					}
 				}
 			}
 		}
 	}
 
 	private float CalculateHitChance(Unit targetUnit, LevelLayout levelLayout)
-    {
+	{
 		float hitChance = 1f;
 
 		Vector2 originPosition = aimCone.origin.point;
@@ -99,10 +106,10 @@ public class GuardBlock : Block
 
 		float distanceToTarget = Vector2.Distance(originPosition, targetPosition);
 
-		foreach(GridCollider gridCollider in levelLayout.gridColliders)
-        {
-			if(LineIntersectionTest.Intersect(originPosition, targetPosition, gridCollider.collisionRect))
-            {
+		foreach (GridCollider gridCollider in levelLayout.gridColliders)
+		{
+			if (LineIntersectionTest.Intersect(originPosition, targetPosition, gridCollider.collisionRect))
+			{
 				Debug.Log(gridCollider.type);
 
 				if (gridCollider.type == ColliderType.Full)
@@ -115,7 +122,7 @@ public class GuardBlock : Block
 					hitChance = .5f;
 				}
 			}
-        }
+		}
 
 		return hitChance;
 	}
@@ -132,8 +139,8 @@ public class GuardBlock : Block
 
 	public override void Playback(Match simulatedMatch, float localTime)
 	{
-		
+
 	}
 
-   
+
 }
