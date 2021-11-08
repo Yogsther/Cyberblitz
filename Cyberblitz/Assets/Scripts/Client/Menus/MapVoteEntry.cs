@@ -12,13 +12,12 @@ public class MapVoteEntry : MonoBehaviour
 
 	public Color32 upvoteColor, downvoteColor;
 
-	void Start()
+	public void Setup(LevelData data)
 	{
-
-	}
-
-	void Update()
-	{
-
+		mapTitle.text = data.name;
+		upvoteButton.onClick.AddListener(() =>
+		{
+			Debug.Log("Voted on " + data);
+		});
 	}
 }
