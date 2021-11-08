@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e555727fc46fe144690d49258b50c2b2, type: 3}
   m_Name: Underground_LevelData
   m_EditorClassIdentifier: 
-  name: Underground Level
+  id: cave
+  name: Underground
   description: This is a test level
   thumbnail: {fileID: 0}
   levelPrefab: {fileID: 5617304617871143158, guid: abbd4e41987f9d2449b2e69fe9348c0d, type: 3}
+  layout: {fileID: 11400000, guid: 505ab8097abec724699f1ac0300c6d1a, type: 2}

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e555727fc46fe144690d49258b50c2b2, type: 3}
   m_Name: Rooftops_LevelData
   m_EditorClassIdentifier: 
-  name: Rooftops Level
+  id: roof
+  name: Rooftops
   description: This is a test level
   thumbnail: {fileID: 0}
   levelPrefab: {fileID: 904300978596894645, guid: a7d00675ef546f34da90ad5c5c8fea45, type: 3}
+  layout: {fileID: 11400000, guid: d00b598912c7c474e968ecdbd44f107d, type: 2}

@@ -172,7 +172,7 @@ public class Referee
 	public void Init()
 	{
 		match = new Match();
-		match.level = "Test Level";
+		match.level = "city";
 		DataManager.levelLayouts.TryGetLevelLayout(match.level, out levelLayout);
 		match.state = Match.GameState.MapSelection;
 		match.round = 0;
