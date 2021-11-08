@@ -15,20 +15,20 @@ public class LevelLayoutList : ScriptableObject
 
         foreach(LevelLayout layout in layouts)
         {
-            layoutDict.Add(layout.name, layout);
+            layoutDict.Add(layout.id, layout);
         }
 
 
         hasBeenCompiled = true;
     }
 
-    public bool TryGetLevelLayout(string name, out LevelLayout levelLayout)
+    public bool TryGetLevelLayout(string id, out LevelLayout levelLayout)
     {
         levelLayout = null;
 
         if (hasBeenCompiled)
         {
-            layoutDict.TryGetValue(name, out levelLayout);
+            layoutDict.TryGetValue(id, out levelLayout);
         } 
         else
         {

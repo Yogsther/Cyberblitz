@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e555727fc46fe144690d49258b50c2b2, type: 3}
   m_Name: AbandonedCity_LevelData
   m_EditorClassIdentifier: 
-  name: Abandoned Level
+  id: city
+  name: Abandoned City
   description: This is a test level
   thumbnail: {fileID: 0}
   levelPrefab: {fileID: 3070884839923585934, guid: 00fd6dd11a23eff42affeb2bf4e0c4ea, type: 3}
