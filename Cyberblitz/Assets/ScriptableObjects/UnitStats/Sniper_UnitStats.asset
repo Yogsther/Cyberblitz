@@ -15,7 +15,7 @@ MonoBehaviour:
   unitType: 1
   maxHp: 2
   speed: 2
-  damage: 5
+  damage: 4
   firerate: 1
-  range: 30
-  spread: 20
+  range: 15
+  spread: 5

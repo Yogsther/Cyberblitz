@@ -2,8 +2,7 @@
 
 public abstract class BlockVisual : MonoBehaviour
 {
-    //public BlockID blockId;
-    public UnitID ownerUnitId;
+    public Block block;
 
     public abstract void UpdateVisuals();
 

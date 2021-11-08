@@ -15,7 +15,7 @@ public class TimelineVisualizationManager : MonoBehaviour
 	Unit selectedUnit;
 	Block selectedBlock;
 
-	List<BlockVisual> blockVisuals;
+	List<BlockVisual> blockVisuals = new List<BlockVisual>();
 
 	List<Waypoint> waypoints = new List<Waypoint>();
 
@@ -202,8 +202,7 @@ public class TimelineVisualizationManager : MonoBehaviour
 	void LoadMoveBlock(MoveBlock block)
 	{
 		MoveBlockVisual moveBlockVisual = Instantiate(moveBlockVisualPrefab, blockVisualsParent);
-		moveBlockVisual.ownerUnitId = block.ownerId;
-		moveBlockVisual.visualizedMoveBlock = block;
+		moveBlockVisual.block = block;
 
 		blockVisuals.Add(moveBlockVisual);
 
@@ -224,19 +223,22 @@ public class TimelineVisualizationManager : MonoBehaviour
 
 	void OnBlockUpdated(Block editedBlock = null)
 	{
-		ClearVisualElements();
+		//ClearVisualElements();
 		if (selectedUnit == null) return;
 		foreach (Block block in selectedUnit.timeline.blocks)
 		{
-			if (block.type == BlockType.Move)
-				LoadMoveBlock((MoveBlock)block);
-			if (block.type == BlockType.Guard)
+			if (!GetTrackedBlockIds().Contains(block.id))
 			{
-				GuardBlock guardBlock = (GuardBlock)block;
-				if (guardBlock.aimCone != null && guardBlock.aimCone.isSet)
+				if (block.type == BlockType.Move)
+					LoadMoveBlock((MoveBlock)block);
+				if (block.type == BlockType.Guard)
 				{
-					Vector2[] points = guardBlock.aimCone.GetConePoints(guardBlock.aimCone.direction);
-					CreateNewLockedCone(points);
+					GuardBlock guardBlock = (GuardBlock)block;
+					if (guardBlock.aimCone != null && guardBlock.aimCone.isSet)
+					{
+						Vector2[] points = guardBlock.aimCone.GetConePoints(guardBlock.aimCone.direction);
+						CreateNewLockedCone(points);
+					}
 				}
 			}
 		}
@@ -247,13 +249,25 @@ public class TimelineVisualizationManager : MonoBehaviour
         }
 	}
 
+	private List<BlockID> GetTrackedBlockIds()
+    {
+		List<BlockID> trackedIds = new List<BlockID>();
+
+		foreach(BlockVisual blockVisual in blockVisuals)
+        {
+			trackedIds.Add(blockVisual.block.id);
+        }
+
+		return trackedIds;
+    }
+
 	List<BlockVisual> GetUnitBlockVisuals(Unit unit)
     {
 		List<BlockVisual> unitBlockVisuals = new List<BlockVisual>();
 
 		foreach(BlockVisual blockVisual in blockVisuals)
         {
-			if (blockVisual.ownerUnitId == unit.id) unitBlockVisuals.Add(blockVisual);
+			if (blockVisual.block.ownerId == unit.id) unitBlockVisuals.Add(blockVisual);
         }
 
 		return unitBlockVisuals;

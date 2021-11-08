@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static PlayPage;
 
 public class AddUnitPanel : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class AddUnitPanel : MonoBehaviour
 	[HideInInspector]
 	public PlayPage playPage;
 	public GameObject addUnitButtonPrefab;
+
+	public Color nonInteractableColor;
 
 
 	public void ClosePanel()
@@ -30,18 +33,35 @@ public class AddUnitPanel : MonoBehaviour
 		{
 			Destroy(child.gameObject);
 		}
+
+		SelectedUnit[] selectedUnits = PlayPage.selectedUnits;
+
 		foreach (UnitType type in UnitDataManager.GetUnitTypes())
 		{
 			if (type != UnitType.Courier)
 			{
 				Button addUnitButton = Instantiate(addUnitButtonPrefab, addUnitButtons).GetComponent<Button>();
-				addUnitButton.GetComponentInChildren<TMP_Text>().text = type.ToString().ToUpper();
+
+				bool canBeSelected = true;
+				foreach (SelectedUnit selectedUnit in selectedUnits) if (selectedUnit != null && !selectedUnit.empty && selectedUnit.type == type) canBeSelected = false;
+				addUnitButton.interactable = canBeSelected;
+
+				TMP_Text buttonText = addUnitButton.GetComponentInChildren<TMP_Text>();
+				buttonText.text = type.ToString().ToUpper();
+				if (!canBeSelected) buttonText.faceColor = nonInteractableColor;
+
+
 				addUnitButton.onClick.AddListener(() =>
 				{
-					openPanelButtonText.text = "CHANGE";
-					playPage.SelectUnit(type, index);
-					ClosePanel();
+					if (canBeSelected)
+					{
+						openPanelButtonText.text = "CHANGE";
+						playPage.SelectUnit(type, index);
+						ClosePanel();
+					}
 				});
+
+
 			}
 
 		}

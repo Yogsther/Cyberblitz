@@ -1,6 +1,7 @@
 ﻿[System.Serializable]
 public abstract class Block
 {
+	public BlockID id = BlockID.New;
 	public BlockType type;
 	public float duration = 5f;
 	public UnitID ownerId = "[ID NOT SET]";
