@@ -10,7 +10,6 @@ public class MatchManager : MonoBehaviour
 	public static MatchManager Instance;
 	public LevelManager levelManager;
 
-
 	private void Awake()
 	{
 		if (Instance != null) Destroy(this);

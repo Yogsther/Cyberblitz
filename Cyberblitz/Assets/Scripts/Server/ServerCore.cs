@@ -131,11 +131,11 @@ public static class ServerCore
 	public static void Init()
 	{
 		// Listen to connection events if needed...
-		ServerConnection.On("PLAY_PLAYER", StartGameWIthPlayers);
+		ServerConnection.On("PLAY_PLAYER", StartGameWithPlayers);
 		ServerConnection.On("PLAY_BOT", StartGameWithBot);
 	}
 
-	static void StartGameWIthPlayers(NetworkPacket packet)
+	static void StartGameWithPlayers(NetworkPacket packet)
 	{
 		PlayRequest playRequest = packet.Parse<PlayRequest>();
 

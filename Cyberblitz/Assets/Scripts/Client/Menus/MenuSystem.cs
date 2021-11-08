@@ -34,6 +34,7 @@ public class MenuSystem : MonoBehaviour
 	public Button testButton;
 
 	public GameObject mainMenu;
+	public GameObject header;
 
 	public Transform subHeader;
 	public GameObject subHeaderButton;
@@ -80,6 +81,7 @@ public class MenuSystem : MonoBehaviour
 
 	public void LoadScreen(string name)
 	{
+		header.SetActive(true);
 		gameOverScreen.HideScreen();
 		DisplayGameUI(false);
 		SetMainMenuVisibility(true);

@@ -164,6 +164,11 @@ public class Referee
 		SendGameUpdate();
 	}
 
+	void StartGame()
+	{
+
+	}
+
 	public void Init()
 	{
 		match = new Match();

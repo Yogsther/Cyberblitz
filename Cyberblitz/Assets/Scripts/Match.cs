@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Match
 {
-	public enum GameState { Planning, Playback, Starting, Ending, WaitingForUnits }
+	public enum GameState { MapSelection, Planning, Playback, Starting, Ending, WaitingForUnits }
 
 	public MatchID id = MatchID.New;
 	public Player[] players;
