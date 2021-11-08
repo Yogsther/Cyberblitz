@@ -19837,6 +19837,7 @@ MonoBehaviour:
   postGameText: {fileID: 7453413454839382419}
   gameOverScreen: {fileID: 6624424855177504431}
   matchManager: {fileID: 0}
+  cinematicCamera: {fileID: 0}
 --- !u!1 &1937640726748169846
 GameObject:
   m_ObjectHideFlags: 0
@@ -23529,6 +23530,9 @@ MonoBehaviour:
   openPanelButton: {fileID: 3297340204211286208}
   playPage: {fileID: 0}
   addUnitButtonPrefab: {fileID: 8094614164485173870, guid: 7158a1d8df388894ba39b5b698e087d6, type: 3}
+  nonInteractableColor:
+    serializedVersion: 2
+    rgba: 4282795590
 --- !u!1 &4184719303790454387
 GameObject:
   m_ObjectHideFlags: 0
@@ -32056,6 +32060,9 @@ MonoBehaviour:
   openPanelButton: {fileID: 3700902585102918108}
   playPage: {fileID: 0}
   addUnitButtonPrefab: {fileID: 8094614164485173870, guid: 7158a1d8df388894ba39b5b698e087d6, type: 3}
+  nonInteractableColor:
+    serializedVersion: 2
+    rgba: 4282795590
 --- !u!1 &6562250545359485014
 GameObject:
   m_ObjectHideFlags: 0
@@ -33658,6 +33665,9 @@ MonoBehaviour:
   openPanelButton: {fileID: 510228513446969585}
   playPage: {fileID: 0}
   addUnitButtonPrefab: {fileID: 8094614164485173870, guid: 7158a1d8df388894ba39b5b698e087d6, type: 3}
+  nonInteractableColor:
+    serializedVersion: 2
+    rgba: 4282795590
 --- !u!1 &7322395090692550823
 GameObject:
   m_ObjectHideFlags: 0

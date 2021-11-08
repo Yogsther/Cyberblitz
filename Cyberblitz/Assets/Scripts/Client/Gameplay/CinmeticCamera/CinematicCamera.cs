@@ -31,7 +31,7 @@ public class CinematicCamera : MonoBehaviour
 	bool inPlaybackMode = false;
 
 	public Transform focusedUnit;
-	public Vector3 smoothFocusVal = Vector3.zero;
+	public Vector3 smoothFocusVal;
 
 	bool circling = false;
 	float circleCameraProgress = 0;
@@ -266,12 +266,6 @@ public class CinematicCamera : MonoBehaviour
 
 		path.Add(CreateWaypoint(camera.transform.position));
 
-		/*Vector3 flyinRight = flyinTarget + (unit.right * rightOfCharacterAmount) + (unit.up * flyinHeight);
-		path.Add(CreateWaypoint(flyinRight));*/
-
-		/*Vector3 flyBehind = flyinTarget + (unit.forward * -flyBehindCharacterAmount) + (unit.right * flyBehindRightOffset) + (unit.up * flyBehindHeight);
-		path.Add(CreateWaypoint(flyBehind));*/
-
 		Vector3 flyToUnit = flyinTarget;
 
 		path.Add(CreateWaypoint(flyToUnit));
@@ -406,10 +400,11 @@ public class CinematicCamera : MonoBehaviour
 		while (circling)
 		{
 
-			// PRODUCES ERROR??? 
 			Vector3 avgFocus = GetAverageFocus();
-			Debug.Log("Avg focus: " + avgFocus);
-			focusPoint.position = Vector3.SmoothDamp(focusPoint.position, avgFocus, ref smoothFocusVal, 1f);
+
+			Vector3 result = Vector3.SmoothDamp(focusPoint.position, avgFocus, ref smoothFocusVal, 1f);
+			if (!float.IsNaN(result.x))
+				focusPoint.position = result;
 
 			dolly.m_PathPosition += Time.deltaTime * dollySpeed;
 			circleCameraProgress = dolly.m_PathPosition;

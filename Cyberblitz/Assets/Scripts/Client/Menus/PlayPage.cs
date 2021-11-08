@@ -17,7 +17,7 @@ public class PlayPage : MonoBehaviour
 	public VisualEffect[] spawnEffects;
 
 
-	class SelectedUnit
+	public class SelectedUnit
 	{
 		public UnitType type;
 		public bool loaded = false;
@@ -28,7 +28,7 @@ public class PlayPage : MonoBehaviour
 		}
 	}
 
-	static SelectedUnit[] selectedUnits = new SelectedUnit[3];
+	public static SelectedUnit[] selectedUnits = new SelectedUnit[3];
 
 	private void Awake()
 	{

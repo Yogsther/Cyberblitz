@@ -49,7 +49,7 @@ public class UnitsPage : MonoBehaviour
 	void SetDots(float value, Transform dots)
 	{
 		for (int i = 0; i < dots.childCount; i++)
-			dots.GetChild(i).GetComponent<Image>().sprite = value >= i ? dotFilled : dotEmpty;
+			dots.GetChild(i).GetComponent<Image>().sprite = value >= (i + 1) ? dotFilled : dotEmpty;
 	}
 
 	public void Navigate(bool forward)
@@ -85,7 +85,7 @@ public class UnitsPage : MonoBehaviour
 
 		SetDots(selectedUnitData.stats.maxHp, health);
 		SetDots(selectedUnitData.stats.speed, speed);
-		SetDots(selectedUnitData.stats.damage, damage);
+		SetDots((selectedUnitData.stats.damage * selectedUnitData.stats.firerate), damage);
 
 	}
 
