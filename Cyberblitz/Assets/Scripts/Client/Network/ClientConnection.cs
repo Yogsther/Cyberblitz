@@ -55,7 +55,7 @@ public class ClientConnection
 				NetworkPacket disconnectMessage = new NetworkPacket("DISCONNECTED", "");
 				callstack.Add(disconnectMessage);
 
-				while (ws.IsAlive == false)
+				while (ws.IsAlive == false && Application.isPlaying)
 				{
 					Task.Delay(1000).Wait();
 					Debug.Log("Reconnecting");
