@@ -61,6 +61,7 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	public void SetDragging(bool dragging, bool centeredOffset = true)
 	{
+		SetSelected(true);
 		drag.dragging = dragging;
 		drag.dragOffset = new Vector2(rectTransform.rect.width / 2, rectTransform.rect.height / 2);
 	}
