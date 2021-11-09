@@ -61,11 +61,7 @@ public class AutoGridPathEditor : InGameEditor
 
                 if (!isBlocked && gridPath.target.point != point)
                 {
-                   
-
                     gridPath.target.point = point;
-
-
                     OnUpdated?.Invoke();
 
                 }

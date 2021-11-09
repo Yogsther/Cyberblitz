@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ public class ReadyButton : MonoBehaviour
 	float planningTime;
 	public float timer = 0f;
 	public Button readyButton;
-	public Text timerText;
+	public TMP_Text timerText;
 
 	public List<Slider> timerSliders;
 

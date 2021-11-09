@@ -19,7 +19,7 @@ public class MapVoteEntry : MonoBehaviour
 	public void Setup(LevelData data)
 	{
 		levelData = data;
-
+		mapImage.sprite = levelData.thumbnail;
 		mapTitle.text = data.name;
 		upvoteButton.onClick.AddListener(() =>
 		{

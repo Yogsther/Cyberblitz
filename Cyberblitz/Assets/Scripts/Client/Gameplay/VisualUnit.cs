@@ -18,6 +18,8 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
 	public Animator animator;
 
+	public SpriteRenderer overheadIconRenderer;
+
 	public bool isSelected;
 	public bool isSelectable;
 

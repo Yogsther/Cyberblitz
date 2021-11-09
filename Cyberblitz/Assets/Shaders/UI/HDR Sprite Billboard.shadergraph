@@ -11,9 +11,6 @@
         },
         {
             "m_Id": "c45573c6c2bb4b95b05edea835194c97"
-        },
-        {
-            "m_Id": "366dfd8312da4c62a6fc5e6551fbdad3"
         }
     ],
     "m_Keywords": [],
@@ -59,9 +56,6 @@
         },
         {
             "m_Id": "7575060a595b41a8b6d11841c3260f20"
-        },
-        {
-            "m_Id": "6d2fe23dc4664f1aa8afe597bad292e5"
         }
     ],
     "m_GroupDatas": [],
@@ -481,24 +475,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.BooleanShaderProperty",
-    "m_ObjectId": "366dfd8312da4c62a6fc5e6551fbdad3",
-    "m_Guid": {
-        "m_GuidSerialized": "bb2139e4-95f4-486e-a5a5-90d517e7da00"
-    },
-    "m_Name": "Billboard",
-    "m_DefaultReferenceName": "Boolean_366dfd8312da4c62a6fc5e6551fbdad3",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": false
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.SaturationNode",
     "m_ObjectId": "445c8f2a16b24547bd7abff89b475472",
     "m_Group": {
@@ -693,41 +669,6 @@
     },
     "m_Labels": [],
     "m_Space": 0
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
-    "m_ObjectId": "6d2fe23dc4664f1aa8afe597bad292e5",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "Property",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -392.0000305175781,
-            "y": 65.99998474121094,
-            "width": 125.0,
-            "height": 34.0
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "b96498855c8749c6b21051df1bfa7a9b"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_Property": {
-        "m_Id": "366dfd8312da4c62a6fc5e6551fbdad3"
-    }
 }
 
 {
@@ -1277,7 +1218,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1289.0,
@@ -1332,20 +1273,6 @@
     "m_SlotType": 0,
     "m_Hidden": false,
     "m_ShaderOutputName": "Predicate",
-    "m_StageCapability": 3,
-    "m_Value": false,
-    "m_DefaultValue": false
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.BooleanMaterialSlot",
-    "m_ObjectId": "b96498855c8749c6b21051df1bfa7a9b",
-    "m_Id": 0,
-    "m_DisplayName": "Billboard",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
     "m_Value": false,
     "m_DefaultValue": false
