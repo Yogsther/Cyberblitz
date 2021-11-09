@@ -6,6 +6,7 @@ public class TimelineVisualizationManager : MonoBehaviour
 
     public LineRenderer moveBlockLine, tempCone, lockedConePrefab;
     public VisualMoveBlock visualMoveBlockPrefab;
+    public VisualGuardBlock visualGuardBlockPrefab;
     public Waypoint waypointPrefab;
     public Camera camera;
     public Transform visualBlocksParent, waypointParent, lockedConesParent;
@@ -58,48 +59,6 @@ public class TimelineVisualizationManager : MonoBehaviour
         }
     }
 
-    private void CreateNewLockedCone(Vector2[] points)
-    {
-        LineRenderer line = Instantiate(lockedConePrefab, lockedConesParent);
-        DrawCone(points, line);
-    }
-
-    private void DrawCone(Vector2[] points, LineRenderer line)
-    {
-        float height = .2f;
-        int coneResolution = 15;
-
-        line.positionCount = points.Length + 1; // Add one for the closing point at the end
-        line.positionCount += coneResolution;
-
-        // Draw the first two positions, from unit position to the outer left point of the cone
-        for (int i = 0; i < 2; i++)
-        {
-            line.SetPosition(i, points[i].ToFlatVector3(height));
-        }
-
-        Vector2 startDiration = points[1] - points[0];
-        Vector2 endDirection = points[2] - points[0];
-        float startAngle = Mathf.Atan2(startDiration.y, startDiration.x);
-        float endAngle = Mathf.Atan2(endDirection.y, endDirection.x);
-
-        float coneDistance = Vector2.Distance(points[0], points[1]);
-
-        // Angle step is the resolution of the curved part of the cone
-        float angleStep = (endAngle - startAngle) / coneResolution;
-
-        for (int i = 0; i < coneResolution; i++)
-        {
-            float angle = Mathf.LerpAngle(startAngle * Mathf.Rad2Deg, endAngle * Mathf.Rad2Deg, i / (float)coneResolution) * Mathf.Deg2Rad;
-            float x = (Mathf.Cos(angle) * coneDistance) + points[0].x;
-            float y = (Mathf.Sin(angle) * coneDistance) + points[0].y;
-            line.SetPosition(i + 2, new Vector2(x, y).ToFlatVector3(height));
-        }
-
-        line.SetPosition(line.positionCount - 2, points[2].ToFlatVector3(height));
-        line.SetPosition(line.positionCount - 1, points[0].ToFlatVector3(height));
-    }
-
     private void LoadMoveBlock(MoveBlock block)
     {
         VisualMoveBlock visualMoveBlock = Instantiate(visualMoveBlockPrefab, visualBlocksParent);
@@ -108,6 +67,13 @@ public class TimelineVisualizationManager : MonoBehaviour
         visualMoveBlock.Init();
 
         visualBlocks.Add(visualMoveBlock);
+    }
+
+    private void LoadGuardBlock(GuardBlock block)
+    {
+        VisualGuardBlock visualGuardBlock = Instantiate(visualGuardBlockPrefab, visualBlocksParent);
+        visualGuardBlock.block = block;
+        visualBlocks.Add(visualGuardBlock);
     }
 
     private void OnUnitSelected(UnitID id)
@@ -161,12 +127,7 @@ public class TimelineVisualizationManager : MonoBehaviour
 
                     if (block is GuardBlock)
                     {
-                        GuardBlock guardBlock = (GuardBlock)block;
-                        if (guardBlock.aimCone != null && guardBlock.aimCone.isSet)
-                        {
-                            Vector2[] points = guardBlock.aimCone.GetConePoints(guardBlock.aimCone.direction);
-                            CreateNewLockedCone(points);
-                        }
+                        LoadGuardBlock(block as GuardBlock);
                     }
                 }
             }
@@ -202,35 +163,5 @@ public class TimelineVisualizationManager : MonoBehaviour
         }
 
         return unitVisualBlocks;
-    }
-
-    private void Update()
-    {
-        if (selectedBlock != null)
-        {
-            if (selectedBlock.type == BlockType.Guard)
-            {
-                GuardBlock guardBlock = (GuardBlock)selectedBlock;
-                float inputDirection = 0;
-                if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), out RaycastHit groundHit))
-                {
-
-                    Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();
-
-                    Vector2 toMouse = mouseHitPoint - guardBlock.aimCone.origin.point;
-
-                    inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
-
-                    Vector2[] points = guardBlock.aimCone.GetConePoints(inputDirection);
-                    DrawCone(points, tempCone);
-                }
-                else
-                {
-                    tempCone.positionCount = 0;
-                }
-            }
-
-        }
-
     }
 }
