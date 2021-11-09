@@ -16,6 +16,7 @@ public class MenuSystem : MonoBehaviour
 {
 	public GameObject gameUI;
 	public GameObject menuBackground;
+	public GameObject connectingScreen;
 
 	public LobbyCamera lobbyCamera;
 	public Camera planningCamera;
@@ -69,6 +70,9 @@ public class MenuSystem : MonoBehaviour
 			SetOutlineVisibility(true);
 			lobbyWorld.SetActive(false);
 		};
+
+		ClientConnection.OnConnected += () => { connectingScreen.SetActive(false); };
+		ClientConnection.OnDisconnected += () => { connectingScreen.SetActive(true); };
 
 		MatchManager.OnMatchUnloaded += () =>
 		{

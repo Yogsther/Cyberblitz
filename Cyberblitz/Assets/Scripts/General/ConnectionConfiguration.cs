@@ -22,6 +22,7 @@ public class ConnectionConfiguration : MonoBehaviour
 	public static ServerConnection serverConnection;
 	public static ClientConnection clientConnection;
 
+
 	private void Start()
 	{
 		// Load config.json and parse it to <Config>
@@ -40,6 +41,8 @@ public class ConnectionConfiguration : MonoBehaviour
 			MatchManager.Instance.Init();
 		}
 	}
+
+
 
 	private void Update()
 	{

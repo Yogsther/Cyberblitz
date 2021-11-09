@@ -4,18 +4,20 @@ using UnityEngine;
 using WebSocketSharp;
 using System;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 public class ClientConnection
 {
 
 	public Config config;
 
-	static WebSocket ws;
+	public static WebSocket ws;
 	public static NetworkEvents events = new NetworkEvents();
 
 	public List<NetworkPacket> callstack = new List<NetworkPacket>();
 
 	public static Action OnConnected;
+	public static Action OnDisconnected;
 	public static string version;
 
 
@@ -47,18 +49,30 @@ public class ClientConnection
 		ws.OnClose += (sender, e) =>
 		{
 			Debug.LogWarning("Disconnected!");
+			OnDisconnected?.Invoke();
+			Task.Run(() =>
+			{
+				Debug.Log("Running disconnect task");
+				while (ws.IsAlive == false)
+				{
+					Task.Delay(1000).Wait();
+					Debug.Log("Reconnecting");
+					ws.Connect();
+				}
+			});
 		};
 
 		On("CONNECTED", packet =>
 		{
 			Debug.Log($"Connected!");
+
 			OnConnected?.Invoke();
 			ClientLogin.Login();
 		});
 
 		ws.OnError += (sender, e) =>
 		{
-			Debug.Log(e.Message);
+			Debug.LogError(e.Message);
 		};
 
 		// Should be last in constructor
