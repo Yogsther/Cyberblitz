@@ -25,9 +25,9 @@ public class Unit
 	{
 		return hp <= 0;
 	}
-	public void SetPosition(int x, int y)
+	public void SetPosition(Vector2Int spawn)
 	{
-		position = new Position(x, y);
+		position = new Position(spawn.x, spawn.y);
 		//gridPosition = position.ToVector2Int;
 	}
 }

@@ -11,7 +11,6 @@ public class MatchManager : MonoBehaviour
 	public static MatchManager Instance;
 	public LevelManager levelManager;
 
-
 	private void Awake()
 	{
 		if (Instance != null) Destroy(this);
@@ -22,15 +21,23 @@ public class MatchManager : MonoBehaviour
 
 	public static Action<Match> OnMatchStart;
 	public static Action<Match> OnMatchUpdate;
+	public static Action OnPlanningStart;
 	public static Action OnPlanningEnd;
 	public static Action<Match, string> OnMatchEnd;
 	public static Action OnMatchUnloaded;
+	public static Action<MapVotes> OnMapVote;
 
 	public void Init()
 	{
 		ClientConnection.On("MATCH_UPDATE", MatchUpdate);
 		ClientConnection.On("SEND_UNITS", SendUnits);
 		ClientConnection.On("GAME_TERMINATED", OnGameEnd);
+
+		ClientConnection.On("DISCONNECTED", packet =>
+		{
+			if (match != null) UnloadMatch();
+			ClientConnection.OnDisconnected?.Invoke();
+		});
 
 		TurnPlayback.OnPlaybackFinished += SignalReady;
 		LevelManager.OnLevelLoaded += (level) => SignalReady();
@@ -60,6 +67,7 @@ public class MatchManager : MonoBehaviour
 		{
 			case Match.GameState.Planning:
 				QueueSystem.Call("MATCH_PLANNING");
+				OnPlanningStart?.Invoke();
 				break;
 			case Match.GameState.Playback:
 				Debug.Log("Stating match playback");
@@ -67,6 +75,9 @@ public class MatchManager : MonoBehaviour
 				break;
 			case Match.GameState.Starting:
 				MatchStart();
+				break;
+			case Match.GameState.MapVote:
+				OnMapVote(match.votes);
 				break;
 		}
 
@@ -78,7 +89,6 @@ public class MatchManager : MonoBehaviour
 		OnPlanningEnd?.Invoke();
 		ClientConnection.Emit("UNITS", match);
 	}
-
 
 	void MatchStart()
 	{

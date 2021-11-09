@@ -60,16 +60,16 @@ public class LevelManager : MonoBehaviour
 		levelDataDict = new Dictionary<string, LevelData>();
 		foreach (LevelData levelData in levelDataList.levelDatas)
 		{
-			levelDataDict.Add(levelData.name, levelData);
+			levelDataDict.Add(levelData.id, levelData);
 		}
 	}
 
-	public void LoadLevel(string name)
+	public void LoadLevel(string id)
 	{
 		UnloadLevel();
 
-		Debug.Log($"[LevelManager] - Loading level: {name}");
-		if (levelDataDict.TryGetValue(name, out LevelData levelData))
+		Debug.Log($"[LevelManager] - Loading level: {id}");
+		if (levelDataDict.TryGetValue(id, out LevelData levelData))
 		{
 			currentLevelData = levelData;
 			currentLevel = Instantiate(levelData.levelPrefab, levelContainer);
@@ -79,7 +79,7 @@ public class LevelManager : MonoBehaviour
 			OnLevelLoaded?.Invoke(currentLevel);
 		} else
 		{
-			Debug.LogWarning($"[LevelManager] - Could not find a LevelData with the name \"{name}\"");
+			Debug.LogWarning($"[LevelManager] - Could not find a LevelData with the id \"{id}\"");
 		}
 	}
 

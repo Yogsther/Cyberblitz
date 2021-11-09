@@ -11,10 +11,11 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 	private TimelineEditor editor;
 
 	public bool deletable = false;
+	public bool mouseOver = false;
 
 	public RectTransform rectTransform, resizeHandleRect;
 
-	public Image blockBackgroundImage, iconImage, selectionImage, resizeHandleImage;
+	public Image blockBackgroundImage, iconImage, resizeHandleImage, outline;
 	public TMP_Text blockDurationText;
 
 	public Block block;
@@ -50,8 +51,8 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 		this.template = template;
 
 		blockBackgroundImage.color = template.color;
-		selectionImage.color = template.color;
-
+		/*selectionImage.color = template.color;
+*/
 		iconImage.sprite = template.icon;
 
 		SetSelected(false);
@@ -61,6 +62,7 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	public void SetDragging(bool dragging, bool centeredOffset = true)
 	{
+		SetSelected(true);
 		drag.dragging = dragging;
 		drag.dragOffset = new Vector2(rectTransform.rect.width / 2, rectTransform.rect.height / 2);
 	}
@@ -240,11 +242,13 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
+		mouseOver = true;
 		SetResizeHandleVibility(true);
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
+		mouseOver = false;
 		SetResizeHandleVibility(false);
 	}
 
@@ -265,7 +269,13 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	public void SetSelected(bool selected)
 	{
-		selectionImage.enabled = selected;
+
+		Color32 darkColor = Color.Lerp(template.color, Color.black, .5f);
+		blockBackgroundImage.color = selected ? template.color : darkColor;
+
+		/*outline.enabled = selected;*/
+		/*outline.color = darkColor;*/
+		/*selectionImage.enabled = selected;*/
 	}
 
 	private void SetResizeHandleVisible(bool visible)

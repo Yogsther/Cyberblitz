@@ -27,7 +27,7 @@ public class UnitPortrait : MonoBehaviour
 		roleIcon.enabled = type != UnitType.Courier;
 
 		UnitData unitData = UnitDataManager.GetUnitDataByType(type);
-		Debug.Log((unitData == null) + "; UNIT DATA IS NULL?  <<<");
+
 		roleIcon.sprite = unitData.roleIcon;
 		unitImage.sprite = unitData.portrait;
 		SetMaxHp(unitData.stats.maxHp);

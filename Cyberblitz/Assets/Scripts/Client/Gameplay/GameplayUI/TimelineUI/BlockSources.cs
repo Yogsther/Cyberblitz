@@ -22,13 +22,15 @@ public class BlockSources : MonoBehaviour
 	{
 		this.editor = editor;
 		DeleteButtons();
-		foreach (KeyValuePair<BlockType, BlockData> data in BlockDataLoader.blockDatas)
+
+		int hotkey = 1;
+		foreach (BlockData blockData in BlockDataLoader.blockDatas.Values)
 		{
-			BlockData blockData = data.Value;
 			if (blockData.showInToolbar)
 			{
-				BlockSource blockSource = CreateSourceButton(blockData);
+				BlockSource blockSource = CreateSourceButton(blockData, hotkey);
 				blockSources.Add(blockSource);
+				hotkey++;
 			}
 		}
 	}
@@ -40,10 +42,10 @@ public class BlockSources : MonoBehaviour
 		field.enabled = visible;
 	}
 
-	BlockSource CreateSourceButton(BlockData blockData)
+	BlockSource CreateSourceButton(BlockData blockData, int hotkey)
 	{
 		BlockSource blockSource = Instantiate(blockSourcePrefab, transform);
-		blockSource.InitiateFromBlockData(blockData, editor);
+		blockSource.InitiateFromBlockData(blockData, editor, hotkey);
 		return blockSource;
 	}
 

@@ -16,6 +16,7 @@ public class MenuSystem : MonoBehaviour
 {
 	public GameObject gameUI;
 	public GameObject menuBackground;
+	public GameObject connectingScreen;
 
 	public LobbyCamera lobbyCamera;
 	public Camera planningCamera;
@@ -26,7 +27,7 @@ public class MenuSystem : MonoBehaviour
 	string currentlyLoadingScreen = null;
 
 	[HideInInspector]
-	MenuScreen selectedMenuScreen = null;
+	public MenuScreen selectedMenuScreen = null;
 	public MenuScreen[] menuScreens;
 
 	public static Action<string> OnScreenLoaded;
@@ -34,6 +35,7 @@ public class MenuSystem : MonoBehaviour
 	public Button testButton;
 
 	public GameObject mainMenu;
+	public GameObject header;
 
 	public Transform subHeader;
 	public GameObject subHeaderButton;
@@ -59,6 +61,8 @@ public class MenuSystem : MonoBehaviour
 
 	private void Awake()
 	{
+		selectedMenuScreen = null;
+
 		MatchManager.OnMatchStart += match =>
 		{
 			DisplayGameUI(true);
@@ -67,11 +71,20 @@ public class MenuSystem : MonoBehaviour
 			lobbyWorld.SetActive(false);
 		};
 
+		ClientConnection.OnConnected += () => { connectingScreen.SetActive(false); };
+		ClientConnection.OnDisconnected += () =>
+		{
+			connectingScreen.SetActive(true);
+			LoadScreen("play");
+		};
+
 		MatchManager.OnMatchUnloaded += () =>
 		{
 			LoadScreen("play");
 		};
 	}
+
+
 
 	public void DisplayGameUI(bool show)
 	{
@@ -80,6 +93,7 @@ public class MenuSystem : MonoBehaviour
 
 	public void LoadScreen(string name)
 	{
+		header.SetActive(true);
 		gameOverScreen.HideScreen();
 		DisplayGameUI(false);
 		SetMainMenuVisibility(true);
@@ -123,7 +137,7 @@ public class MenuSystem : MonoBehaviour
 		if (!menuBackground.activeSelf) menuBackground.SetActive(true);
 
 		ClearSubHeader();
-		if (selectedMenuScreen != null) selectedMenuScreen.screen.SetActive(false);
+		if (selectedMenuScreen != null && selectedMenuScreen.screen != null) selectedMenuScreen.screen.SetActive(false);
 		selectedMenuScreen = GetScreen(name);
 		selectedMenuScreen.screen.SetActive(true);
 		if (OnPageLoad.ContainsKey(name)) OnPageLoad[name]();
@@ -149,6 +163,7 @@ public class MenuSystem : MonoBehaviour
 
 	private void Start()
 	{
+		foreach (MenuScreen menuScreen in menuScreens) menuScreen.screen.SetActive(false);
 		LoadScreen("play");
 	}
 

@@ -1,30 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ReadyButton : MonoBehaviour
 {
-
+	public GameObject timerGroup;
+	float planningTime;
 	public float timer = 0f;
 	public Button readyButton;
-	public Text stateText, timerText;
+	public TMP_Text timerText;
+
+	public List<Slider> timerSliders;
 
 	void Awake()
 	{
 		MatchManager.OnMatchUpdate += OnMatchUpdate;
 		readyButton.onClick.AddListener(() => ReadyUp());
+
+		MatchManager.OnPlanningStart += OnPlanningStart;
+		MatchManager.OnPlanningEnd += OnPlanningEnd;
 	}
 
 	void OnMatchUpdate(Match match)
 	{
-		timerText.text = "--:--";
+		timerText.text = "--";
 		if (match.state == Match.GameState.Planning)
 		{
 			timer = match.rules.planningTime;
 		}
+		planningTime = match.rules.planningTime;
 		readyButton.interactable = match.state == Match.GameState.Planning;
-		stateText.text = match.state.ToString().ToUpper();
+	}
+
+	void OnPlanningStart()
+	{
+		timerGroup.SetActive(true);
+	}
+
+	void OnPlanningEnd()
+	{
+		timerGroup.SetActive(false);
 	}
 
 	void ReadyUp()
@@ -33,7 +50,6 @@ public class ReadyButton : MonoBehaviour
 
 		if (MatchManager.match.state == Match.GameState.Planning)
 		{
-			stateText.text = "READY";
 			readyButton.interactable = false;
 			MatchManager.SignalReady();
 		}
@@ -53,7 +69,9 @@ public class ReadyButton : MonoBehaviour
 						timer = 0;
 						MatchManager.SignalReady();
 					}
-					timerText.text = TimeFormat.TimeToString(timer) + "S";
+					timerText.text = Mathf.Floor(timer) + "S";
+					foreach (Slider slider in timerSliders)
+						slider.value = timer / planningTime;
 				}
 
 			}

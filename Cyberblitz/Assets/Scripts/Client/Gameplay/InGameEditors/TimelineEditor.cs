@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class TimelineEditor : InGameEditor
 {
@@ -10,6 +11,7 @@ public class TimelineEditor : InGameEditor
 
 	public float TOTAL_TIMELINE_DURATION = 10f;
 	public float freeTimeInTimeline;
+	public float SCROLL_SENSITIVITY;
 
 	Dictionary<BlockType, Type> classFinder = new Dictionary<BlockType, Type> {
 			{ BlockType.Move, typeof(MoveBlock) },
@@ -24,12 +26,13 @@ public class TimelineEditor : InGameEditor
 	float TIMELINE_WIDTH;
 
 	[HideInInspector]
-	public float BLOCK_ELEMENT_PADDING = 10f; // Pixels
+	public readonly float BLOCK_ELEMENT_PADDING = 5f; // Pixels
 
 	public BlockElement blockElementPrefab;
 	List<BlockElement> blockElements = new List<BlockElement>();
 
 	public RectTransform timelineField;
+	public GameObject timelineGroup;
 	public BlockSources blockSources;
 
 	public Canvas canvas;
@@ -71,10 +74,24 @@ public class TimelineEditor : InGameEditor
 		return selectedUnit.timeline;
 	}
 
+	private void Update()
+	{
+		float scroll = Mouse.current.scroll.ReadValue().y;
+		if (scroll != 0)
+		{
+			foreach (BlockElement blockElement in blockElements)
+			{
+				if (blockElement.mouseOver)
+				{
+					ResizeBlock(blockElement.block, blockElement.block.duration + scroll * SCROLL_SENSITIVITY);
+				}
+			}
+		}
+	}
 
 	void SetTimelineVisibility(bool visibility)
 	{
-		timelineField.gameObject.SetActive(visibility);
+		timelineGroup.SetActive(visibility);
 		blockSources.SetVisibility(visibility);
 	}
 
@@ -134,8 +151,17 @@ public class TimelineEditor : InGameEditor
 
 	public void ResizeBlock(Block block, float newDuration)
 	{
-		block.duration = newDuration;
-		BlockUpdate();
+		BlockData template = BlockDataLoader.GetBlockData(block.type);
+		if (template.resizable)
+		{
+			float timeLeft = freeTimeInTimeline + block.duration;
+			block.duration = newDuration;
+			if (block.duration > timeLeft) block.duration = timeLeft;
+			if (block.duration < template.minLength) block.duration = template.minLength;
+
+			BlockUpdate();
+		}
+
 	}
 
 	public BlockElement CreateBlockElement(BlockData template)
@@ -288,7 +314,7 @@ public class TimelineEditor : InGameEditor
 
 	public void ArrengeUITimeline()
 	{
-		float x = BLOCK_ELEMENT_PADDING;
+		float x = 0;
 		freeTimeInTimeline = TOTAL_TIMELINE_DURATION;
 
 		BlockElement lastMovementBlock = null;
@@ -300,7 +326,7 @@ public class TimelineEditor : InGameEditor
 			blockElement.block.timelineIndex = i;
 			blockElement.SetPhysicalPositionInTimeline(x);
 			blockElement.UpdatePhysicalProperties();
-			x += blockElement.GetWidth() + BLOCK_ELEMENT_PADDING;
+			if (i != blockElements.Count - 1) x += blockElement.GetWidth() + BLOCK_ELEMENT_PADDING;
 
 			if (blockElement.block.type == BlockType.Move)
 			{
