@@ -37,7 +37,7 @@ public class PlayPage : MonoBehaviour
 		{
 			foreach (SelectedUnit selectedUnit in selectedUnits)
 			{
-				selectedUnit.loaded = false;
+				if (selectedUnit != null) selectedUnit.loaded = false;
 			}
 			LoadModels();
 		};

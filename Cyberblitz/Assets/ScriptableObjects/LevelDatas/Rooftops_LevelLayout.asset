@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c33803a5d640c409297acf4c1d90bd, type: 3}
   m_Name: Rooftops_LevelLayout
   m_EditorClassIdentifier: 
-  id: roof
+  id: ROOF
   name: Rooftops
   levelGridSize: {x: 25, y: 23}
   spawnAreas:

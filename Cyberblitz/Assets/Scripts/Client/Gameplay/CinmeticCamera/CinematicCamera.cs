@@ -81,6 +81,7 @@ public class CinematicCamera : MonoBehaviour
 		{
 			planningCamera.enabled = false;
 			camera.enabled = false;
+			circling = false;
 		};
 	}
 
@@ -193,12 +194,12 @@ public class CinematicCamera : MonoBehaviour
 
 					activeActionActor = visualUnit.id;
 					OnActionCameraIn?.Invoke(activeActionActor);
-					Debug.Log("Starting action clip: " + time);
+
 					CreateZoomPath(visualUnit.transform);
 				}
 				if (time >= clip.end && !clip.hasEnded && clip.canRun)
 				{
-					Debug.Log("Stopping action clip: " + time);
+
 					clip.hasEnded = true;
 					StartCircling();
 				}
@@ -364,10 +365,11 @@ public class CinematicCamera : MonoBehaviour
 			for (int i = 0; i < focusGroup.Count; i++)
 			{
 				UnitFocus unitFocus = focusGroup[i];
+
 				if (unitFocus.duration < timePassed) focusGroup.RemoveAt(i);
 				else avgFocus += unitFocus.unitModel.position;
 			}
-			avgFocus /= focusGroup.Count;
+			if (focusGroup.Count > 1) avgFocus /= focusGroup.Count;
 
 		} else
 		{

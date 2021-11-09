@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c33803a5d640c409297acf4c1d90bd, type: 3}
   m_Name: AbandonedCity_LevelLayout
   m_EditorClassIdentifier: 
-  id: city
+  id: CITY
   name: Abandoned City
   levelGridSize: {x: 27, y: 21}
   spawnAreas:

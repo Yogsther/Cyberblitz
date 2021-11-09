@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e555727fc46fe144690d49258b50c2b2, type: 3}
   m_Name: Underground_LevelData
   m_EditorClassIdentifier: 
-  id: cave
+  id: CAVE
   name: Underground
   description: This is a test level
   thumbnail: {fileID: 0}
