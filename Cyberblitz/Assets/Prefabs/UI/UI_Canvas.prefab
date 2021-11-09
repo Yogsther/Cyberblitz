@@ -23537,7 +23537,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -68}
-  m_SizeDelta: {x: 1765.7439, y: 477.4612}
+  m_SizeDelta: {x: 1836.5542, y: 496.6085}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5202158963605767254
 CanvasRenderer:
@@ -23667,7 +23667,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: a7e08772683a3614fa5a6bab121a8b09, type: 3}
     m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
@@ -29214,7 +29214,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 61, y: 61}
-  m_Spacing: {x: 10, y: 0}
+  m_Spacing: {x: 20, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &5326204956634792116
@@ -39790,6 +39790,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1930913189142706119, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1930913189142706119, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 4897154417564408535, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
       propertyPath: m_Name
       value: BlockSource (1)
@@ -39891,6 +39899,18 @@ PrefabInstance:
     - target: {fileID: 863233595424369396, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1930913189142706119, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1930913189142706119, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1930913189142706119, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 4897154417564408535, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
       propertyPath: m_Name
@@ -40095,6 +40115,14 @@ PrefabInstance:
     - target: {fileID: 863233595424369396, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1930913189142706119, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1930913189142706119, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 4897154417564408535, guid: b4e68b027d0d89d4097d557c8ea00d2c, type: 3}
       propertyPath: m_Name
