@@ -14,7 +14,7 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	public RectTransform rectTransform, resizeHandleRect;
 
-	public Image blockBackgroundImage, iconImage, selectionImage, resizeHandleImage;
+	public Image blockBackgroundImage, iconImage, resizeHandleImage;
 	public TMP_Text blockDurationText;
 
 	public Block block;
@@ -50,8 +50,8 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 		this.template = template;
 
 		blockBackgroundImage.color = template.color;
-		selectionImage.color = template.color;
-
+		/*selectionImage.color = template.color;
+*/
 		iconImage.sprite = template.icon;
 
 		SetSelected(false);
@@ -265,7 +265,7 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	public void SetSelected(bool selected)
 	{
-		selectionImage.enabled = selected;
+		/*selectionImage.enabled = selected;*/
 	}
 
 	private void SetResizeHandleVisible(bool visible)

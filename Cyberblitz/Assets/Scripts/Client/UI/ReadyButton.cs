@@ -8,7 +8,7 @@ public class ReadyButton : MonoBehaviour
 
 	public float timer = 0f;
 	public Button readyButton;
-	public Text stateText, timerText;
+	public Text timerText;
 
 	void Awake()
 	{
@@ -24,7 +24,7 @@ public class ReadyButton : MonoBehaviour
 			timer = match.rules.planningTime;
 		}
 		readyButton.interactable = match.state == Match.GameState.Planning;
-		stateText.text = match.state.ToString().ToUpper();
+
 	}
 
 	void ReadyUp()
@@ -33,7 +33,6 @@ public class ReadyButton : MonoBehaviour
 
 		if (MatchManager.match.state == Match.GameState.Planning)
 		{
-			stateText.text = "READY";
 			readyButton.interactable = false;
 			MatchManager.SignalReady();
 		}

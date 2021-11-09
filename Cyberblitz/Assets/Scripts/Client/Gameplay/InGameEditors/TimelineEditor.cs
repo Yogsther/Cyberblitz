@@ -24,7 +24,7 @@ public class TimelineEditor : InGameEditor
 	float TIMELINE_WIDTH;
 
 	[HideInInspector]
-	public float BLOCK_ELEMENT_PADDING = 10f; // Pixels
+	public readonly float BLOCK_ELEMENT_PADDING = 5f; // Pixels
 
 	public BlockElement blockElementPrefab;
 	List<BlockElement> blockElements = new List<BlockElement>();
@@ -47,6 +47,7 @@ public class TimelineEditor : InGameEditor
 
 	private void Start()
 	{
+
 		TIMELINE_WIDTH = timelineField.rect.width - BLOCK_ELEMENT_PADDING;
 		TIMELINE_PIXELS_TO_SECONDS = TIMELINE_WIDTH / TIMELINE_DURATION;
 
