@@ -40,7 +40,7 @@ public class MapVotePage : MonoBehaviour
 				ReadyUp();
 			}
 
-			countdown.text = Mathf.Floor(timeLeft) + "s";
+			countdown.text = Mathf.Floor(timeLeft).ToString();
 		}
 	}
 

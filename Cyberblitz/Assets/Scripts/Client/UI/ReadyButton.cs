@@ -64,7 +64,7 @@ public class ReadyButton : MonoBehaviour
 						timer = 0;
 						MatchManager.SignalReady();
 					}
-					timerText.text = Mathf.Floor(timer) + "S";
+					timerText.text = Mathf.Floor(timer).ToString();
 				}
 
 			}
