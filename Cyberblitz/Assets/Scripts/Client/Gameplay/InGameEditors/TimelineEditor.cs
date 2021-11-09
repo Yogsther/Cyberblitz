@@ -48,7 +48,6 @@ public class TimelineEditor : InGameEditor
 
 	private void Start()
 	{
-
 		TIMELINE_WIDTH = timelineField.rect.width - BLOCK_ELEMENT_PADDING;
 		TIMELINE_PIXELS_TO_SECONDS = TIMELINE_WIDTH / TIMELINE_DURATION;
 
@@ -63,7 +62,6 @@ public class TimelineEditor : InGameEditor
 		MatchManager.OnPlanningEnd += OnPlanningEnd;
 	}
 
-
 	void OnPlanningEnd()
 	{
 		DeselectUnit();
@@ -73,7 +71,6 @@ public class TimelineEditor : InGameEditor
 	{
 		return selectedUnit.timeline;
 	}
-
 
 	void SetTimelineVisibility(bool visibility)
 	{
