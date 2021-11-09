@@ -101,10 +101,13 @@ public class VisualUnitManager : MonoBehaviour
 					visualUnitInstance.friendly = friendlyPlayer;
 					GameObject model = Instantiate(unitData.model, visualUnitInstance.mainModel);
 					model.transform.localPosition = Vector3.zero;
-
 					model.transform.localRotation = Quaternion.AngleAxis(visualUnitInstance.rotationOffset, Vector3.down);
 
 					model.layer = 7;
+
+					visualUnitInstance.overheadIconRenderer.sprite = unitData.roleIcon;
+					if (unit.isMVP) visualUnitInstance.overheadIconRenderer.gameObject.SetActive(true);
+					//visualUnitInstance.overheadIconRenderer.color = 
 
 					visualUnitInstance.isSelectable = false;
 

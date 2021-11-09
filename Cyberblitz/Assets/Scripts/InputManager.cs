@@ -78,14 +78,16 @@ public class InputManager : MonoBehaviour
 
 			foreach (RaycastHit hit in pointerHitInfos)
 			{
-
-				bool hitObjectIsInLayerMask = layerMask == (layerMask | (1 << hit.collider.gameObject.layer));
-
-				if (hitObjectIsInLayerMask)
+				if (hit.transform != null)
 				{
-					raycastHit = hit;
+					bool hitObjectIsInLayerMask = layerMask == (layerMask | (1 << hit.transform.gameObject.layer));
 
-					return true;
+					if (hitObjectIsInLayerMask)
+					{
+						raycastHit = hit;
+
+						return true;
+					}
 				}
 			}
 		}

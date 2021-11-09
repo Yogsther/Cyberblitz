@@ -1,216 +1,167 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class TimelineVisualizationManager : MonoBehaviour
 {
 
-	public LineRenderer moveBlockLine, tempCone, lockedConePrefab;
-	public Waypoint waypointPrefab;
-	public Camera camera;
-	public Transform waypointParent, lockedConesParent;
+    public LineRenderer moveBlockLine, tempCone, lockedConePrefab;
+    public VisualMoveBlock visualMoveBlockPrefab;
+    public VisualGuardBlock visualGuardBlockPrefab;
+    public Waypoint waypointPrefab;
+    public Camera camera;
+    public Transform visualBlocksParent, waypointParent, lockedConesParent;
+    private Unit selectedUnit;
+    private Block selectedBlock;
+    private readonly List<VisualBlock> visualBlocks = new List<VisualBlock>();
+    private readonly List<Waypoint> waypoints = new List<Waypoint>();
 
-	Unit selectedUnit;
-	Block selectedBlock;
+    private void Awake()
+    {
+        TimelineEditor.OnBlockUpdate += OnBlockUpdated;
+        TimelineEditor.OnUnitSelected += OnUnitSelected;
+        TimelineEditor.OnBlockSelected += OnBlockSelected;
+        TimelineEditor.OnBlockDeselected += OnBlockDeselected;
+        MatchManager.OnMatchUpdate += OnMatchUpdate;
+    }
 
-	List<Waypoint> waypoints = new List<Waypoint>();
+    private void OnBlockDeselected()
+    {
+        selectedBlock = null;
+        OnBlockUpdated();
+    }
 
-	void Awake()
-	{
-		TimelineEditor.OnBlockUpdate += OnBlockUpdated;
-		TimelineEditor.OnUnitSelected += OnUnitSelected;
-		TimelineEditor.OnBlockSelected += OnBlockSelected;
-		TimelineEditor.OnBlockDeselected += OnBlockDeselected;
-		MatchManager.OnMatchUpdate += OnMatchUpdate;
-	}
+    private void OnMatchUpdate(Match match)
+    {
+        if (match.state != Match.GameState.Planning)
+        {
+            selectedBlock = null;
+            ClearVisualElements();
+        }
+    }
 
-	void OnBlockDeselected()
-	{
-		selectedBlock = null;
-		OnBlockUpdated();
-	}
+    private void ClearVisualElements()
+    {
+        tempCone.positionCount = 0;
+        //moveBlockLine.positionCount = 0;
+        ClearTransform(visualBlocksParent);
+        ClearTransform(waypointParent);
+        ClearTransform(lockedConesParent);
 
-	void OnMatchUpdate(Match match)
-	{
-		if (match.state != Match.GameState.Planning)
-		{
-			selectedBlock = null;
-			ClearVisualElements();
-		}
-	}
+        visualBlocks.Clear();
+        waypoints.Clear();
+    }
 
-	void CreateNewWaypoint(MoveBlock block)
-	{
-		if (block.movementPath == null) return;
-		Waypoint waypoint = Instantiate(waypointPrefab, waypointParent);
-		waypoint.transform.position = block.movementPath.target.point.ToFlatVector3(waypoint.transform.position.y);
-		waypoint.index = waypoints.Count;
-		waypoint.block = block;
-		waypoint.SetCamera(camera);
-		waypoint.SetSelected(selectedBlock == block);
+    private void ClearTransform(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 
-		waypoints.Add(waypoint);
-	}
+    private void LoadMoveBlock(MoveBlock block)
+    {
+        VisualMoveBlock visualMoveBlock = Instantiate(visualMoveBlockPrefab, visualBlocksParent);
+        visualMoveBlock.block = block;
 
-	void DrawPath(Unit unit)
-	{
-		Timeline timeline = unit.timeline;
-		float lineHeight = 0.21f;
+        visualMoveBlock.Init();
 
-		// Set the first position to current unit position
-		moveBlockLine.positionCount = 1;
-		moveBlockLine.SetPosition(0, unit.position.ToVector2().ToFlatVector3(lineHeight));
+        visualBlocks.Add(visualMoveBlock);
+    }
 
-		foreach (Block block in timeline.blocks)
-		{
-			if (block.type == BlockType.Move)
-			{
-				MoveBlock moveBlock = (MoveBlock)block;
-				if (moveBlock.movementPath != null)
-				{
-					foreach (Vector2Int point in moveBlock.movementPath.GetPoints())
-					{
-						// Add line point for movement block target
-						moveBlockLine.positionCount++;
-						moveBlockLine.SetPosition(moveBlockLine.positionCount - 1, point.ToFlatVector3(lineHeight));
-					}
-				}
+    private void LoadGuardBlock(GuardBlock block)
+    {
+        VisualGuardBlock visualGuardBlock = Instantiate(visualGuardBlockPrefab, visualBlocksParent);
+        visualGuardBlock.block = block;
+        visualBlocks.Add(visualGuardBlock);
+    }
 
+    private void OnUnitSelected(UnitID id)
+    {
+        selectedUnit = MatchManager.GetUnit(id);
+        OnBlockUpdated();
+    }
 
-			}
-		}
+    private void OnBlockSelected(Block block)
+    {
+        selectedBlock = block;
+        OnBlockUpdated(block);
 
-		// If no movementblocks were added, remove the line.
-		if (moveBlockLine.positionCount == 1) moveBlockLine.positionCount = 0;
-	}
+        foreach (VisualBlock visualBlock in visualBlocks)
+        {
+            bool isSelectedBlock = visualBlock.block == selectedBlock;
 
-	void ClearVisualElements()
-	{
-		tempCone.positionCount = 0;
-		moveBlockLine.positionCount = 0;
+            visualBlock.SetSelected(isSelectedBlock);
+        }
+    }
 
-		ClearTransform(waypointParent);
-		ClearTransform(lockedConesParent);
+    private void OnBlockUpdated(Block editedBlock = null)
+    {
 
-		waypoints.Clear();
-	}
+        RefreshVisualBlocks();
 
-	void ClearTransform(Transform parent)
-	{
-		foreach (Transform child in parent)
-		{
-			Destroy(child.gameObject);
-		}
-	}
+        foreach (VisualBlock visualBlock in GetUnitVisualBlocks(selectedUnit))
+        {
+            visualBlock.UpdateVisuals();
+        }
+    }
 
-	void CreateNewLockedCone(Vector2[] points)
-	{
-		LineRenderer line = Instantiate(lockedConePrefab, lockedConesParent);
-		DrawCone(points, line);
-	}
+    private void RefreshVisualBlocks()
+    {
 
-	void DrawCone(Vector2[] points, LineRenderer line)
-	{
-		float height = .2f;
-		int coneResolution = 15;
-
-		line.positionCount = points.Length + 1; // Add one for the closing point at the end
-		line.positionCount += coneResolution;
-
-		// Draw the first two positions, from unit position to the outer left point of the cone
-		for (int i = 0; i < 2; i++)
-		{
-			line.SetPosition(i, points[i].ToFlatVector3(height));
-		}
-
-		Vector2 startDiration = points[1] - points[0];
-		Vector2 endDirection = points[2] - points[0];
-		float startAngle = Mathf.Atan2(startDiration.y, startDiration.x);
-		float endAngle = Mathf.Atan2(endDirection.y, endDirection.x);
-
-		float coneDistance = Vector2.Distance(points[0], points[1]);
-
-		// Angle step is the resolution of the curved part of the cone
-		float angleStep = (endAngle - startAngle) / coneResolution;
-
-		for (int i = 0; i < coneResolution; i++)
-		{
-			float angle = Mathf.LerpAngle(startAngle * Mathf.Rad2Deg, endAngle * Mathf.Rad2Deg, (float)i / (float)coneResolution) * Mathf.Deg2Rad;
-			float x = (Mathf.Cos(angle) * coneDistance) + points[0].x;
-			float y = (Mathf.Sin(angle) * coneDistance) + points[0].y;
-			line.SetPosition(i + 2, new Vector2(x, y).ToFlatVector3(height));
-		}
-
-		line.SetPosition(line.positionCount - 2, points[2].ToFlatVector3(height));
-		line.SetPosition(line.positionCount - 1, points[0].ToFlatVector3(height));
-	}
+        int team = MatchManager.match.GetLocalTeam();
+        Unit[] units = MatchManager.match.GetAllUnits(team);
 
 
-	void LoadMoveBlock(MoveBlock block)
-	{
-		CreateNewWaypoint(block);
-	}
 
-	void OnUnitSelected(UnitID id)
-	{
-		selectedUnit = MatchManager.GetUnit(id);
-		OnBlockUpdated();
-	}
+        foreach (Unit unit in units)
+        {
+            foreach (Block block in unit.timeline.blocks)
+            {
+                if (!TryGetVisualBlock(block.id, out VisualBlock existingVisualBlock))
+                {
+                    if (block is MoveBlock)
+                    {
+                        LoadMoveBlock(block as MoveBlock);
+                    }
 
-	void OnBlockSelected(Block block)
-	{
-		selectedBlock = block;
-		OnBlockUpdated(block);
-	}
+                    if (block is GuardBlock)
+                    {
+                        LoadGuardBlock(block as GuardBlock);
+                    }
+                }
+            }
+        }
+    }
 
-	void OnBlockUpdated(Block editedBlock = null)
-	{
-		ClearVisualElements();
-		if (selectedUnit == null) return;
-		foreach (Block block in selectedUnit.timeline.blocks)
-		{
-			if (block.type == BlockType.Move)
-				LoadMoveBlock((MoveBlock)block);
-			if (block.type == BlockType.Guard)
-			{
-				GuardBlock guardBlock = (GuardBlock)block;
-				if (guardBlock.aimCone != null && guardBlock.aimCone.isSet)
-				{
-					Vector2[] points = guardBlock.aimCone.GetConePoints(guardBlock.aimCone.direction);
-					CreateNewLockedCone(points);
-				}
-			}
-		}
+    private bool TryGetVisualBlock(BlockID id, out VisualBlock visualBlockResult)
+    {
+        visualBlockResult = null;
+        foreach (VisualBlock visualBlock in visualBlocks)
+        {
+            if (visualBlock.block.id == id)
+            {
+                visualBlockResult = visualBlock;
+                break;
+            }
+        }
 
-		DrawPath(selectedUnit);
-	}
 
-	private void Update()
-	{
-		if (selectedBlock != null)
-		{
-			if (selectedBlock.type == BlockType.Guard)
-			{
-				GuardBlock guardBlock = (GuardBlock)selectedBlock;
-				float inputDirection = 0;
-				if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), out RaycastHit groundHit))
-				{
+        return visualBlockResult != null;
+    }
 
-					Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();
+    private List<VisualBlock> GetUnitVisualBlocks(Unit unit)
+    {
+        List<VisualBlock> unitVisualBlocks = new List<VisualBlock>();
 
-					Vector2 toMouse = mouseHitPoint - guardBlock.aimCone.origin.point;
+        foreach (VisualBlock visualBlock in visualBlocks)
+        {
+            if (visualBlock.block.ownerId == unit.id)
+            {
+                unitVisualBlocks.Add(visualBlock);
+            }
+        }
 
-					inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
-
-					Vector2[] points = guardBlock.aimCone.GetConePoints(inputDirection);
-					DrawCone(points, tempCone);
-				} else
-				{
-					tempCone.positionCount = 0;
-				}
-			}
-		}
-
-	}
+        return unitVisualBlocks;
+    }
 }

@@ -176,10 +176,10 @@ MonoBehaviour:
   canvas: {fileID: 187528042444801288}
   selectedColor:
     serializedVersion: 2
-    rgba: 4294929920
+    rgba: 4294967295
   waypointColor:
     serializedVersion: 2
-    rgba: 4294951830
+    rgba: 4288453788
   image: {fileID: 187528041121049753}
 --- !u!114 &3778165696302532688
 MonoBehaviour:
