@@ -172,26 +172,21 @@ public class Referee
 		int mostUpvotes = 0;
 		List<string> mapContenders = new List<string>();
 
-		// TODO NEED A WAY TO GET LEVEL DATA
 		foreach (LevelLayout level in DataManager.levelLayouts.layoutDict.Values)
 		{
-			Debug.Log("Checking level" + level.name + ", ID: " + level.id);
-			Debug.Log("Downvotes: " + match.votes.GetVotes(level.id, VoteType.Downvote));
 			if (match.votes.GetVotes(level.id, VoteType.Downvote) == 0)
 			{
 				int upvotes = match.votes.GetVotes(level.id, VoteType.Upvote);
-				Debug.Log("Upvotes: " + upvotes);
+
 				if (upvotes >= mostUpvotes)
 				{
 					if (upvotes > mostUpvotes)
 					{
-						Debug.Log("CLEARED");
+						mostUpvotes = upvotes;
 						mapContenders.Clear();
 					}
-					Debug.Log("Added");
 					mapContenders.Add(level.id);
 				}
-
 			}
 		}
 
