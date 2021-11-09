@@ -14,6 +14,9 @@ public class ReadyButton : MonoBehaviour
 	{
 		MatchManager.OnMatchUpdate += OnMatchUpdate;
 		readyButton.onClick.AddListener(() => ReadyUp());
+
+		MatchManager.OnPlanningStart += OnPlanningStart;
+		MatchManager.OnPlanningEnd += OnPlanningEnd;
 	}
 
 	void OnMatchUpdate(Match match)
@@ -24,7 +27,16 @@ public class ReadyButton : MonoBehaviour
 			timer = match.rules.planningTime;
 		}
 		readyButton.interactable = match.state == Match.GameState.Planning;
+	}
 
+	void OnPlanningStart()
+	{
+		timerText.gameObject.SetActive(true);
+	}
+
+	void OnPlanningEnd()
+	{
+		timerText.gameObject.SetActive(false);
 	}
 
 	void ReadyUp()
@@ -52,7 +64,7 @@ public class ReadyButton : MonoBehaviour
 						timer = 0;
 						MatchManager.SignalReady();
 					}
-					timerText.text = TimeFormat.TimeToString(timer) + "S";
+					timerText.text = Mathf.Floor(timer) + "S";
 				}
 
 			}

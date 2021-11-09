@@ -30,6 +30,7 @@ public class TimelineEditor : InGameEditor
 	List<BlockElement> blockElements = new List<BlockElement>();
 
 	public RectTransform timelineField;
+	public GameObject timelineGroup;
 	public BlockSources blockSources;
 
 	public Canvas canvas;
@@ -62,6 +63,7 @@ public class TimelineEditor : InGameEditor
 		MatchManager.OnPlanningEnd += OnPlanningEnd;
 	}
 
+
 	void OnPlanningEnd()
 	{
 		DeselectUnit();
@@ -75,7 +77,7 @@ public class TimelineEditor : InGameEditor
 
 	void SetTimelineVisibility(bool visibility)
 	{
-		timelineField.gameObject.SetActive(visibility);
+		timelineGroup.SetActive(visibility);
 		blockSources.SetVisibility(visibility);
 	}
 
@@ -289,7 +291,7 @@ public class TimelineEditor : InGameEditor
 
 	public void ArrengeUITimeline()
 	{
-		float x = BLOCK_ELEMENT_PADDING;
+		float x = 0;
 		freeTimeInTimeline = TOTAL_TIMELINE_DURATION;
 
 		BlockElement lastMovementBlock = null;
@@ -301,7 +303,7 @@ public class TimelineEditor : InGameEditor
 			blockElement.block.timelineIndex = i;
 			blockElement.SetPhysicalPositionInTimeline(x);
 			blockElement.UpdatePhysicalProperties();
-			x += blockElement.GetWidth() + BLOCK_ELEMENT_PADDING;
+			if (i != blockElements.Count - 1) x += blockElement.GetWidth() + BLOCK_ELEMENT_PADDING;
 
 			if (blockElement.block.type == BlockType.Move)
 			{

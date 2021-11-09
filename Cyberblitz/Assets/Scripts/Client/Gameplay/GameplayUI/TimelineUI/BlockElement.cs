@@ -14,7 +14,7 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	public RectTransform rectTransform, resizeHandleRect;
 
-	public Image blockBackgroundImage, iconImage, resizeHandleImage;
+	public Image blockBackgroundImage, iconImage, resizeHandleImage, outline;
 	public TMP_Text blockDurationText;
 
 	public Block block;
@@ -265,6 +265,12 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	public void SetSelected(bool selected)
 	{
+
+		Color32 darkColor = Color.Lerp(template.color, Color.black, .5f);
+		blockBackgroundImage.color = selected ? template.color : darkColor;
+
+		/*outline.enabled = selected;*/
+		/*outline.color = darkColor;*/
 		/*selectionImage.enabled = selected;*/
 	}
 

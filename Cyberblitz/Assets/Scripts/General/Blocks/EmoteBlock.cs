@@ -16,7 +16,8 @@ public class EmoteBlock : Block
 
 	public override void OnPlaybackStart(Match simulatedMatch)
 	{
-
+		VisualUnit unit = VisualUnitManager.GetVisualUnitById(ownerId);
+		unit.animator.SetTrigger("Emote");
 	}
 
 	public override void Playback(Match simulatedMatch, float localTime)
