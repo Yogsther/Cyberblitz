@@ -141,14 +141,19 @@ public class AutoGridPath
 
 	public float GetTotalPathLength()
 	{
-		float sectionsLength = 0f;
+		float length = 0f;
 
-		foreach (Section section in sections)
-		{
-			sectionsLength += section.Length;
-		}
+		List<Vector2Int> points = GetPoints();
 
-		return sectionsLength;
+		for(int i = 0; i < points.Count - 1; i++)
+        {
+			Vector2Int a = points[i];
+			Vector2Int b = points[i + 1];
+
+			length += Vector2Int.Distance(a, b);
+        }
+
+		return length;
 	}
 
 

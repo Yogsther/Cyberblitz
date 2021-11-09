@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1049.4463, g: 1300.3135, b: 1721.0547, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1133,6 +1133,10 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 1373387130}
+    - target: {fileID: 1836880850167774324, guid: f939239941208104c8dac2a024e27a9f, type: 3}
+      propertyPath: visualMoveBlockPrefab
+      value: 
+      objectReference: {fileID: 7949283730807958435, guid: 1ade83a1e813d15479d7d2d2309c143f, type: 3}
     - target: {fileID: 1836880850167774325, guid: f939239941208104c8dac2a024e27a9f, type: 3}
       propertyPath: m_RootOrder
       value: 9

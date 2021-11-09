@@ -74,7 +74,7 @@ LineRenderer:
   m_Positions: []
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 1.5
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -137,8 +137,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8100506283713569493}
   - component: {fileID: 7949283730807958435}
+  - component: {fileID: 1798551182937095218}
   m_Layer: 5
-  m_Name: MoveBlockVisual
+  m_Name: VisualMoveBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -172,9 +173,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 099ea783f26b7a843835192599eeb472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selected: 0
   waypoint: {fileID: 8940167075382014571}
   moveLine: {fileID: 688363492}
-  selected: 0
+  lineHeight: 0.21
+  smoothingSpeed: 20
+--- !u!95 &1798551182937095218
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6546017693159536304}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: aaa89c0e4a8708242860cb51184c6032, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &5108385064087072355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -197,6 +219,10 @@ PrefabInstance:
     - target: {fileID: 187528041121049753, guid: 6a5759db37237b547a8efa164e7be798, type: 3}
       propertyPath: m_Material
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 187528042444801288, guid: 6a5759db37237b547a8efa164e7be798, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 187528042444801291, guid: 6a5759db37237b547a8efa164e7be798, type: 3}
       propertyPath: m_Pivot.x
@@ -268,7 +294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 187528042444801291, guid: 6a5759db37237b547a8efa164e7be798, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.26000977
+      value: 0.21
       objectReference: {fileID: 0}
     - target: {fileID: 187528042444801291, guid: 6a5759db37237b547a8efa164e7be798, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -285,6 +311,10 @@ PrefabInstance:
     - target: {fileID: 187528042444801292, guid: 6a5759db37237b547a8efa164e7be798, type: 3}
       propertyPath: m_Name
       value: Waypoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 4248437819474418696, guid: 6a5759db37237b547a8efa164e7be798, type: 3}
+      propertyPath: index
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a5759db37237b547a8efa164e7be798, type: 3}

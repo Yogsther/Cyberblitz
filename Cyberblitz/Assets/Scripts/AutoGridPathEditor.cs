@@ -59,7 +59,7 @@ public class AutoGridPathEditor : InGameEditor
 
                 bool isBlocked = Physics.CheckSphere(point.ToFlatVector3(.5f), .25f, GameManager.instance.blockPathfinderMask);
 
-                if (!isBlocked)
+                if (!isBlocked && gridPath.target.point != point)
                 {
                    
 

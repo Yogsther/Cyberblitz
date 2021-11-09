@@ -17,6 +17,10 @@ public class Waypoint : MonoBehaviour, IPointerDownHandler
 	public void OnPointerDown(PointerEventData eventData)
 	{
 		Debug.Log("Registered click");
+		Unit blockOwner = MatchManager.GetUnit(block.ownerId);
+
+		VisualUnit.OnSelected?.Invoke(block.ownerId);
+
 		GameManager.instance.TimelineEditor.SelectBlock(block);
 	}
 
