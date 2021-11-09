@@ -154,7 +154,11 @@ public class TimelineEditor : InGameEditor
 		BlockData template = BlockDataLoader.GetBlockData(block.type);
 		if (template.resizable)
 		{
+			float timeLeft = freeTimeInTimeline + block.duration;
 			block.duration = newDuration;
+			if (block.duration > timeLeft) block.duration = timeLeft;
+			if (block.duration < template.minLength) block.duration = template.minLength;
+
 			BlockUpdate();
 		}
 
