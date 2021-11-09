@@ -15,6 +15,6 @@ MonoBehaviour:
   id: CAVE
   name: Underground
   description: This is a test level
-  thumbnail: {fileID: 0}
+  thumbnail: {fileID: 21300000, guid: e37437c93fb300740ba5c7d802430972, type: 3}
   levelPrefab: {fileID: 5617304617871143158, guid: abbd4e41987f9d2449b2e69fe9348c0d, type: 3}
   layout: {fileID: 11400000, guid: 505ab8097abec724699f1ac0300c6d1a, type: 2}
