@@ -11,6 +11,7 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 	private TimelineEditor editor;
 
 	public bool deletable = false;
+	public bool mouseOver = false;
 
 	public RectTransform rectTransform, resizeHandleRect;
 
@@ -241,11 +242,13 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
+		mouseOver = true;
 		SetResizeHandleVibility(true);
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
+		mouseOver = false;
 		SetResizeHandleVibility(false);
 	}
 

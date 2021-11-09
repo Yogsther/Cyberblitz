@@ -3120,6 +3120,10 @@ PrefabInstance:
       propertyPath: timelineGroup
       value: 
       objectReference: {fileID: 1594121985}
+    - target: {fileID: 1270513853118946502, guid: 205c88a25d5b57e4da7a9d03cded5b44, type: 3}
+      propertyPath: SCROLL_SENSITIVITY
+      value: 0.004
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 205c88a25d5b57e4da7a9d03cded5b44, type: 3}
 --- !u!1001 &2109809370298982956
