@@ -49,14 +49,17 @@ public class ClientConnection
 		ws.OnClose += (sender, e) =>
 		{
 			Debug.LogWarning("Disconnected!");
-			OnDisconnected?.Invoke();
+
 			Task.Run(() =>
 			{
-				Debug.Log("Running disconnect task");
+				NetworkPacket disconnectMessage = new NetworkPacket("DISCONNECTED", "");
+				callstack.Add(disconnectMessage);
+
 				while (ws.IsAlive == false)
 				{
 					Task.Delay(1000).Wait();
 					Debug.Log("Reconnecting");
+
 					ws.Connect();
 				}
 			});

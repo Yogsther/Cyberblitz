@@ -31,6 +31,12 @@ public class MatchManager : MonoBehaviour
 		ClientConnection.On("SEND_UNITS", SendUnits);
 		ClientConnection.On("GAME_TERMINATED", OnGameEnd);
 
+		ClientConnection.On("DISCONNECTED", packet =>
+		{
+			if (match != null) UnloadMatch();
+			ClientConnection.OnDisconnected?.Invoke();
+		});
+
 		TurnPlayback.OnPlaybackFinished += SignalReady;
 		LevelManager.OnLevelLoaded += (level) => SignalReady();
 	}

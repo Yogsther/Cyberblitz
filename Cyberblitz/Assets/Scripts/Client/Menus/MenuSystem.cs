@@ -72,7 +72,11 @@ public class MenuSystem : MonoBehaviour
 		};
 
 		ClientConnection.OnConnected += () => { connectingScreen.SetActive(false); };
-		ClientConnection.OnDisconnected += () => { connectingScreen.SetActive(true); };
+		ClientConnection.OnDisconnected += () =>
+		{
+			connectingScreen.SetActive(true);
+			LoadScreen("play");
+		};
 
 		MatchManager.OnMatchUnloaded += () =>
 		{
