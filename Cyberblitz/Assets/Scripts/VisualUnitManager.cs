@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class VisualUnitManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class VisualUnitManager : MonoBehaviour
 	private static Dictionary<UnitID, VisualUnit> visualUnitDict = new Dictionary<UnitID, VisualUnit>();
 	private static Dictionary<UserID, List<VisualUnit>> userVisualUnitsDict = new Dictionary<UserID, List<VisualUnit>>();
 
+	int selectedUnitIndex = 0;
 
 	public static Action OnVisualUnitsSpawned;
 
@@ -25,12 +27,33 @@ public class VisualUnitManager : MonoBehaviour
 		};
 	}
 
+	/// <summary>
+	/// Select the next unit based on selected unit by index
+	/// So forward would select the next in the list, otherwise it would select the previous one in list
+	/// </summary>
+	void SelectNextUnit(bool next)
+	{
+		selectedUnitIndex += next ? 1 : -1;
+		if (selectedUnitIndex > -1)
+			selectedUnitIndex = selectedUnitIndex % (visualUnits.Count / 2);
+		else selectedUnitIndex = (visualUnits.Count / 2) - 1;
+
+		visualUnits[selectedUnitIndex].SetSelected(true);
+	}
+
+	private void Update()
+	{
+		if (Keyboard.current[Key.X].wasPressedThisFrame) SelectNextUnit(true);
+		if (Keyboard.current[Key.Z].wasPressedThisFrame) SelectNextUnit(false);
+	}
+
 	private void Start()
 	{
-		/*QueueSystem.Subscribe("MATCH_START", () =>
+		TimelineEditor.OnUnitSelected += unit =>
 		{
-			
-		});*/
+			selectedUnitIndex = visualUnits.IndexOf(GetVisualUnitById(unit));
+			Debug.Log("Selected unit index: " + selectedUnitIndex);
+		};
 
 		LevelManager.OnLevelLoaded += (level) =>
 		{
@@ -38,7 +61,6 @@ public class VisualUnitManager : MonoBehaviour
 		};
 
 		MatchManager.OnMatchUpdate += OnMatchUpdate;
-
 	}
 
 	void OnMatchUpdate(Match match)
@@ -107,6 +129,7 @@ public class VisualUnitManager : MonoBehaviour
 
 	private void DeleteAllVisualUnits()
 	{
+		selectedUnitIndex = 0;
 		foreach (VisualUnit visualUnit in visualUnits)
 		{
 			Destroy(visualUnit.gameObject);

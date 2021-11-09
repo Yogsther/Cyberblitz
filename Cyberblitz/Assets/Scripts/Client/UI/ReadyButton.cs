@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class ReadyButton : MonoBehaviour
 {
-
+	public GameObject timerGroup;
+	float planningTime;
 	public float timer = 0f;
 	public Button readyButton;
 	public Text timerText;
+
+	public List<Slider> timerSliders;
 
 	void Awake()
 	{
@@ -26,17 +29,18 @@ public class ReadyButton : MonoBehaviour
 		{
 			timer = match.rules.planningTime;
 		}
+		planningTime = match.rules.planningTime;
 		readyButton.interactable = match.state == Match.GameState.Planning;
 	}
 
 	void OnPlanningStart()
 	{
-		timerText.gameObject.SetActive(true);
+		timerGroup.SetActive(true);
 	}
 
 	void OnPlanningEnd()
 	{
-		timerText.gameObject.SetActive(false);
+		timerGroup.SetActive(false);
 	}
 
 	void ReadyUp()
@@ -64,7 +68,9 @@ public class ReadyButton : MonoBehaviour
 						timer = 0;
 						MatchManager.SignalReady();
 					}
-					timerText.text = Mathf.Floor(timer).ToString();
+					timerText.text = Mathf.Floor(timer) + "S";
+					foreach (Slider slider in timerSliders)
+						slider.value = timer / planningTime;
 				}
 
 			}

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class TimelineEditor : InGameEditor
 {
@@ -10,6 +11,7 @@ public class TimelineEditor : InGameEditor
 
 	public float TOTAL_TIMELINE_DURATION = 10f;
 	public float freeTimeInTimeline;
+	public float SCROLL_SENSITIVITY;
 
 	Dictionary<BlockType, Type> classFinder = new Dictionary<BlockType, Type> {
 			{ BlockType.Move, typeof(MoveBlock) },
@@ -48,7 +50,6 @@ public class TimelineEditor : InGameEditor
 
 	private void Start()
 	{
-
 		TIMELINE_WIDTH = timelineField.rect.width - BLOCK_ELEMENT_PADDING;
 		TIMELINE_PIXELS_TO_SECONDS = TIMELINE_WIDTH / TIMELINE_DURATION;
 
@@ -63,7 +64,6 @@ public class TimelineEditor : InGameEditor
 		MatchManager.OnPlanningEnd += OnPlanningEnd;
 	}
 
-
 	void OnPlanningEnd()
 	{
 		DeselectUnit();
@@ -74,6 +74,20 @@ public class TimelineEditor : InGameEditor
 		return selectedUnit.timeline;
 	}
 
+	private void Update()
+	{
+		float scroll = Mouse.current.scroll.ReadValue().y;
+		if (scroll != 0)
+		{
+			foreach (BlockElement blockElement in blockElements)
+			{
+				if (blockElement.mouseOver)
+				{
+					ResizeBlock(blockElement.block, blockElement.block.duration + scroll * SCROLL_SENSITIVITY);
+				}
+			}
+		}
+	}
 
 	void SetTimelineVisibility(bool visibility)
 	{
@@ -137,8 +151,17 @@ public class TimelineEditor : InGameEditor
 
 	public void ResizeBlock(Block block, float newDuration)
 	{
-		block.duration = newDuration;
-		BlockUpdate();
+		BlockData template = BlockDataLoader.GetBlockData(block.type);
+		if (template.resizable)
+		{
+			float timeLeft = freeTimeInTimeline + block.duration;
+			block.duration = newDuration;
+			if (block.duration > timeLeft) block.duration = timeLeft;
+			if (block.duration < template.minLength) block.duration = template.minLength;
+
+			BlockUpdate();
+		}
+
 	}
 
 	public BlockElement CreateBlockElement(BlockData template)
