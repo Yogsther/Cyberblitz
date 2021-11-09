@@ -20,6 +20,7 @@ public class MatchManager : MonoBehaviour
 
 	public static Action<Match> OnMatchStart;
 	public static Action<Match> OnMatchUpdate;
+	public static Action OnPlanningStart;
 	public static Action OnPlanningEnd;
 	public static Action<Match, string> OnMatchEnd;
 	public static Action OnMatchUnloaded;
@@ -65,6 +66,7 @@ public class MatchManager : MonoBehaviour
 		{
 			case Match.GameState.Planning:
 				QueueSystem.Call("MATCH_PLANNING");
+				OnPlanningStart?.Invoke();
 				break;
 			case Match.GameState.Playback:
 				Debug.Log("Stating match playback");
