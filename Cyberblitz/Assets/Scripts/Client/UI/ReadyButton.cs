@@ -18,7 +18,7 @@ public class ReadyButton : MonoBehaviour
 
 	void OnMatchUpdate(Match match)
 	{
-		timerText.text = "--:--";
+		timerText.text = "--";
 		if (match.state == Match.GameState.Planning)
 		{
 			timer = match.rules.planningTime;
