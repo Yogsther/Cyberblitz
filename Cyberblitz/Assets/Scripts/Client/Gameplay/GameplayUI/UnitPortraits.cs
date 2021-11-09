@@ -71,12 +71,17 @@ public class UnitPortraits : MonoBehaviour
 
 	void OnMatchUpdate(Match match)
 	{
-		Unit[] units = match.GetAllUnits(match.GetLocalTeam());
-		for (int i = 0; i < units.Length; i++)
+		if (match.state != Match.GameState.MapVote)
 		{
-			portraits[i].SetHp(units[i].hp);
-			if (units[i].IsDead()) portraits[i].SetDead();
+			Unit[] units = match.GetAllUnits(match.GetLocalTeam());
+			for (int i = 0; i < units.Length; i++)
+			{
+				portraits[i].SetHp(units[i].hp);
+				if (units[i].IsDead()) portraits[i].SetDead();
+			}
+
 		}
+
 
 	}
 

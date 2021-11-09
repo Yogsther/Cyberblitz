@@ -15,6 +15,9 @@ public class Referee
 
 		switch (match.state)
 		{
+			case Match.GameState.MapVote:
+				StartGame();
+				break;
 			case Match.GameState.Starting:
 				match.state = Match.GameState.Planning;
 				break;
@@ -29,8 +32,6 @@ public class Referee
 				match.state = Match.GameState.Playback;
 				break;
 		}
-
-
 
 		Debug.Log("Starting new round, phase: " + match.state);
 
@@ -53,9 +54,6 @@ public class Referee
 		ClearReadyPlayers();
 	}
 
-
-
-
 	void PrepareForPlanning()
 	{
 		// Clear all unit timelines
@@ -65,11 +63,6 @@ public class Referee
 
 
 		// Set position to default
-	}
-
-	void NewRound()
-	{
-		match.round++;
 	}
 
 	public void OnPlayerDisconnect(User disconnectedUser)
@@ -107,6 +100,20 @@ public class Referee
 	{
 		ServerConnection.OnMatchContext(match.id, "READY", OnPlayerReady);
 		ServerConnection.OnMatchContext(match.id, "UNITS", OnUnits);
+		ServerConnection.OnMatchContext(match.id, "VOTE", OnVote);
+	}
+
+	void OnVote(NetworkPacket packet)
+	{
+		Vote vote = packet.Parse<Vote>();
+
+		// For security lol
+		vote.user = packet.user.id;
+
+		Debug.Log("Recorded vote from " + packet.user.username);
+
+		match.votes.AddVote(vote);
+		SendGameUpdate();
 	}
 
 	void OnUnits(NetworkPacket packet)
@@ -151,35 +158,85 @@ public class Referee
 		Broadcast("MATCH_UPDATE", match);
 	}
 
-	public void Start()
+	/*public void Start()
 	{
+		
+
+		// Start the game
+		ClearReadyPlayers();
+		SendGameUpdate();
+	}*/
+
+	void ChooseMap()
+	{
+		int mostUpvotes = 0;
+		List<string> mapContenders = new List<string>();
+
+		// TODO NEED A WAY TO GET LEVEL DATA
+		foreach (LevelLayout level in DataManager.levelLayouts.layoutDict.Values)
+		{
+			Debug.Log("Checking level" + level.name + ", ID: " + level.id);
+			Debug.Log("Downvotes: " + match.votes.GetVotes(level.id, VoteType.Downvote));
+			if (match.votes.GetVotes(level.id, VoteType.Downvote) == 0)
+			{
+				int upvotes = match.votes.GetVotes(level.id, VoteType.Upvote);
+				Debug.Log("Upvotes: " + upvotes);
+				if (upvotes >= mostUpvotes)
+				{
+					if (upvotes > mostUpvotes)
+					{
+						Debug.Log("CLEARED");
+						mapContenders.Clear();
+					}
+					Debug.Log("Added");
+					mapContenders.Add(level.id);
+				}
+
+			}
+		}
+
+		if (mapContenders.Count == 0) match.level = "CITY";
+		else match.level = mapContenders[UnityEngine.Random.Range(0, mapContenders.Count - 1)];
+
+		Debug.Log("Map contenders count: " + mapContenders.Count);
+	}
+
+	void StartGame()
+	{
+
+		ChooseMap();
+
+		Debug.Log("Trying to start with level: " + match.level);
+		match.state = Match.GameState.Starting;
+		DataManager.levelLayouts.TryGetLevelLayout(match.level, out levelLayout);
+		Debug.Log("LevelLayout: ? " + levelLayout);
+		SetUnitSpawnpoints();
 
 		// Announce new game start in console
 		List<string> playerNames = new List<string>();
 		foreach (Player player in match.players) playerNames.Add(player.user.username);
 		Debug.Log("Startin game with: " + String.Join(", ", playerNames.ToArray()));
 
-		// Start the game
-		ClearReadyPlayers();
+
 		SendGameUpdate();
-	}
-
-	void StartGame()
-	{
-
 	}
 
 	public void Init()
 	{
 		match = new Match();
-		match.level = "Test Level";
-		DataManager.levelLayouts.TryGetLevelLayout(match.level, out levelLayout);
-		match.state = Match.GameState.MapSelection;
+		match.level = "CITY";
+
+		match.state = Match.GameState.MapVote;
 		match.round = 0;
 
 		match.players = new Player[2];
 
 		StartListening();
+	}
+
+	public void StartMapVote()
+	{
+		SendGameUpdate();
 	}
 
 	public void AddPlayer(User user, UnitType[] units)
@@ -214,7 +271,7 @@ public class Referee
 		return -1;
 	}
 
-	void AddUnit(Player player, UnitType type, Vector2Int spawn, int index)
+	void AddUnit(Player player, UnitType type, int index)
 	{
 		Unit unit = new Unit(player.user.id);
 
@@ -226,24 +283,30 @@ public class Referee
 		unit.hp = unitStats.maxHp;
 		unit.ownerID = player.user.id;
 
-		unit.SetPosition(spawn.x, spawn.y);
 		player.units[index] = unit;
 	}
 
+	void SetUnitSpawnpoints()
+	{
+		foreach (Player player in match.players)
+		{
+			int team = player.team;
+			SpawnArea spawnArea = levelLayout.spawnAreas[team];
 
-	Player CreatePlayer(User user, int team, UnitType[] units)
+			for (int i = 0; i < player.units.Length; i++)
+				player.units[i].SetPosition(spawnArea.GetSpawnPosition(i));
+		}
+	}
+
+	Player CreatePlayer(User user, int team, UnitType[] unitTypes)
 	{
 		Player player = new Player(user, team);
 
+		// Not an elegant way of adding units.. :(
+		AddUnit(player, UnitType.Courier, 0);
 
-		SpawnArea spawnArea = levelLayout.spawnAreas[team];
-
-		AddUnit(player, UnitType.Courier, spawnArea.GetSpawnPosition(0), 0);
-
-		for (int i = 0; i < units.Length; i++)
-		{
-			AddUnit(player, units[i], spawnArea.GetSpawnPosition(i + 1), i + 1);
-		}
+		for (int i = 0; i < unitTypes.Length; i++)
+			AddUnit(player, unitTypes[i], i + 1);
 
 		Debug.Log("Created player " + player.user.username + " on team " + team);
 		return player;

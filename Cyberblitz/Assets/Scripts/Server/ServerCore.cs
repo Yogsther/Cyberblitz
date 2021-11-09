@@ -53,6 +53,7 @@ public static class ServerCore
 
 	public static void TerminateGame(MatchID id)
 	{
+		Debug.Log("Terminated game " + id);
 		games.Remove(GetGame(id));
 		UpdateUserList();
 	}
@@ -128,6 +129,7 @@ public static class ServerCore
 		return null;
 	}
 
+
 	public static void Init()
 	{
 		// Listen to connection events if needed...
@@ -152,7 +154,7 @@ public static class ServerCore
 			referee.Init();
 			referee.AddPlayer(user1.user, playRequest.units);
 			referee.AddPlayer(user2.user, playRequest.units);
-			referee.Start();
+			referee.StartMapVote();
 
 			UpdateUserList();
 		}
@@ -173,7 +175,7 @@ public static class ServerCore
 		referee.Init();
 		referee.AddPlayer(packet.user, playRequest.units);
 		referee.AddBot();
-		referee.Start();
+		referee.StartMapVote();
 
 		UpdateUserList();
 	}

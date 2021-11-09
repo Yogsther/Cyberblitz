@@ -26,7 +26,7 @@ public class MenuSystem : MonoBehaviour
 	string currentlyLoadingScreen = null;
 
 	[HideInInspector]
-	MenuScreen selectedMenuScreen = null;
+	public MenuScreen selectedMenuScreen = null;
 	public MenuScreen[] menuScreens;
 
 	public static Action<string> OnScreenLoaded;
@@ -60,6 +60,8 @@ public class MenuSystem : MonoBehaviour
 
 	private void Awake()
 	{
+		selectedMenuScreen = null;
+
 		MatchManager.OnMatchStart += match =>
 		{
 			DisplayGameUI(true);
@@ -73,6 +75,8 @@ public class MenuSystem : MonoBehaviour
 			LoadScreen("play");
 		};
 	}
+
+
 
 	public void DisplayGameUI(bool show)
 	{
@@ -125,7 +129,7 @@ public class MenuSystem : MonoBehaviour
 		if (!menuBackground.activeSelf) menuBackground.SetActive(true);
 
 		ClearSubHeader();
-		if (selectedMenuScreen != null) selectedMenuScreen.screen.SetActive(false);
+		if (selectedMenuScreen != null && selectedMenuScreen.screen != null) selectedMenuScreen.screen.SetActive(false);
 		selectedMenuScreen = GetScreen(name);
 		selectedMenuScreen.screen.SetActive(true);
 		if (OnPageLoad.ContainsKey(name)) OnPageLoad[name]();
@@ -151,6 +155,7 @@ public class MenuSystem : MonoBehaviour
 
 	private void Start()
 	{
+		foreach (MenuScreen menuScreen in menuScreens) menuScreen.screen.SetActive(false);
 		LoadScreen("play");
 	}
 

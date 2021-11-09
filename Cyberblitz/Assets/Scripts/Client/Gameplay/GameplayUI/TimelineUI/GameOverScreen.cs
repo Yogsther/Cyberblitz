@@ -23,9 +23,14 @@ public class GameOverScreen : MonoBehaviour
 
 		MatchManager.OnMatchEnd += (Match match, string reason) =>
 		{
-			User winner = match.GetUser(match.winner);
-			if (reason == null) reason = winner.username + " won the game!";
-			DisplayPostGame(winner.id == ClientLogin.user.id, reason);
+			bool won = true;
+			if (reason == null)
+			{
+				User winner = match.GetUser(match.winner);
+				won = winner.id == ClientLogin.user.id;
+				reason = winner.username + " won the game!";
+			}
+			DisplayPostGame(won, reason);
 			cinematicCamera.StartCircling();
 		};
 	}

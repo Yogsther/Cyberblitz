@@ -23,6 +23,7 @@ public class MatchManager : MonoBehaviour
 	public static Action OnPlanningEnd;
 	public static Action<Match, string> OnMatchEnd;
 	public static Action OnMatchUnloaded;
+	public static Action<MapVotes> OnMapVote;
 
 	public void Init()
 	{
@@ -66,6 +67,9 @@ public class MatchManager : MonoBehaviour
 			case Match.GameState.Starting:
 				MatchStart();
 				break;
+			case Match.GameState.MapVote:
+				OnMapVote(match.votes);
+				break;
 		}
 
 		OnMatchUpdate?.Invoke(match);
@@ -76,7 +80,6 @@ public class MatchManager : MonoBehaviour
 		OnPlanningEnd?.Invoke();
 		ClientConnection.Emit("UNITS", match);
 	}
-
 
 	void MatchStart()
 	{
