@@ -83,16 +83,77 @@ public class AutoGridPath
 		return pathSections;
 	}
 
-	public float GetTotalPathLength()
-	{
-		float sectionsLength = 0f;
+	public List<Section> GetSimplifiedSections()
+    {
+		List<Section> simplifiedSections = new List<Section>();
+		List<Section> baseSections = GetSections();
 
-		foreach (Section section in sections)
+		if (baseSections.Count != 0)
 		{
-			sectionsLength += section.Length;
+
+			Vector2Int lastDirection = baseSections[0].Direction;
+
+			Section simplifiedSection = baseSections[0];
+
+			foreach (Section section in baseSections)
+			{
+				if (section.Direction != lastDirection)
+				{
+					simplifiedSection.b = section.a;
+
+					simplifiedSections.Add(simplifiedSection);
+
+					simplifiedSection = section;
+				}
+
+				lastDirection = section.Direction;
+			}
+
+			simplifiedSection.b = baseSections[baseSections.Count - 1].b;
+
+			simplifiedSections.Add(simplifiedSection);
+
 		}
 
-		return sectionsLength;
+		return simplifiedSections;
+
+	}
+
+	public List<Vector2Int> GetSimpifiedPoints()
+	{
+		List<Vector2Int> simplifiedPoints = new List<Vector2Int>();
+
+		List<Section> simplifiedSections = GetSimplifiedSections();
+
+		if (simplifiedSections.Count != 0)
+		{
+
+			simplifiedPoints.Add(simplifiedSections[0].a);
+
+			foreach (Section section in simplifiedSections)
+			{
+				simplifiedPoints.Add(section.b);
+			}
+		}
+
+		return simplifiedPoints;
+	}
+
+	public float GetTotalPathLength()
+	{
+		float length = 0f;
+
+		List<Vector2Int> points = GetPoints();
+
+		for(int i = 0; i < points.Count - 1; i++)
+        {
+			Vector2Int a = points[i];
+			Vector2Int b = points[i + 1];
+
+			length += Vector2Int.Distance(a, b);
+        }
+
+		return length;
 	}
 
 

@@ -12,6 +12,10 @@ public class CameraController : MonoBehaviour
 
 	public void InitCamera(Level level)
 	{
+		transform.position = Vector3.zero;
+		transform.rotation = Quaternion.identity;
+		transform.localScale = Vector3.one;
+
 		if (MatchManager.TryGetLocalPlayer(out Player localPlayer))
 		{
 			int team = localPlayer.team;
