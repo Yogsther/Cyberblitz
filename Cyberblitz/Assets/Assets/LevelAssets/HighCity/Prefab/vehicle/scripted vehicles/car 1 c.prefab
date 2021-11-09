@@ -158,6 +158,63 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5086624752326982198, guid: e049d959678e5b440834dafeefa35312, type: 3}
+--- !u!1001 &7362733914276975746
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4117520259210312070}
+    m_Modifications:
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.029
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.115
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.145
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000021855694
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842175576689412437, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7926046341753963190, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
+      propertyPath: m_Name
+      value: CarLight
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 768b507f30e73794fadb0aefb53deb6e, type: 3}
 --- !u!1001 &8961857674567078556
 PrefabInstance:
   m_ObjectHideFlags: 0
