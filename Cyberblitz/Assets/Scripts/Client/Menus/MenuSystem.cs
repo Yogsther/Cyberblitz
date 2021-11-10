@@ -93,10 +93,7 @@ public class MenuSystem : MonoBehaviour
 
 	public void LoadScreen(string name)
 	{
-		header.SetActive(true);
-		gameOverScreen.HideScreen();
-		DisplayGameUI(false);
-		SetMainMenuVisibility(true);
+
 
 		if (currentlyLoadingScreen != null) return;
 
@@ -122,12 +119,16 @@ public class MenuSystem : MonoBehaviour
 				LoadScreenElements(name);
 			}
 		}
-
 	}
 
 
 	void LoadScreenElements(string name)
 	{
+		header.SetActive(true);
+		gameOverScreen.HideScreen();
+		DisplayGameUI(false);
+		SetMainMenuVisibility(true);
+
 		currentlyLoadingScreen = null;
 		lobbyWorld.SetActive(true);
 		planningCamera.enabled = false;
@@ -164,7 +165,17 @@ public class MenuSystem : MonoBehaviour
 	private void Start()
 	{
 		foreach (MenuScreen menuScreen in menuScreens) menuScreen.screen.SetActive(false);
-		LoadScreen("play");
+		LoadScreen("intro");
+
+		header.SetActive(false);
+	}
+
+	public void StartLoginAnimation()
+	{
+		lobbyCamera.AnimateFromLogin(() =>
+		{
+			LoadScreenElements("play");
+		});
 	}
 
 

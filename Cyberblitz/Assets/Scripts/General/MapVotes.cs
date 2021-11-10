@@ -26,7 +26,7 @@ public class Vote
 
 public class MapVotes
 {
-	public int votingUsers = 2;
+
 	public List<Vote> votes = new List<Vote>();
 
 	public void AddVote(Vote vote)
@@ -39,13 +39,15 @@ public class MapVotes
 	{
 		// Remove previous votes
 		foreach (Vote vote in votes.ToArray())
-
-			if (vote.map == map || (type == VoteType.Downvote && vote.type == VoteType.Downvote))
+			if (vote.user == user)
 			{
-				// Remove the vote if it's on the same map or if it's a downvote on another map
-				votes.Remove(vote);
-				// If it's the same vote on the same map
-				if (vote.type == type && vote.map == map) return;
+				if (vote.map == map || (type == VoteType.Downvote && vote.type == VoteType.Downvote))
+				{
+					// Remove the vote if it's on the same map or if it's a downvote on another map
+					votes.Remove(vote);
+					// If it's the same vote on the same map
+					if (vote.type == type && vote.map == map) return;
+				}
 			}
 
 		votes.Add(new Vote(map, user, type));

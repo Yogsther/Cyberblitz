@@ -23,8 +23,8 @@ public class ClientConnection
 
 	public static bool IsConnected()
 	{
-		// DONT USE ws.IsAline, it sends a ping to the server and waits for it.
-		return ws.ReadyState == WebSocketState.Open;
+		/*return ws.ReadyState == WebSocketState.Open;*/
+		return ws.IsAlive;
 	}
 
 	public void Disconnect()
@@ -70,7 +70,6 @@ public class ClientConnection
 			Debug.Log($"Connected!");
 
 			OnConnected?.Invoke();
-			ClientLogin.Login();
 		});
 
 		ws.OnError += (sender, e) =>

@@ -23,10 +23,10 @@ public static class ClientLogin
 	}
 
 	// Test login function, not comeplete
-	public static void Login()
+	public static void Login(string username)
 	{
 		Init();
-		ClientConnection.Emit("login");
+		ClientConnection.Emit("login", username);
 	}
 
 	/// <summary>
