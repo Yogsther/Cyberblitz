@@ -9,10 +9,18 @@ public class LobbyCamera : MonoBehaviour
 	public Quaternion cameraDownAngle;
 	public Camera lobbyCamera;
 
+	public Transform menuPosition, loginPosition;
+
 
 	public float animationSmoothingIn, animationSmoothingOut;
 	Vector3 smoothCameraVel;
+	Vector3 cameraPositionVel;
 
+	private void Start()
+	{
+		lobbyCamera.transform.position = loginPosition.position;
+		lobbyCamera.transform.rotation = loginPosition.rotation;
+	}
 
 	public void AnimateIn(Action callback)
 	{
@@ -24,6 +32,23 @@ public class LobbyCamera : MonoBehaviour
 	{
 		lobbyCamera.transform.rotation = cameraDownAngle;
 		StartCoroutine(AnimateCamera(cameraUpAngle, animationSmoothingOut, callback));
+	}
+
+	public void AnimateFromLogin(Action callback)
+	{
+		StartCoroutine(AnimateTo(menuPosition, .1f, callback));
+	}
+
+	IEnumerator AnimateTo(Transform target, float smoothing, Action callback = null)
+	{
+		while (Vector3.Distance(target.position, lobbyCamera.transform.position) > .001f)
+		{
+			lobbyCamera.transform.position = Vector3.SmoothDamp(lobbyCamera.transform.position, target.position, ref cameraPositionVel, smoothing);
+			lobbyCamera.transform.rotation = SmoothDampQuaternion(lobbyCamera.transform.rotation, target.rotation, ref smoothCameraVel, smoothing);
+
+			yield return new WaitForEndOfFrame();
+		}
+		if (callback != null) callback();
 	}
 
 	IEnumerator AnimateCamera(Quaternion target, float smoothing, Action callback = null)

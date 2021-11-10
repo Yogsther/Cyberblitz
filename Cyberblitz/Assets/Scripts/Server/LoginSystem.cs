@@ -12,11 +12,11 @@ public static class LoginSystem
 
 	public static void LoginUser(NetworkPacket packet)
 	{
-		User dummy = new User();
-		dummy.username = $"User #{UnityEngine.Random.Range(0, 1000)}";
+		User user = new User();
+		user.username = packet.content;
 
-		Debug.Log($"Creating and loggin in dummy user {dummy.username}");
+		Debug.Log($"Creating and loggin in dummy user {user.username}");
 
-		ServerCore.ConnectUser(dummy, Token.New, packet.socket);
+		ServerCore.ConnectUser(user, Token.New, packet.socket);
 	}
 }
