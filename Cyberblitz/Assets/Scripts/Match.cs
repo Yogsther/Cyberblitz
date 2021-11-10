@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Match
 {
-	public enum GameState { Planning, Playback, Starting, Ending, WaitingForUnits, MapVote }
+	public enum GameState { Planning, Playback, Starting, Ending, WaitingForUnits, MapVote, WaitingForUnitSelection }
 
 	public MatchID id = MatchID.New;
 	public Player[] players;
@@ -12,7 +12,7 @@ public class Match
 	public int round;
 	public string level;
 	public Queue<MatchEvent> events = new Queue<MatchEvent>();
-	public GameState state = GameState.MapVote;
+	public GameState state = GameState.WaitingForUnitSelection;
 	public MatchRules rules = new MatchRules();
 	public float longestTimelineDuration;
 	public UserID winner = null;

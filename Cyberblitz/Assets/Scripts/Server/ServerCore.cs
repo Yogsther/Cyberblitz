@@ -10,6 +10,7 @@ using UnityEngine;
 public static class ServerCore
 {
 	public static List<Referee> games = new List<Referee>();
+	public static Invites invites = new Invites();
 	public static Referee GetGame(MatchID id)
 	{
 		foreach (Referee referee in games)
@@ -47,14 +48,19 @@ public static class ServerCore
 		if (connectedUser != null)
 		{
 			connectedUser.Emit(message, content);
-			Debug.Log("Sent " + message + " to " + connectedUser.user.username);
 		}
 	}
 
 	public static void TerminateGame(MatchID id)
 	{
 		Debug.Log("Terminated game " + id);
-		games.Remove(GetGame(id));
+		Referee game = GetGame(id);
+		foreach (Player player in game.match.players)
+		{
+			ConnectedUser user = GetConnectedUser(player.user.id);
+			if (user != null) user.user.state = UserState.Ready;
+		}
+		games.Remove(game);
 		UpdateUserList();
 	}
 
@@ -68,12 +74,17 @@ public static class ServerCore
 
 	public static void UpdateUserList()
 	{
-		List<User> userList = new List<User>();
+		UserList userList = new UserList();
+
+		userList.invites = invites;
+		userList.users = new List<User>();
+
 		foreach (ConnectedUser connectedUser in users)
 		{
 			User user = connectedUser.user;
-			user.playable = GetUserGame(user.id) == null;
-			userList.Add(user);
+
+			if (GetUserGame(user.id) != null) user.state = UserState.Ingame;
+			userList.users.Add(user);
 		}
 		Broadcast("USER_LIST", userList);
 	}
@@ -133,18 +144,45 @@ public static class ServerCore
 	public static void Init()
 	{
 		// Listen to connection events if needed...
-		ServerConnection.On("PLAY_PLAYER", StartGameWithPlayers);
+		/*ServerConnection.On("PLAY_PLAYER", StartGameWithPlayers);*/
 		ServerConnection.On("PLAY_BOT", StartGameWithBot);
+		ServerConnection.On("USER_STATE", OnUserState);
+		ServerConnection.On("INVITE", OnInvite);
 	}
 
-	static void StartGameWithPlayers(NetworkPacket packet)
+	static void OnInvite(NetworkPacket packet)
 	{
-		PlayRequest playRequest = packet.Parse<PlayRequest>();
+		ConnectedUser from = GetConnectedUser(packet.user.id);
+		ConnectedUser to = GetConnectedUser(packet.Parse<UserID>());
+		if (from != null && to != null)
+		{
+			if (invites.ExistsInvite(to.user.id, from.user.id))
+			{
+				invites.RemoveAllInvitesRelatingToUser(from.user.id);
+				invites.RemoveAllInvitesRelatingToUser(to.user.id);
 
-		ConnectedUser user1 = GetConnectedUser(packet.user.id);
-		ConnectedUser user2 = GetConnectedUser(playRequest.opponent);
+				// Start game with players
+				StartGameWithPlayers(from, to);
 
-		// TEMPORARY BOTH PLAYERS GET PLAYER 1 UNIT CHOICES
+			} else if (invites.CreateInvite(from.user.id, to.user.id))
+				UpdateUserList();
+		}
+	}
+
+	static void OnUserState(NetworkPacket packet)
+	{
+		UserState state = packet.Parse<UserState>();
+		ConnectedUser user = GetConnectedUser(packet.user.id);
+		if (user != null)
+		{
+			user.user.state = state;
+			UpdateUserList();
+		}
+	}
+
+	static void StartGameWithPlayers(ConnectedUser user1, ConnectedUser user2)
+	{
+		/*PlayRequest playRequest = packet.Parse<PlayRequest>();*/
 
 		if (user1 != null && user2 != null)
 		{
@@ -152,9 +190,9 @@ public static class ServerCore
 			games.Add(referee);
 
 			referee.Init();
-			referee.AddPlayer(user1.user, playRequest.units);
-			referee.AddPlayer(user2.user, playRequest.units);
-			referee.StartMapVote();
+			referee.AddPlayer(user1.user);
+			referee.AddPlayer(user2.user);
+			referee.SendGameUpdate();
 
 			UpdateUserList();
 		}
@@ -173,9 +211,9 @@ public static class ServerCore
 		games.Add(referee);
 
 		referee.Init();
-		referee.AddPlayer(packet.user, playRequest.units);
+		referee.AddPlayer(packet.user);
 		referee.AddBot();
-		referee.StartMapVote();
+		referee.SendGameUpdate();
 
 		UpdateUserList();
 	}
