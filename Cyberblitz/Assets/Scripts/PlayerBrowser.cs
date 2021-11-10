@@ -35,12 +35,12 @@ public class PlayerBrowser : MonoBehaviour
 
 	void Start()
 	{
-		ClientConnection.On("USER_LIST", LoadUserList);
+		/*ClientConnection.On("USER_LIST", LoadUserList);
 		MatchManager.OnMatchUpdate += (match) =>
 		{
 			SetVisbility(false);
-			/*menuSystem.SetMainMenuVisibility(false);*/
-		};
+			*//*menuSystem.SetMainMenuVisibility(false);*//*
+		};*/
 		/*SetVisbility(true);*/
 	}
 

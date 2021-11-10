@@ -37,9 +37,12 @@ public class BlockSource : MonoBehaviour, IPointerDownHandler
 	{
 		if (Keyboard.current[keys[hotkey]].wasPressedThisFrame)
 		{
-			BlockElement blockElement = CreateBlockElement();
-			editor.InsertBlock(blockElement);
-			editor.SelectBlock(blockElement.block);
+			if (editor.freeTimeInTimeline >= template.minLength)
+			{
+				BlockElement blockElement = CreateBlockElement();
+				editor.InsertBlock(blockElement);
+				editor.SelectBlock(blockElement.block);
+			}
 		}
 	}
 

@@ -40,6 +40,8 @@ public class MenuSystem : MonoBehaviour
 	public Transform subHeader;
 	public GameObject subHeaderButton;
 
+	public TMP_Text versionNumber;
+
 	public Dictionary<string, Action> OnPageLoad = new Dictionary<string, Action>();
 
 	public CustomPassVolume outlineVolume;
@@ -71,6 +73,11 @@ public class MenuSystem : MonoBehaviour
 			lobbyWorld.SetActive(false);
 		};
 
+		MatchManager.OnMapVote += (match) =>
+		{
+			header.SetActive(false);
+		};
+
 		ClientConnection.OnConnected += () => { connectingScreen.SetActive(false); };
 		ClientConnection.OnDisconnected += () =>
 		{
@@ -82,6 +89,11 @@ public class MenuSystem : MonoBehaviour
 		{
 			LoadScreen("play");
 		};
+
+		ConnectionConfiguration.OnVersionNumber += version =>
+		{
+			versionNumber.text = version;
+		};
 	}
 
 
@@ -91,10 +103,8 @@ public class MenuSystem : MonoBehaviour
 		gameUI.SetActive(show);
 	}
 
-	public void LoadScreen(string name)
+	public void LoadScreen(string name, Action callback)
 	{
-
-
 		if (currentlyLoadingScreen != null) return;
 
 		if (selectedMenuScreen == null || name != selectedMenuScreen.name)
@@ -105,6 +115,7 @@ public class MenuSystem : MonoBehaviour
 				lobbyCamera.AnimateOut(() =>
 				{
 					LoadScreenElements(name);
+					callback();
 				});
 			} else if (name == "play")
 			{
@@ -113,12 +124,18 @@ public class MenuSystem : MonoBehaviour
 				lobbyCamera.AnimateIn(() =>
 				{
 					currentlyLoadingScreen = null;
+					callback();
 				});
 			} else
 			{
 				LoadScreenElements(name);
 			}
 		}
+	}
+
+	public void LoadScreen(string name)
+	{
+		LoadScreen(name, () => { });
 	}
 
 

@@ -15,6 +15,9 @@ public class Referee
 
 		switch (match.state)
 		{
+			case Match.GameState.WaitingForUnitSelection:
+				match.state = Match.GameState.MapVote;
+				break;
 			case Match.GameState.MapVote:
 				StartGame();
 				break;
@@ -101,6 +104,20 @@ public class Referee
 		ServerConnection.OnMatchContext(match.id, "READY", OnPlayerReady);
 		ServerConnection.OnMatchContext(match.id, "UNITS", OnUnits);
 		ServerConnection.OnMatchContext(match.id, "VOTE", OnVote);
+		ServerConnection.OnMatchContext(match.id, "UNIT_SELECTION", OnUnitSelection);
+	}
+
+	void OnUnitSelection(NetworkPacket packet)
+	{
+		UnitType[] unitTypes = packet.Parse<UnitType[]>();
+		foreach (Player player in match.players)
+		{
+			if (player.user.id == packet.user.id)
+			{
+				AddUnits(player, unitTypes);
+				SetPlayerReady(player.user.id);
+			}
+		}
 	}
 
 	void OnVote(NetworkPacket packet)
@@ -149,23 +166,13 @@ public class Referee
 	/// </summary>
 	void Broadcast(string message)
 	{
-
 		Broadcast(message, "");
 	}
 
-	void SendGameUpdate()
+	public void SendGameUpdate()
 	{
 		Broadcast("MATCH_UPDATE", match);
 	}
-
-	/*public void Start()
-	{
-		
-
-		// Start the game
-		ClearReadyPlayers();
-		SendGameUpdate();
-	}*/
 
 	void ChooseMap()
 	{
@@ -221,7 +228,7 @@ public class Referee
 		match = new Match();
 		match.level = "CITY";
 
-		match.state = Match.GameState.MapVote;
+		match.state = Match.GameState.WaitingForUnitSelection;
 		match.round = 0;
 
 		match.players = new Player[2];
@@ -229,15 +236,10 @@ public class Referee
 		StartListening();
 	}
 
-	public void StartMapVote()
-	{
-		SendGameUpdate();
-	}
-
-	public void AddPlayer(User user, UnitType[] units)
+	public void AddPlayer(User user)
 	{
 		int team = GetFreePlayerTeam();
-		match.players[team] = CreatePlayer(user, team, units);
+		match.players[team] = CreatePlayer(user, team);
 	}
 
 	public void AddBot()
@@ -249,7 +251,8 @@ public class Referee
 
 		UnitType[] defaultUnits = new UnitType[] { UnitType.Sniper, UnitType.Scout, UnitType.Heavy };
 
-		match.players[team] = CreatePlayer(botUser, team, defaultUnits);
+		match.players[team] = CreatePlayer(botUser, team);
+		AddUnits(match.players[team], defaultUnits);
 	}
 
 	int GetFreePlayerTeam()
@@ -293,15 +296,17 @@ public class Referee
 		}
 	}
 
-	Player CreatePlayer(User user, int team, UnitType[] unitTypes)
+	public void AddUnits(Player player, UnitType[] unitTypes)
 	{
-		Player player = new Player(user, team);
-
 		// Not an elegant way of adding units.. :(
 		AddUnit(player, UnitType.Courier, 0);
-
 		for (int i = 0; i < unitTypes.Length; i++)
 			AddUnit(player, unitTypes[i], i + 1);
+	}
+
+	Player CreatePlayer(User user, int team)
+	{
+		Player player = new Player(user, team);
 
 		Debug.Log("Created player " + player.user.username + " on team " + team);
 		return player;
