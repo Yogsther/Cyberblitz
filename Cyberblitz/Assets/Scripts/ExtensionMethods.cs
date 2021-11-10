@@ -88,6 +88,20 @@ public static class ExtensionMethods
         return new Vector2Int(vector.x, vector.z);
     }
 
+    //___Vector2[]___//
+    
+    public static Vector2[] SetAllIndexesToValue(this Vector2[] v2Array, Vector2 value)
+    {
+        Vector2[] output = new Vector2[v2Array.Length];
+
+        for(int i = 0; i < v2Array.Length; i++)
+        {
+            output[i] = value;
+        }
+
+        return v2Array;
+    }
+
     //___List<Vector2Int>___//
     public static List<Vector3> ToFlatVector3(this List<Vector2Int> vector2Ints, float y = 0f)
     {

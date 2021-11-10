@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3802914770040471844}
   - component: {fileID: 6973813394024186783}
   - component: {fileID: 4737181379212406831}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 5737020223886627676}
   - component: {fileID: 6225497009198404489}
   - component: {fileID: 1680253893434434502}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Dot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 6129215809102001977}
   - component: {fileID: 3641406704879038741}
   - component: {fileID: 4676008946258224015}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BlockSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 1544191919319405685}
   - component: {fileID: 4033878085699524536}
   - component: {fileID: 8810364206051919153}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +331,7 @@ GameObject:
   - component: {fileID: 6021981548827683597}
   - component: {fileID: 8964539162872742051}
   - component: {fileID: 1930913189142706119}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HotkeyNumberText
   m_TagString: Untagged
   m_Icon: {fileID: 0}

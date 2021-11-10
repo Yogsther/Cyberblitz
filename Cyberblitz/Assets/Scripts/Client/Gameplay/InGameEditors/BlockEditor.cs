@@ -20,6 +20,8 @@ public class BlockEditor : InGameEditor
 	public void StopEditing()
 	{
 		selectedBlock = null;
+		pathEditor.StopEditing();
+		visionConeEditor.StopEditing();
 	}
 
 	public IEnumerator BlockEditing(Block block)
@@ -34,7 +36,7 @@ public class BlockEditor : InGameEditor
 
 		yield return null;
 
-		Debug.Log("[BlockEditor] - Started editing a block");
+		Debug.Log($"[BlockEditor] - Started editing block {block.id}");
 
 		switch (block.type)
 		{
@@ -88,7 +90,7 @@ public class BlockEditor : InGameEditor
 			break;
 		}
 
-		Debug.Log("[BlockEditor] - Stopped editing a block");
+		Debug.Log($"[BlockEditor] - Stopped editing block {block.id}");
 
 	}
 
