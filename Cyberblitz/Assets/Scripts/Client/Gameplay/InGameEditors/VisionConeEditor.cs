@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class VisionConeEditor : InGameEditor
 {
@@ -40,7 +41,7 @@ public class VisionConeEditor : InGameEditor
 		while (selectedVisionCone == visionCone)
 		{
 
-			if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), LayerMask.GetMask("UI"), out RaycastHit groundHit))
+			if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), LayerMask.GetMask("UI"), out RaycastHit groundHit) && !InputManager.startedHoldingWhileOnGui)
 			{
 
 				Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();

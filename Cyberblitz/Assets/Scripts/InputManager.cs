@@ -16,6 +16,8 @@ public class InputManager : MonoBehaviour
 	public static bool pointerIsHeld;
 	public static bool pointerIsReleased;
 
+	public static bool startedHoldingWhileOnGui;
+
 	public static bool rightButtonIsPressed;
 	public static bool rightButtonIsHeld;
 	public static bool rightButtonIsReleased;
@@ -43,6 +45,16 @@ public class InputManager : MonoBehaviour
 		pointerIsPressed = ctx.started;
 		pointerIsHeld = ctx.performed;
 		pointerIsReleased = ctx.canceled;
+
+        if (pointerIsPressed)
+        {
+			startedHoldingWhileOnGui = isOnGui;
+		}
+
+        if (pointerIsReleased)
+        {
+			startedHoldingWhileOnGui = false;
+        }
 	}
 
 	public void OnRightButtonClick(InputAction.CallbackContext ctx)
