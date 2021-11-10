@@ -10,7 +10,7 @@ public class VisualMoveBlock : VisualBlock
     public LineRenderer moveLine;
 
     public float lineHeight = 0.21f;
-    public float smoothingSpeed = 10f;
+    public float smoothingSpeed = 20f;
 
 
 

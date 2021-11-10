@@ -3,17 +3,17 @@ using UnityEngine;
 
 public class TimelineVisualizationManager : MonoBehaviour
 {
-
-    public LineRenderer moveBlockLine, tempCone, lockedConePrefab;
     public VisualMoveBlock visualMoveBlockPrefab;
     public VisualGuardBlock visualGuardBlockPrefab;
-    public Waypoint waypointPrefab;
     public Camera camera;
-    public Transform visualBlocksParent, waypointParent, lockedConesParent;
+    public Transform visualBlocksParent;
     private Unit selectedUnit;
     private Block selectedBlock;
     private readonly List<VisualBlock> visualBlocks = new List<VisualBlock>();
-    private readonly List<Waypoint> waypoints = new List<Waypoint>();
+
+
+
+
 
     private void Awake()
     {
@@ -21,11 +21,25 @@ public class TimelineVisualizationManager : MonoBehaviour
         TimelineEditor.OnUnitSelected += OnUnitSelected;
         TimelineEditor.OnBlockSelected += OnBlockSelected;
         TimelineEditor.OnBlockDeselected += OnBlockDeselected;
+        TimelineEditor.OnBlockRemoved += RemoveVisualBlock;
         MatchManager.OnMatchUpdate += OnMatchUpdate;
     }
 
     private void OnBlockDeselected()
     {
+        if (selectedBlock != null)
+        {
+            foreach (VisualBlock visualBlock in visualBlocks)
+            {
+                bool isDeselectedBlock = visualBlock.block == selectedBlock;
+
+                if (isDeselectedBlock)
+                {
+                    visualBlock.SetSelected(false);
+                }
+            }
+        }
+
         selectedBlock = null;
         OnBlockUpdated();
     }
@@ -41,14 +55,10 @@ public class TimelineVisualizationManager : MonoBehaviour
 
     private void ClearVisualElements()
     {
-        tempCone.positionCount = 0;
         //moveBlockLine.positionCount = 0;
         ClearTransform(visualBlocksParent);
-        ClearTransform(waypointParent);
-        ClearTransform(lockedConesParent);
 
         visualBlocks.Clear();
-        waypoints.Clear();
     }
 
     private void ClearTransform(Transform parent)
@@ -74,6 +84,15 @@ public class TimelineVisualizationManager : MonoBehaviour
         VisualGuardBlock visualGuardBlock = Instantiate(visualGuardBlockPrefab, visualBlocksParent);
         visualGuardBlock.block = block;
         visualBlocks.Add(visualGuardBlock);
+    }
+
+    public void RemoveVisualBlock(BlockID id)
+    {
+        if (TryGetVisualBlock(id, out VisualBlock visualBlock))
+        {
+            visualBlocks.Remove(visualBlock);
+            Destroy(visualBlock.gameObject);
+        }
     }
 
     private void OnUnitSelected(UnitID id)
@@ -111,7 +130,6 @@ public class TimelineVisualizationManager : MonoBehaviour
 
         int team = MatchManager.match.GetLocalTeam();
         Unit[] units = MatchManager.match.GetAllUnits(team);
-
 
 
         foreach (Unit unit in units)

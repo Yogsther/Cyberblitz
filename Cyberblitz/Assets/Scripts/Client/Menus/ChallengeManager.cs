@@ -9,6 +9,7 @@ public class ChallengeManager : MonoBehaviour
 	public ChallengeEntry entryPrefab;
 	public List<ChallengeEntry> entries = new List<ChallengeEntry>();
 	public GameObject warning;
+	public GameObject noPlayersOnline;
 
 	UserList userList;
 
@@ -17,6 +18,7 @@ public class ChallengeManager : MonoBehaviour
 		ClearList();
 		ClientConnection.On("USER_LIST", OnUserList);
 		PlayPage.OnUnitsAssembled += () => { warning.SetActive(false); };
+		warning.SetActive(true);
 	}
 
 	public void PlayBot()
@@ -31,11 +33,11 @@ public class ChallengeManager : MonoBehaviour
 		// Update user statuses and invites
 		foreach (User user in userList.users)
 		{
-			onlineUsers.Add(user.id);
 			// Update local state
 			if (user.id == ClientLogin.user.id) ClientLogin.user.state = user.state;
 			else
 			{
+				onlineUsers.Add(user.id);
 				// Add or update entry
 				ChallengeEntry entry = GetEntry(user);
 				if (entry == null) entry = CreateEntry(user);
@@ -43,6 +45,8 @@ public class ChallengeManager : MonoBehaviour
 				entry.UpdateInfo(user, userList.invites.GetInviteStatus(ClientLogin.user.id, user.id));
 			}
 		}
+
+		noPlayersOnline.SetActive(onlineUsers.Count == 0);
 
 		// Remove offline users
 		foreach (ChallengeEntry entry in entries.ToArray())

@@ -40,6 +40,8 @@ public class MenuSystem : MonoBehaviour
 	public Transform subHeader;
 	public GameObject subHeaderButton;
 
+	public TMP_Text versionNumber;
+
 	public Dictionary<string, Action> OnPageLoad = new Dictionary<string, Action>();
 
 	public CustomPassVolume outlineVolume;
@@ -86,6 +88,11 @@ public class MenuSystem : MonoBehaviour
 		MatchManager.OnMatchUnloaded += () =>
 		{
 			LoadScreen("play");
+		};
+
+		ConnectionConfiguration.OnVersionNumber += version =>
+		{
+			versionNumber.text = version;
 		};
 	}
 
