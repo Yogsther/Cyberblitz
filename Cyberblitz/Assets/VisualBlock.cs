@@ -15,7 +15,6 @@ public abstract class VisualBlock : MonoBehaviour
 
     public virtual void SetSelected(bool status)
     {
-
         selected = status;
         animator.SetBool("Selected", selected);
     }

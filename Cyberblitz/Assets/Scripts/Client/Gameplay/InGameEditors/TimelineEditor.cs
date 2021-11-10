@@ -44,6 +44,7 @@ public class TimelineEditor : InGameEditor
 
 	public static Action<Block> OnBlockSelected;
 	public static Action<Block> OnBlockUpdate;
+	public static Action<BlockID> OnBlockRemoved;
 	public static Action<UnitID> OnUnitSelected;
 	public static Action<UnitID> OnUnitDeselect;
 	public static Action OnBlockDeselected;
@@ -289,6 +290,7 @@ public class TimelineEditor : InGameEditor
 		blockElements.Remove(blockElement);
 		GetSelectedTimeline().RemoveBlock(blockElement.block);
 		ArrengeUITimeline();
+		OnBlockRemoved?.Invoke(blockElement.block.id);
 	}
 
 
