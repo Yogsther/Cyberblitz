@@ -72,7 +72,7 @@ public class TimelineVisualizationManager : MonoBehaviour
     private void LoadMoveBlock(MoveBlock block)
     {
         VisualMoveBlock visualMoveBlock = Instantiate(visualMoveBlockPrefab, visualBlocksParent);
-        visualMoveBlock.block = block;
+        visualMoveBlock.SetBlock(block);
 
         visualMoveBlock.Init();
 
@@ -82,7 +82,7 @@ public class TimelineVisualizationManager : MonoBehaviour
     private void LoadGuardBlock(GuardBlock block)
     {
         VisualGuardBlock visualGuardBlock = Instantiate(visualGuardBlockPrefab, visualBlocksParent);
-        visualGuardBlock.block = block;
+        visualGuardBlock.SetBlock(block);
         visualBlocks.Add(visualGuardBlock);
     }
 

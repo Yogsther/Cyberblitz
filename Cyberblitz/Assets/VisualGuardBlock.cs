@@ -6,16 +6,26 @@ public class VisualGuardBlock : VisualBlock
     public GuardBlock guardBlock => block as GuardBlock;
 
     [Header("Temp Cone")]
+    public GameObject tempCone;
     public MeshFilter tempConeMeshFilter;
     public MeshRenderer tempConeMeshRenderer;
 
     [Header("Locked Cone")]
+    public GameObject lockedCone;
+
     public MeshFilter lockedConeMeshFilter;
     public MeshRenderer lockedConeMeshRenderer;
 
     public float smoothingSpeed = 20f;
 
     private Vector2[] drawnPoints;
+
+    public override void SetBlock(Block block)
+    {
+        base.SetBlock(block);
+
+
+    }
 
     [ContextMenu("Draw Test Cones")]
     public void DrawTestCones()
@@ -36,7 +46,6 @@ public class VisualGuardBlock : VisualBlock
         tempConeMeshFilter.mesh = GetConeMesh(testTempPoints);
         lockedConeMeshFilter.mesh = GetConeMesh(testLockPoints);
 
-
     }
 
     public override void SetSelected(bool status)
@@ -44,63 +53,57 @@ public class VisualGuardBlock : VisualBlock
         base.SetSelected(status);
 
         UpdateVisuals();
-        
+
     }
 
     private void Update()
     {
-        tempConeMeshRenderer.gameObject.SetActive(selected && !InputManager.isOnGui);
-
-        if (guardBlock != null && tempConeMeshRenderer.gameObject.activeInHierarchy)
+        if (guardBlock.aimCone != null)
         {
 
-            float inputDirection = 0;
-            if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), out RaycastHit groundHit))
+            tempCone.SetActive(selected && !InputManager.isOnGui);
+
+            if (tempCone.activeInHierarchy)
             {
-
-                Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();
-
-                Vector2 toMouse = mouseHitPoint - guardBlock.aimCone.origin.point;
-
-                inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
+                float inputDirection = GameManager.instance.TimelineEditor.blockEditor.visionConeEditor.GetInputDirection();
 
                 Vector2[] points = guardBlock.aimCone.GetConePoints(inputDirection);
 
                 tempConeMeshFilter.mesh = GetConeMesh(points);
             }
-        }
 
-        if (guardBlock != null)
-        {
-            if (guardBlock.aimCone != null)
+            if (lockedCone.activeInHierarchy)
             {
-                if (drawnPoints == null)
-                {
-                    drawnPoints = new Vector2[3];
-                    drawnPoints.SetAllIndexesToValue(guardBlock.aimCone.origin.point);
-                }
 
                 Vector2[] points = guardBlock.aimCone.GetConePoints();
 
-                for (int i = 0; i < points.Length; i++)
+                if (drawnPoints != null)
                 {
-                    drawnPoints[i] = Vector2.LerpUnclamped(drawnPoints[i], points[i], smoothingSpeed * Time.deltaTime);
+                    for (int i = 0; i < points.Length; i++)
+                    {
+                        drawnPoints[i] = Vector2.LerpUnclamped(drawnPoints[i], points[i], smoothingSpeed * Time.deltaTime);
+                    }
+                    lockedConeMeshFilter.mesh = GetConeMesh(drawnPoints);
                 }
-
-
-                    
-                lockedConeMeshFilter.mesh = GetConeMesh(drawnPoints);
+                else
+                {
+                    lockedConeMeshFilter.mesh = GetConeMesh(points);
+                }
 
             }
         }
-
     }
 
     public override void UpdateVisuals()
     {
+        if (guardBlock.aimCone != null && guardBlock.aimCone.isSet && !lockedCone.activeInHierarchy)
+        {
+            drawnPoints = new Vector2[3];
+            drawnPoints.SetAllIndexesToValue(guardBlock.aimCone.GetConePoints()[0]);
 
+            lockedCone.SetActive(true);
+        }
     }
-
     private Mesh GetConeMesh(Vector2[] conePoints)
     {
         Mesh mesh = new Mesh();
@@ -140,7 +143,7 @@ public class VisualGuardBlock : VisualBlock
         float startAngle = Mathf.Atan2(startDiration.y, startDiration.x) * Mathf.Rad2Deg;
         float endAngle = Mathf.Atan2(endDirection.y, endDirection.x) * Mathf.Rad2Deg;
 
-        
+
 
         for (int i = 0; i < coneResolution + 1; i++)
         {
@@ -186,7 +189,7 @@ public class VisualGuardBlock : VisualBlock
 
     private void OnDrawGizmos()
     {
-        if(guardBlock != null)
+        if (guardBlock != null)
         {
             guardBlock.aimCone.DrawGizmo();
         }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class CameraController : MonoBehaviour
     private Vector3 cameraOffset => transform.TransformPoint(localCameraOffset / zoom);
     private float padding => levelBorderPadding / zoom;
 
+
+    
 
     private void Awake()
     {
@@ -59,7 +62,7 @@ public class CameraController : MonoBehaviour
 
     private void ChangeCameraZoom(float change)
     {
-        zoom += change * zoomSpeed * Time.deltaTime;
+        zoom += change * zoomSpeed;
 
         zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
     }
@@ -81,22 +84,30 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
+        
+
         if (LevelManager.instance.currentLevel != null)
         {
 
-            if (InputManager.TryGetPointerHitLayer(grabbableLayers, out RaycastHit groundHit) && InputManager.rightButtonIsHeld)
+            if (InputManager.TryGetPointerHitLayer(grabbableLayers, out RaycastHit groundHit))
             {
 
-                if (!isDragging)
+
+
+                if (InputManager.rightButtonIsHeld)
                 {
-                    grabbedPoint = groundHit.point;
 
-                    isDragging = true;
+                    if (!isDragging)
+                    {
+                        grabbedPoint = groundHit.point;
+
+                        isDragging = true;
+                    }
+
+                    Vector3 toGrabbedPoint = (grabbedPoint - groundHit.point).Flatten();
+
+                    pivotTargetPosition += toGrabbedPoint;
                 }
-
-                Vector3 toGrabbedPoint = (grabbedPoint - groundHit.point).Flatten();
-
-                pivotTargetPosition += toGrabbedPoint;
             }
 
 

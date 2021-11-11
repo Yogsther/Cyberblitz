@@ -328,7 +328,7 @@ public class TimelineEditor : InGameEditor
 			blockElement.block.timelineIndex = i;
 			blockElement.SetPhysicalPositionInTimeline(x);
 			blockElement.UpdatePhysicalProperties();
-			if (i != blockElements.Count - 1) x += blockElement.GetWidth() + BLOCK_ELEMENT_PADDING;
+			if (i != blockElements.Count - 1) x += blockElement.targetWidth + BLOCK_ELEMENT_PADDING;
 
 			if (blockElement.block.type == BlockType.Move)
 			{

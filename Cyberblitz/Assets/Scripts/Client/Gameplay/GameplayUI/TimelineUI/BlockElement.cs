@@ -22,6 +22,9 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 	[HideInInspector]
 	public BlockData template;
 
+	public float targetX = 0f;
+	public float targetWidth = 0f;
+
 	private class DragOperation
 	{
 		public bool dragging = false;
@@ -57,7 +60,7 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 		SetSelected(false);
 		SetResizeHandleVisible(false);
-		UpdatePhysicalProperties();
+		UpdatePhysicalProperties(false);
 	}
 
 	public void SetDragging(bool dragging, bool centeredOffset = true)
@@ -99,8 +102,9 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 		rectTransform.SetAsLastSibling();
 
 		localPoint -= drag.dragOffset;
-		rectTransform.anchoredPosition = localPoint;
-
+		targetX = localPoint.x;
+		//rectTransform.anchoredPosition = localPoint;
+		rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, localPoint.y);
 
 		if (editor.IsMouseIsOverTimeline() && IsPlaceableInTimeline())
 		{
@@ -146,12 +150,16 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 		}
 	}
 
-	public void UpdatePhysicalProperties()
+	public void UpdatePhysicalProperties(bool useSmoothing = true)
 	{
 		// Set block width from block duration
 		float width = editor.TIMELINE_PIXELS_TO_SECONDS;
 		if (block != null) width = block.duration * editor.TIMELINE_PIXELS_TO_SECONDS - editor.BLOCK_ELEMENT_PADDING;
-		rectTransform.sizeDelta = new Vector2(width, rectTransform.sizeDelta.y);
+        if (!useSmoothing)
+        {
+			rectTransform.sizeDelta = new Vector2(width, rectTransform.sizeDelta.y);
+		}
+		targetWidth = width;
 
 		// Update block duration-text
 		float duration = template.minLength;
@@ -161,12 +169,16 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 
 	public void SetPhysicalPositionInTimeline(float x)
 	{
+		targetX = x;
+
 		Vector2 centeredPosition = new Vector2(0f, 0f)
 		{
 			x = x
 		};
 
-		rectTransform.anchoredPosition = centeredPosition;
+
+		//rectTransform.anchoredPosition = centeredPosition;
+		rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 0f);
 	}
 
 	public float GetWidth()
@@ -184,7 +196,6 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 			if (duration < template.minLength) duration = template.minLength;
 			editor.ResizeBlock(block, duration);
 		}
-
 	}
 
 
@@ -221,6 +232,9 @@ public class BlockElement : MonoBehaviour, IPointerClickHandler, IPointerDownHan
 				OnDragEnd();
 			}
 		}
+
+		rectTransform.anchoredPosition = new Vector2(Mathf.Lerp(rectTransform.anchoredPosition.x, targetX, 20f * Time.deltaTime), rectTransform.anchoredPosition.y);
+		rectTransform.sizeDelta = new Vector2(Mathf.Lerp(rectTransform.sizeDelta.x, targetWidth, 20f * Time.deltaTime), rectTransform.sizeDelta.y);
 	}
 
 	public void OnPointerDown(PointerEventData eventData)

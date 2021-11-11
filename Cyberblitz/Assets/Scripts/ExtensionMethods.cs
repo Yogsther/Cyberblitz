@@ -3,6 +3,15 @@ using UnityEngine;
 
 public static class ExtensionMethods
 {
+
+    //___object___//
+
+    public static void LogWithOriginTag(this object obj, string message)
+    {
+        Debug.Log($"[{obj.GetType()}] - {message}");
+    }
+
+
     //___Position___//
 
     public static Vector2 ToVector2(this Position position)
@@ -102,11 +111,9 @@ public static class ExtensionMethods
     
     public static Vector2[] SetAllIndexesToValue(this Vector2[] v2Array, Vector2 value)
     {
-        Vector2[] output = new Vector2[v2Array.Length];
-
         for(int i = 0; i < v2Array.Length; i++)
         {
-            output[i] = value;
+            v2Array[i] = value;
         }
 
         return v2Array;

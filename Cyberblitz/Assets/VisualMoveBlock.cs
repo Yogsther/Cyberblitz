@@ -21,7 +21,15 @@ public class VisualMoveBlock : VisualBlock
         waypoint.block = block;
         waypoint.SetSelected(selected);
 
-        UpdatePositionsInstant();
+        BlockEditor.OnBlockSet += id =>
+        {
+            if (id == block.id)
+            {
+                waypoint.transform.position = moveBlock.movementPath.target.point.ToFlatVector3(lineHeight);
+
+                UpdatePositionsInstant();
+            }
+        };
     }
 
     private void Update()
@@ -98,10 +106,6 @@ public class VisualMoveBlock : VisualBlock
                 Vector3 targetPos = targetLinePositions[i];
 
                 moveLine.SetPosition(i, Vector3.LerpUnclamped(currentPos, targetPos, smoothingSpeed * Time.deltaTime));
-
-                /*Debug.DrawRay(targetPos, Vector3.up, Color.green);
-
-                Debug.DrawRay(moveLine.GetPosition(i), Vector3.up);*/
             }
 
             if (targetLinePositions.Count != 0)

@@ -8,6 +8,16 @@ public class VisionConeEditor : InGameEditor
 
 	private float inputDirection = 0f;
 
+    private void Awake()
+    {
+		InputManager.OnConfrimBlockEdit += () => ConfirmCone();
+    }
+
+    public float GetInputDirection()
+    {
+		return inputDirection;
+    }
+
 	[ContextMenu("Edit Test Cone")]
 	public void EditTestPath()
 	{
@@ -30,6 +40,21 @@ public class VisionConeEditor : InGameEditor
 		selectedVisionCone = null;
 	}
 
+	public void ConfirmCone()
+    {
+		if (selectedVisionCone != null && !InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), out RaycastHit groundHit))
+		{
+
+			selectedVisionCone.isSet = true;
+			selectedVisionCone.direction = inputDirection;
+
+			OnUpdated?.Invoke();
+
+			GameManager.instance.TimelineEditor.DeselectBlock();
+			selectedVisionCone = null;
+		}
+	}
+
 	private IEnumerator ConeEditing(VisionCone visionCone)
 	{
 		selectedVisionCone = visionCone;
@@ -41,16 +66,17 @@ public class VisionConeEditor : InGameEditor
 		while (selectedVisionCone == visionCone)
 		{
 
-			if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), LayerMask.GetMask("UI"), out RaycastHit groundHit))
+			if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), out RaycastHit groundHit))
 			{
+
+				Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();
+
+				Vector2 toMouse = mouseHitPoint - visionCone.origin.point;
+
+				inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
+
 				if (InputManager.pointerIsHeld && !InputManager.startedHoldingWhileOnGui)
 				{
-					Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();
-
-					Vector2 toMouse = mouseHitPoint - visionCone.origin.point;
-
-					inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
-
 
 					visionCone.isSet = true;
 					visionCone.direction = inputDirection;
@@ -65,7 +91,6 @@ public class VisionConeEditor : InGameEditor
 
 			yield return null;
 		}
-
 
 		Debug.Log("[VisionConeEditor] - Stopped editing a cone");
 	}
