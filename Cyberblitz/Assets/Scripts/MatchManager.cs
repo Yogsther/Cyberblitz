@@ -33,6 +33,7 @@ public class MatchManager : MonoBehaviour
 		ClientConnection.On("SEND_UNITS", SendUnits);
 		ClientConnection.On("GAME_TERMINATED", OnGameEnd);
 
+
 		ClientConnection.On("DISCONNECTED", packet =>
 		{
 			if (match != null) UnloadMatch();
@@ -41,6 +42,11 @@ public class MatchManager : MonoBehaviour
 
 		TurnPlayback.OnPlaybackFinished += SignalReady;
 		LevelManager.OnLevelLoaded += (level) => SignalReady();
+	}
+
+	public void OnSendUnitSelection()
+	{
+		ClientConnection.Emit("UNIT_SELECTION", PlayPage.GetSelectedUnits());
 	}
 
 	public void UnloadMatch()
@@ -65,6 +71,9 @@ public class MatchManager : MonoBehaviour
 
 		switch (match.state)
 		{
+			case Match.GameState.WaitingForUnitSelection:
+				OnSendUnitSelection();
+				break;
 			case Match.GameState.Planning:
 				QueueSystem.Call("MATCH_PLANNING");
 				OnPlanningStart?.Invoke();

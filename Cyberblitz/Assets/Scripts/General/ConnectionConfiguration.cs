@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,7 @@ public class ConnectionConfiguration : MonoBehaviour
 
 	public static ServerConnection serverConnection;
 	public static ClientConnection clientConnection;
+	public static Action<string> OnVersionNumber;
 
 
 	private void Start()
@@ -39,6 +41,7 @@ public class ConnectionConfiguration : MonoBehaviour
 			// Connect to server
 			clientConnection = new ClientConnection(config, live);
 			MatchManager.Instance.Init();
+			OnVersionNumber?.Invoke(config.version);
 		}
 	}
 

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VFX;
@@ -11,8 +13,10 @@ public class PlayPage : MonoBehaviour
 	public Transform modelSpawns;
 	public Button playButton;
 	public PlayerBrowser playerBrowser;
+	public TMP_Text playerNameText;
 
 	public RuntimeAnimatorController selectAnimationController;
+	public static Action OnUnitsAssembled;
 
 	public VisualEffect[] spawnEffects;
 
@@ -43,17 +47,6 @@ public class PlayPage : MonoBehaviour
 		};
 	}
 
-	private void Start()
-	{
-		playButton.onClick.AddListener(() =>
-		{
-			if (HasSelectedUnits())
-			{
-				playerBrowser.SetVisbility(true);
-			}
-		});
-	}
-
 	void ClearModelsInSpawnpoint(Transform spawnpoint)
 	{
 		foreach (Transform model in spawnpoint)
@@ -79,6 +72,11 @@ public class PlayPage : MonoBehaviour
 		selectedUnits[index] = new SelectedUnit(type);
 		selectedUnits[index].empty = false;
 		LoadModels();
+		if (HasSelectedUnits() && ClientLogin.user.state == UserState.Unavalible)
+		{
+			OnUnitsAssembled?.Invoke();
+			ClientConnection.Emit("USER_STATE", UserState.Ready);
+		}
 	}
 
 	void LoadModels()
@@ -111,6 +109,7 @@ public class PlayPage : MonoBehaviour
 			panel.ClosePanel();
 		}
 		menuSystem.menuBackground.SetActive(false);
+		playerNameText.text = ClientLogin.user.username;
 	}
 
 	public void OpenPanel(AddUnitPanel panelToOpen)

@@ -65,8 +65,10 @@ public class MapVotePage : MonoBehaviour
 		this.votes = votes;
 		if (menuSystem.selectedMenuScreen.name != "vote")
 		{
-			menuSystem.LoadScreen("vote");
-			menuSystem.header.SetActive(false);
+			menuSystem.LoadScreen("vote", () =>
+			{
+				menuSystem.header.SetActive(false);
+			});
 
 			ready = false;
 			timeLeft = VOTE_TIME;
