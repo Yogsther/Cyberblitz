@@ -12,6 +12,7 @@ public class Referee
 
 	void MatchStep()
 	{
+		ClearReadyPlayers();
 
 		switch (match.state)
 		{
@@ -54,7 +55,7 @@ public class Referee
 		else Broadcast("SEND_UNITS");
 
 		if (match.state == Match.GameState.Ending) Terminate(match.GetUser(match.winner) + " won the game.");
-		ClearReadyPlayers();
+
 	}
 
 	void PrepareForPlanning()
@@ -81,6 +82,7 @@ public class Referee
 
 	void OnPlayerReady(NetworkPacket packet)
 	{
+		Debug.Log("Got ready from player");
 		// Conditions where players cannot set ready.
 		if (match.state == Match.GameState.WaitingForUnits) return;
 
@@ -218,7 +220,6 @@ public class Referee
 		List<string> playerNames = new List<string>();
 		foreach (Player player in match.players) playerNames.Add(player.user.username);
 		Debug.Log("Startin game with: " + String.Join(", ", playerNames.ToArray()));
-
 
 		SendGameUpdate();
 	}

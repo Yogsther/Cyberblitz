@@ -71,7 +71,7 @@ public class UnitPortraits : MonoBehaviour
 
 	void OnMatchUpdate(Match match)
 	{
-		if (match.state != Match.GameState.MapVote)
+		if (match.state != Match.GameState.MapVote && match.state != Match.GameState.WaitingForUnitSelection)
 		{
 			Unit[] units = match.GetAllUnits(match.GetLocalTeam());
 			for (int i = 0; i < units.Length; i++)

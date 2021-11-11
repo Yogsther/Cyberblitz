@@ -73,11 +73,11 @@ public class TurnPlayback : MonoBehaviour
 
 				if (unit.timeline.TryGetBlockAtTime(time, out Block block))
 				{
-                    if (block.firstPlaybackTick)
-                    {
+					if (block.firstPlaybackTick)
+					{
 						block.OnPlaybackStart(match);
 						block.firstPlaybackTick = false;
-                    }
+					}
 
 					float blockStartTime = unit.timeline.GetStartTimeOfBlockAtIndex(block.timelineIndex);
 
@@ -92,7 +92,7 @@ public class TurnPlayback : MonoBehaviour
 
 			yield return null;
 		}
-
+		Debug.Log("Finished playback");
 		OnPlaybackFinished?.Invoke();
 	}
 }

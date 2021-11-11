@@ -96,11 +96,12 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
 	public void SetRagdollEnabled(bool enabled)
 	{
-		animator.enabled = !enabled;
-
+		if (animator != null) animator.enabled = !enabled;
+		else Debug.Log("ANIMATOR WAS NULL");
 		foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
 		{
-			rb.isKinematic = !enabled;
+			if (rb != null) rb.isKinematic = !enabled;
+			else Debug.Log("RB was NULL");
 		}
 	}
 

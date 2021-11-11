@@ -55,12 +55,8 @@ public static class ServerCore
 	{
 		Debug.Log("Terminated game " + id);
 		Referee game = GetGame(id);
-		foreach (Player player in game.match.players)
-		{
-			ConnectedUser user = GetConnectedUser(player.user.id);
-			if (user != null) user.user.state = UserState.Ready;
-		}
 		games.Remove(game);
+		ServerConnection.FreeMatchContext(id);
 		UpdateUserList();
 	}
 
@@ -84,7 +80,10 @@ public static class ServerCore
 			User user = connectedUser.user;
 
 			if (GetUserGame(user.id) != null) user.state = UserState.Ingame;
+			else if (user.state == UserState.Ingame) user.state = UserState.Ready;
+
 			userList.users.Add(user);
+			Debug.Log("UserList: " + user.username + " , state: " + user.state.ToString());
 		}
 		Broadcast("USER_LIST", userList);
 	}
@@ -124,6 +123,7 @@ public static class ServerCore
 				{
 					activeGame.OnPlayerDisconnect(connectedUser.user);
 				}
+				invites.RemoveAllInvitesRelatingToUser(connectedUser.user.id);
 				Debug.Log($"Disconnected user {connectedUser.user.username}\nTotal connected users: {users.Count}");
 			}
 		}
@@ -149,6 +149,7 @@ public static class ServerCore
 		ServerConnection.On("USER_STATE", OnUserState);
 		ServerConnection.On("INVITE", OnInvite);
 		ServerConnection.On("TOGGLE_MATCHMAKING", OnToggleMatchmaking);
+		ServerConnection.On("USER_LIST_UPDATE", packet => { UpdateUserList(); });
 	}
 
 	static void OnToggleMatchmaking(NetworkPacket packet)
@@ -156,10 +157,8 @@ public static class ServerCore
 		ConnectedUser user = GetConnectedUser(packet.user.id);
 		if (user != null)
 		{
-			if (user.user.state == UserState.InPool)
-			{
-				user.user.state = UserState.Ready;
-			} else
+			if (user.user.state == UserState.InPool) user.user.state = UserState.Ready;
+			else
 			{
 				user.user.state = UserState.InPool;
 				foreach (ConnectedUser otherUser in users)
@@ -185,9 +184,6 @@ public static class ServerCore
 		{
 			if (invites.ExistsInvite(to.user.id, from.user.id))
 			{
-				invites.RemoveAllInvitesRelatingToUser(from.user.id);
-				invites.RemoveAllInvitesRelatingToUser(to.user.id);
-
 				// Start game with players
 				StartGameWithPlayers(from, to);
 
@@ -213,6 +209,9 @@ public static class ServerCore
 
 		if (user1 != null && user2 != null)
 		{
+			invites.RemoveAllInvitesRelatingToUser(user1.user.id);
+			invites.RemoveAllInvitesRelatingToUser(user2.user.id);
+
 			Referee referee = new Referee();
 			games.Add(referee);
 

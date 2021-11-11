@@ -50,6 +50,7 @@ public class ServerConnection : WebSocketBehavior
 
 		if (packet.version != config.version)
 		{
+			Debug.Log("User was rejected connection, Client version: " + packet.version);
 			SendTo(socket, "MISSMATCH_VERSION", config.version);
 			return;
 		}
@@ -98,6 +99,17 @@ public class ServerConnection : WebSocketBehavior
 	public static void On(string identifier, Action<NetworkPacket> callback)
 	{
 		events.On(identifier, callback);
+	}
+
+	public static void FreeMatchContext(MatchID id)
+	{
+		foreach (MatchID contextEventID in events.contextEvents.Keys)
+		{
+			if (contextEventID == id)
+			{
+				events.contextEvents.Remove(contextEventID);
+			}
+		}
 	}
 
 	public static void OnMatchContext(MatchID id, string identifier, Action<NetworkPacket> callback)

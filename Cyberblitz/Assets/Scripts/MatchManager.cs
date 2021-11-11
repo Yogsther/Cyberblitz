@@ -54,6 +54,7 @@ public class MatchManager : MonoBehaviour
 		match = null;
 		levelManager.UnloadLevel();
 		OnMatchUnloaded?.Invoke();
+		ClientConnection.Emit("USER_LIST_UPDATE");
 	}
 
 	void OnGameEnd(NetworkPacket packet)
@@ -66,8 +67,6 @@ public class MatchManager : MonoBehaviour
 	void MatchUpdate(NetworkPacket packet)
 	{
 		match = packet.Parse<Match>();
-
-		Debug.Log("Match manager got match update: " + match.state.ToString());
 
 		switch (match.state)
 		{
@@ -96,6 +95,7 @@ public class MatchManager : MonoBehaviour
 	void SendUnits(NetworkPacket packet)
 	{
 		OnPlanningEnd?.Invoke();
+		Debug.Log("Sending units");
 		ClientConnection.Emit("UNITS", match);
 	}
 
@@ -112,6 +112,7 @@ public class MatchManager : MonoBehaviour
 
 	public static void SignalReady()
 	{
+		Debug.Log("Sent READY");
 		ClientConnection.Emit("READY");
 	}
 

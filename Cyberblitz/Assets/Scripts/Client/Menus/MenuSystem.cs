@@ -129,6 +129,7 @@ public class MenuSystem : MonoBehaviour
 			} else
 			{
 				LoadScreenElements(name);
+				callback();
 			}
 		}
 	}

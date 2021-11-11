@@ -6,8 +6,8 @@ using UnityEngine;
 public class NetworkEvents
 {
 
-	EventListeners events = new EventListeners();
-	Dictionary<MatchID, EventListeners> contextEvents = new Dictionary<MatchID, EventListeners>();
+	public EventListeners events = new EventListeners();
+	public Dictionary<MatchID, EventListeners> contextEvents = new Dictionary<MatchID, EventListeners>();
 
 	public void OnMatchContext(MatchID id, string identifier, Action<NetworkPacket> callback)
 	{

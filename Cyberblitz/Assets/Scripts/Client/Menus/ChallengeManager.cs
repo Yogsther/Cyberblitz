@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ChallengeManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class ChallengeManager : MonoBehaviour
 	public GameObject noPlayersOnline;
 	public GameObject matchmakingBanner;
 	public Action<User> OnLocalUserUpdate;
+	public TMP_Text matchmakingButtonText;
 
 	UserList userList;
 
@@ -54,6 +56,7 @@ public class ChallengeManager : MonoBehaviour
 	public void UpdateMatchmakingVisuals()
 	{
 		matchmakingBanner.SetActive(inMatchMaking);
+		matchmakingButtonText.text = inMatchMaking ? "STOP MATCHMAKING" : "START MATCHMAKING";
 	}
 
 	void UpdateEntries()
