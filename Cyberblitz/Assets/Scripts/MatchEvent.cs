@@ -88,8 +88,6 @@ public class DeathEvent : MatchEvent
 
 	public override void PlaybackEffect(Match simulatedMatch)
 	{
-		VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(actorUnitId);
-		SoundManager.PlaySound("unit_killed", visualUnit.mainModel.position);
 		VisualUnit.OnDeath?.Invoke(actorUnitId);
 	}
 }

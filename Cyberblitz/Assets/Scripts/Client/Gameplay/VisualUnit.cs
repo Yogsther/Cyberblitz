@@ -81,6 +81,7 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 				isSelectable = false;
 				SetRagdollEnabled(isDead);
 				outlineAnimator.SetBool("Dead", isDead);
+				SoundManager.PlaySound("unit_killed", mainModel.position);
 			}
 		};
 	}
@@ -107,6 +108,8 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
 	public void SetRagdollEnabled(bool enabled)
 	{
+		Debug.Log("ID of killed unit " + id);
+
 		if (animator != null) animator.enabled = !enabled;
 		else Debug.Log("ANIMATOR WAS NULL");
 		foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())

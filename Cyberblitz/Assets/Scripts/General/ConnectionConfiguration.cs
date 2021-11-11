@@ -51,7 +51,7 @@ public class ConnectionConfiguration : MonoBehaviour
 	{
 		if (connectionType == ConnectionType.Client)
 		{
-			foreach (NetworkPacket packet in clientConnection.callstack)
+			foreach (NetworkPacket packet in clientConnection.callstack.ToArray())
 			{
 				ClientConnection.events.Invoke(packet);
 			}
