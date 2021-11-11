@@ -70,23 +70,27 @@ public class TurnPlayback : MonoBehaviour
 
 			foreach (Unit unit in units)
 			{
-
-				if (unit.timeline.TryGetBlockAtTime(time, out Block block))
+				if (!VisualUnitManager.GetVisualUnitById(unit.id).isDead)
 				{
-					if (block.firstPlaybackTick)
+
+					if (unit.timeline.TryGetBlockAtTime(time, out Block block))
 					{
-						block.OnPlaybackStart(match);
-						block.firstPlaybackTick = false;
+						if (block.firstPlaybackTick)
+						{
+							block.OnPlaybackStart(match);
+							block.firstPlaybackTick = false;
+						}
+
+						float blockStartTime = unit.timeline.GetStartTimeOfBlockAtIndex(block.timelineIndex);
+
+						float blockLocalTime = time - blockStartTime;
+
+						block.Playback(match, blockLocalTime);
 					}
-
-					float blockStartTime = unit.timeline.GetStartTimeOfBlockAtIndex(block.timelineIndex);
-
-					float blockLocalTime = time - blockStartTime;
-
-					block.Playback(match, blockLocalTime);
-				} else
-				{
-					//Debug.LogWarning($"Unit {unit.id} had a Block that was null at time {time}");
+					else
+					{
+						//Debug.LogWarning($"Unit {unit.id} had a Block that was null at time {time}");
+					}
 				}
 			}
 
