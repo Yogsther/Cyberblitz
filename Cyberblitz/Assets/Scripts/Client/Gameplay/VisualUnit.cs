@@ -87,6 +87,11 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 	}
 
 
+	private void OnDestroy()
+	{
+		Debug.Log("Got destroyed! " + id);
+	}
+
 
 	private void Update()
 	{

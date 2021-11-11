@@ -35,7 +35,7 @@ public class GuardBlock : Block
 				bool canShoot = ownerUnit.lastShot == -1 || secondsSinceLastShot >= shotCooldown;
 
 
-				if (canShoot)
+				if (canShoot && !otherUnit.dead)
 				{
 
 
@@ -71,13 +71,13 @@ public class GuardBlock : Block
 						if (otherUnit.hp <= 0)
 						{
 							otherUnit.hp = 0;
+							otherUnit.dead = true;
 
 							DeathEvent deathEvent = new DeathEvent(otherUnit.id, effectTime + effectAnimationDelay);
 							simulatedMatch.events.Enqueue(deathEvent);
 
 							if (otherUnit.type == UnitType.Courier && simulatedMatch.winner == null)
 							{
-								Debug.Log("REGISTERED WINNER!");
 								simulatedMatch.winner = ownerUnit.ownerID;
 							}
 						} else

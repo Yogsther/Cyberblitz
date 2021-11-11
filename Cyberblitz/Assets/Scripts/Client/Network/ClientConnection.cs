@@ -50,8 +50,9 @@ public class ClientConnection
 		{
 			Debug.LogWarning("Disconnected!");
 
-			Task.Run(() =>
+			/*Task.Run(() =>
 			{
+				Debug.Log("Disconnected!, RECONNINECINTINGIN");
 				NetworkPacket disconnectMessage = new NetworkPacket("DISCONNECTED", "");
 				callstack.Add(disconnectMessage);
 
@@ -62,7 +63,7 @@ public class ClientConnection
 
 					ws.Connect();
 				}
-			});
+			});*/
 		};
 
 		On("CONNECTED", packet =>

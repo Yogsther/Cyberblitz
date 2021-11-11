@@ -6,6 +6,7 @@ public class Unit
 	public UserID ownerID;
 	public float hp;
 	public UnitType type;
+	public bool dead = false;
 	public bool isMVP = false;
 	public Timeline timeline = new Timeline();
 	public Position position = new Position(0f, 0f);
@@ -23,7 +24,7 @@ public class Unit
 
 	public bool IsDead()
 	{
-		return hp <= 0;
+		return dead;
 	}
 	public void SetPosition(Vector2Int spawn)
 	{

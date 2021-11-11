@@ -66,6 +66,7 @@ public class TurnPlayback : MonoBehaviour
 				nextEvent.PlaybackEffect(match);
 
 				if (match.events.Count != 0) nextEvent = match.events.Dequeue();
+				else nextEvent = null;
 			}
 
 			foreach (Unit unit in units)
@@ -86,8 +87,7 @@ public class TurnPlayback : MonoBehaviour
 						float blockLocalTime = time - blockStartTime;
 
 						block.Playback(match, blockLocalTime);
-					}
-					else
+					} else
 					{
 						//Debug.LogWarning($"Unit {unit.id} had a Block that was null at time {time}");
 					}

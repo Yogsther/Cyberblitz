@@ -15,6 +15,7 @@ public class UnitPortrait : MonoBehaviour
 	{
 		selectButton.onClick.AddListener(() =>
 		{
+			Debug.Log("Selecting unit " + unitID);
 			VisualUnitManager.GetVisualUnitById(unitID).SetSelected(true);
 		});
 	}
