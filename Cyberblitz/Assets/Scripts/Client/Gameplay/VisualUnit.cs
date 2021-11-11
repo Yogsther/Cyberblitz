@@ -53,6 +53,17 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 			if (outlineAnimator != null) outlineAnimator.SetBool("Selected", isSelected);
 		};
 
+		TimelineEditor.OnUnitDeselect += id =>
+		{
+			bool isDeselectedUnit = id == this.id;
+
+			if (isDeselectedUnit)
+			{
+				isSelected = false;
+				if (outlineAnimator != null) outlineAnimator.SetBool("Selected", isSelected);
+			}
+		};
+
 		OnShoot += (id, direction) =>
 		{
 			if (id == this.id)

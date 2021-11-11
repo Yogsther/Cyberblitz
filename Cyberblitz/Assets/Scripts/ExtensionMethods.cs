@@ -3,6 +3,15 @@ using UnityEngine;
 
 public static class ExtensionMethods
 {
+
+    //___object___//
+
+    public static void LogWithOriginTag(this object obj, string message)
+    {
+        Debug.Log($"[{obj.GetType()}] - {message}");
+    }
+
+
     //___Position___//
 
     public static Vector2 ToVector2(this Position position)
@@ -52,6 +61,16 @@ public static class ExtensionMethods
         return new Vector3(vector.x, y, vector.z);
     }
 
+    public static Vector3 ClampToRect(this Vector3 vector, Rect rect, float padding)
+    {
+        Vector3 clampedVector = new Vector3();
+
+        clampedVector.x = Mathf.Clamp(vector.x, rect.xMin + padding, rect.xMax - padding);
+        clampedVector.y = Mathf.Clamp(vector.y, rect.yMin + padding, rect.yMax - padding);
+
+        return vector;
+    }
+
     public static Vector2Int RoundFlatToVector2Int(this Vector3 vector)
     {
         int x = Mathf.RoundToInt(vector.x);
@@ -92,11 +111,9 @@ public static class ExtensionMethods
     
     public static Vector2[] SetAllIndexesToValue(this Vector2[] v2Array, Vector2 value)
     {
-        Vector2[] output = new Vector2[v2Array.Length];
-
         for(int i = 0; i < v2Array.Length; i++)
         {
-            output[i] = value;
+            v2Array[i] = value;
         }
 
         return v2Array;

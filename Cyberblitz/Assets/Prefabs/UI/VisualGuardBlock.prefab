@@ -113,7 +113,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6870153970711377345
 Transform:
   m_ObjectHideFlags: 0
@@ -237,10 +237,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selected: 0
+  isSet: 0
+  tempCone: {fileID: 1353655096964282292}
   tempConeMeshFilter: {fileID: 2868585772787394551}
   tempConeMeshRenderer: {fileID: 7539952887363301572}
+  lockedCone: {fileID: 1904852430773926138}
   lockedConeMeshFilter: {fileID: 2766559231455791717}
   lockedConeMeshRenderer: {fileID: 3541260121508094449}
+  smoothingSpeed: 20
 --- !u!95 &5158742293398230707
 Animator:
   serializedVersion: 3
@@ -251,7 +255,7 @@ Animator:
   m_GameObject: {fileID: 7372316664004969313}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 13640f659a8addb4c851b8aa2e9b4a3b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

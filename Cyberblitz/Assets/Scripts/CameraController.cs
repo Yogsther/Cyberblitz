@@ -1,78 +1,148 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-	private Vector3 refpoint;
-	private bool isDragging;
-
-	private Vector3 targetPosition;
-
-	private Vector3 smoothVelocity;
+    public Transform cameraTransform;
+    public Transform pivotTransform;
 
 
-	public void InitCamera(Level level)
-	{
-		transform.position = Vector3.zero;
-		transform.rotation = Quaternion.identity;
-		transform.localScale = Vector3.one;
+    public Vector3 localCameraOffset;
+    [Range(.55f, 1.5f)] public float zoom = 1f;
+    public float minZoom = .55f;
+    public float maxZoom = 1.4f;
 
-		if (MatchManager.TryGetLocalPlayer(out Player localPlayer))
-		{
-			int team = localPlayer.team;
+    public float targetZoom = 1f;
 
-			SpawnArea spawnArea = level.spawnAreas[team];
+    public float zoomSpeed = .1f;
 
-			transform.position = spawnArea.center.ToFlatVector3();
+    public float levelBorderPadding = 5f;
+    public bool lookAtPivot;
 
-			transform.Rotate(Vector3.up, spawnArea.cameraRotationForTeam, Space.World);// *= spawnArea.cameraRotation;    
+    public LayerMask grabbableLayers;
 
-			targetPosition = transform.position;
-		} else
-		{
-			Debug.Log("Did not find player");
-		}
-
-	}
-
-	private void LateUpdate()
-	{
-		if (LevelManager.instance.currentLevel != null)
-		{
-
-			if (InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), out RaycastHit groundHit))
-			{
-				if (InputManager.rightButtonIsHeld)
-				{
-					if (!isDragging)
-					{
-						refpoint = groundHit.point;
-
-						isDragging = true;
-					}
-					Vector3 diff = (refpoint - groundHit.point).Flatten();
-
-					targetPosition += diff;
-
-				}
-			}
+    private bool isDragging;
+    private Vector3 grabbedPoint;
 
 
-			if (InputManager.rightButtonIsReleased)
-			{
-				isDragging = false;
-			}
-
-			Vector3 clampedPos = targetPosition;
-
-			clampedPos.x = Mathf.Clamp(clampedPos.x, 5f, LevelManager.instance.currentLevel.levelGridSize.x - 5f);
-			clampedPos.z = Mathf.Clamp(clampedPos.z, 5f, LevelManager.instance.currentLevel.levelGridSize.y - 5f);
-
-			targetPosition = clampedPos;
+    private Vector3 pivotTargetPosition;
+    private Vector3 cameraOffset => transform.TransformPoint(localCameraOffset / zoom);
+    private float padding => levelBorderPadding / zoom;
 
 
+    
 
-			transform.position = targetPosition; //Vector3.MoveTowards(transform.position, targetPosition, .1f); //Vector3.SmoothDamp(transform.position, targetPosition, ref smoothVelocity, .2f);
-		}
-	}
+    private void Awake()
+    {
+        InputManager.OnCameraZoom += ChangeCameraZoom;
+    }
+
+    public void InitCamera(Level level)
+    {
+        pivotTransform.position = Vector3.zero;
+        pivotTransform.rotation = Quaternion.identity;
+        pivotTransform.localScale = Vector3.one;
+
+        if (MatchManager.TryGetLocalPlayer(out Player localPlayer))
+        {
+            int team = localPlayer.team;
+
+            SpawnArea spawnArea = level.spawnAreas[team];
+
+            pivotTransform.position = spawnArea.center.ToFlatVector3();
+
+            pivotTransform.Rotate(Vector3.up, spawnArea.cameraRotationForTeam, Space.World);// *= spawnArea.cameraRotation;    
+
+            pivotTargetPosition = pivotTransform.position;
+        }
+        else
+        {
+            Debug.Log("Did not find player");
+        }
+
+    }
+
+    private void ChangeCameraZoom(float change)
+    {
+        targetZoom += change * zoomSpeed;
+
+        targetZoom = Mathf.Clamp(targetZoom, minZoom, maxZoom);
+    }
+
+    private void ClampPositionToFlatLevel(ref Vector3 position)
+    {
+        Vector2 levelSize = LevelManager.instance.currentLevel.levelGridSize;
+
+
+        Vector2 clampedPadding = new Vector2
+        {
+            x = Mathf.Clamp(padding, 0f, levelSize.x * .5f),
+            y = Mathf.Clamp(padding, 0f, levelSize.y * .5f)
+        };
+
+        position.x = Mathf.Clamp(position.x, clampedPadding.x, levelSize.x - clampedPadding.x);
+        position.z = Mathf.Clamp(position.z, clampedPadding.y, levelSize.y - clampedPadding.y);
+    }
+
+    private void Update()
+    {
+        zoom = Mathf.Lerp(zoom, targetZoom, 20f * Time.deltaTime);
+    }
+
+    private void LateUpdate()
+    {
+        
+
+        if (LevelManager.instance.currentLevel != null)
+        {
+
+            if (InputManager.TryGetPointerHitLayer(grabbableLayers, out RaycastHit groundHit))
+            {
+
+
+
+                if (InputManager.rightButtonIsHeld)
+                {
+
+                    if (!isDragging)
+                    {
+                        grabbedPoint = groundHit.point;
+
+                        isDragging = true;
+                    }
+
+                    Vector3 toGrabbedPoint = (grabbedPoint - groundHit.point).Flatten();
+
+                    pivotTargetPosition += toGrabbedPoint;
+                }
+            }
+
+
+            if (InputManager.rightButtonIsReleased)
+            {
+                isDragging = false;
+            }
+
+
+
+            ClampPositionToFlatLevel(ref pivotTargetPosition);
+            
+
+            pivotTransform.position = pivotTargetPosition;
+            cameraTransform.position = cameraOffset;
+
+            if (lookAtPivot)
+            {
+                cameraTransform.LookAt(pivotTransform);
+            }
+        }
+    }
+
+
+    private void OnDrawGizmos()
+    {
+
+        Gizmos.DrawLine(cameraOffset, pivotTransform.position);
+    }
 
 }

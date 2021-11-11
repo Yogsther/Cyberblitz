@@ -19,9 +19,14 @@ public class Waypoint : MonoBehaviour, IPointerDownHandler
 		Debug.Log("Registered click");
 		Unit blockOwner = MatchManager.GetUnit(block.ownerId);
 
-		VisualUnit.OnSelected?.Invoke(block.ownerId);
+		
 
-		GameManager.instance.TimelineEditor.SelectBlock(block);
+		if(GameManager.instance.TimelineEditor.selectedBlock != block)
+        {
+			VisualUnit.OnSelected?.Invoke(block.ownerId);
+			GameManager.instance.TimelineEditor.SelectBlock(block);
+		}
+		
 	}
 
 	public void SetSelected(bool selected)
