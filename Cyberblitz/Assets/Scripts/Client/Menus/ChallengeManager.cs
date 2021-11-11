@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +11,12 @@ public class ChallengeManager : MonoBehaviour
 	public List<ChallengeEntry> entries = new List<ChallengeEntry>();
 	public GameObject warning;
 	public GameObject noPlayersOnline;
+	public GameObject matchmakingBanner;
+	public Action<User> OnLocalUserUpdate;
 
 	UserList userList;
+
+	bool inMatchMaking = false;
 
 	void Start()
 	{
@@ -19,12 +24,36 @@ public class ChallengeManager : MonoBehaviour
 		ClientConnection.On("USER_LIST", OnUserList);
 		PlayPage.OnUnitsAssembled += () => { warning.SetActive(false); };
 		warning.SetActive(true);
+		OnLocalUserUpdate += OnUserUpdate;
+		matchmakingBanner.SetActive(false);
 	}
 
 	public void PlayBot()
 	{
 		if (PlayPage.HasSelectedUnits())
 			ClientConnection.Emit("PLAY_BOT", new PlayRequest(PlayPage.GetSelectedUnits()));
+	}
+
+	void OnUserUpdate(User user)
+	{
+		ClientLogin.user.state = user.state;
+		inMatchMaking = user.state == UserState.InPool;
+		UpdateMatchmakingVisuals();
+	}
+
+	public void ToggleMatchmaking()
+	{
+		if (PlayPage.HasSelectedUnits())
+		{
+			inMatchMaking = !inMatchMaking;
+			ClientConnection.Emit("TOGGLE_MATCHMAKING");
+		}
+		UpdateMatchmakingVisuals();
+	}
+
+	public void UpdateMatchmakingVisuals()
+	{
+		matchmakingBanner.SetActive(inMatchMaking);
 	}
 
 	void UpdateEntries()
@@ -34,7 +63,7 @@ public class ChallengeManager : MonoBehaviour
 		foreach (User user in userList.users)
 		{
 			// Update local state
-			if (user.id == ClientLogin.user.id) ClientLogin.user.state = user.state;
+			if (user.id == ClientLogin.user.id) OnLocalUserUpdate?.Invoke(user);
 			else
 			{
 				onlineUsers.Add(user.id);
