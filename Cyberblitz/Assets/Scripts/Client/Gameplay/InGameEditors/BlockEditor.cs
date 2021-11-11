@@ -29,7 +29,7 @@ public class BlockEditor : InGameEditor
 
     public IEnumerator BlockEditing(Block block)
     {
-        if (selectedBlock != block)
+        if (block != selectedBlock)
         {
 
             selectedBlock = block;

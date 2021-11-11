@@ -57,42 +57,46 @@ public class VisionConeEditor : InGameEditor
 
 	private IEnumerator ConeEditing(VisionCone visionCone)
 	{
-		selectedVisionCone = visionCone;
-
-		yield return null;
-
-		Debug.Log("[VisionConeEditor] - Started editing a cone");
-
-		while (selectedVisionCone == visionCone)
+		if (visionCone != selectedVisionCone)
 		{
 
-			if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), out RaycastHit groundHit))
-			{
-
-				Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();
-
-				Vector2 toMouse = mouseHitPoint - visionCone.origin.point;
-
-				inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
-
-				if (InputManager.pointerIsHeld && !InputManager.startedHoldingWhileOnGui)
-				{
-
-					visionCone.isSet = true;
-					visionCone.direction = inputDirection;
-
-					OnUpdated?.Invoke();
-
-					GameManager.instance.TimelineEditor.DeselectBlock();
-					selectedVisionCone = null;
-				}
-
-			}
+			selectedVisionCone = visionCone;
 
 			yield return null;
-		}
 
-		Debug.Log("[VisionConeEditor] - Stopped editing a cone");
+			Debug.Log("[VisionConeEditor] - Started editing a cone");
+
+			while (selectedVisionCone == visionCone)
+			{
+
+				if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), out RaycastHit groundHit))
+				{
+
+					Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();
+
+					Vector2 toMouse = mouseHitPoint - visionCone.origin.point;
+
+					inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
+
+					if (InputManager.pointerIsHeld && !InputManager.startedHoldingWhileOnGui)
+					{
+
+						visionCone.isSet = true;
+						visionCone.direction = inputDirection;
+
+						OnUpdated?.Invoke();
+
+						GameManager.instance.TimelineEditor.DeselectBlock();
+						selectedVisionCone = null;
+					}
+
+				}
+
+				yield return null;
+			}
+
+			Debug.Log("[VisionConeEditor] - Stopped editing a cone");
+		}
 	}
 
 

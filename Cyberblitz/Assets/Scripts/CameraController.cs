@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour
     public float minZoom = .55f;
     public float maxZoom = 1.4f;
 
+    public float targetZoom = 1f;
+
     public float zoomSpeed = .1f;
 
     public float levelBorderPadding = 5f;
@@ -62,9 +64,9 @@ public class CameraController : MonoBehaviour
 
     private void ChangeCameraZoom(float change)
     {
-        zoom += change * zoomSpeed;
+        targetZoom += change * zoomSpeed;
 
-        zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
+        targetZoom = Mathf.Clamp(targetZoom, minZoom, maxZoom);
     }
 
     private void ClampPositionToFlatLevel(ref Vector3 position)
@@ -80,6 +82,11 @@ public class CameraController : MonoBehaviour
 
         position.x = Mathf.Clamp(position.x, clampedPadding.x, levelSize.x - clampedPadding.x);
         position.z = Mathf.Clamp(position.z, clampedPadding.y, levelSize.y - clampedPadding.y);
+    }
+
+    private void Update()
+    {
+        zoom = Mathf.Lerp(zoom, targetZoom, 20f * Time.deltaTime);
     }
 
     private void LateUpdate()

@@ -103,8 +103,15 @@ public class VisualUnitManager : MonoBehaviour
 					model.transform.localPosition = Vector3.zero;
 					model.transform.localRotation = Quaternion.AngleAxis(visualUnitInstance.rotationOffset, Vector3.down);
 
-					model.layer = 7;
-
+					if(friendlyPlayer) model.layer = 7;
+					else
+                    {
+						visualUnitInstance.gameObject.layer = 13;
+						foreach(Transform child in visualUnitInstance.transform)
+                        {
+							child.gameObject.layer = 13;
+                        }
+                    }
 					visualUnitInstance.overheadIconRenderer.sprite = unitData.roleIcon;
 					if (unit.isMVP) visualUnitInstance.overheadIconRenderer.gameObject.SetActive(true);
 					//visualUnitInstance.overheadIconRenderer.color = 
