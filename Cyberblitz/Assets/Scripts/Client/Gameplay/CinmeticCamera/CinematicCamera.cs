@@ -53,6 +53,8 @@ public class CinematicCamera : MonoBehaviour
 	float blindHeight = 540f;
 	float blindOpenSpeed = 1500f;
 
+	public AudioListener globalAudioListener;
+
 	public float playbackStart;
 
 	class UnitFocus
@@ -245,8 +247,13 @@ public class CinematicCamera : MonoBehaviour
 
 	void DisableActionCamera()
 	{
+		globalAudioListener.enabled = true;
 		Debug.Log("Trying to disable action camera, is null? " + actionCamera);
-		if (actionCamera != null) actionCamera.camera.enabled = false;
+		if (actionCamera != null)
+		{
+			actionCamera.microphone.enabled = false;
+			actionCamera.camera.enabled = false;
+		}
 	}
 
 	[ContextMenu("Create zoom path")]
@@ -307,7 +314,9 @@ public class CinematicCamera : MonoBehaviour
 		SetBlindsVisible(true);
 		camera.enabled = false;
 		planningCamera.enabled = false;
+		globalAudioListener.enabled = false;
 		actionCamera.camera.enabled = true;
+		actionCamera.microphone.enabled = true;
 		StartCoroutine(AnimateUpBlinds());
 	}
 

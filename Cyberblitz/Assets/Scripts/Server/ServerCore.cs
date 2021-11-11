@@ -188,7 +188,10 @@ public static class ServerCore
 				StartGameWithPlayers(from, to);
 
 			} else if (invites.CreateInvite(from.user.id, to.user.id))
+			{
 				UpdateUserList();
+				to.Emit("INVITED");
+			}
 		}
 	}
 

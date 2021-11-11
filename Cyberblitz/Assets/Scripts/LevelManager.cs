@@ -76,6 +76,9 @@ public class LevelManager : MonoBehaviour
 
 			currentLevel.SetupLevel();
 
+			SoundManager.PlayAmbience(levelData.ambience);
+			SoundManager.PlayMusic(levelData.music);
+
 			OnLevelLoaded?.Invoke(currentLevel);
 		} else
 		{

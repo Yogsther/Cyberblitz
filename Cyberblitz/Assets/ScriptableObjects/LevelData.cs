@@ -12,4 +12,6 @@ public class LevelData : ScriptableObject
 
 	public Level levelPrefab;
 	public LevelLayout layout;
+	public AudioClip music;
+	public AudioClip ambience;
 }

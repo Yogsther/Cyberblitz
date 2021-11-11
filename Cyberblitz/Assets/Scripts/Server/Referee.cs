@@ -54,7 +54,7 @@ public class Referee
 		if (match.state != Match.GameState.WaitingForUnits) SendGameUpdate();
 		else Broadcast("SEND_UNITS");
 
-		if (match.state == Match.GameState.Ending) Terminate(match.GetUser(match.winner) + " won the game.");
+		if (match.state == Match.GameState.Ending) Terminate(match.GetUser(match.winner).username + " won the game.");
 
 	}
 

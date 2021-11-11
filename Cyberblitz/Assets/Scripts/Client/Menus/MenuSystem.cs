@@ -14,6 +14,8 @@ public class MenuScreen
 }
 public class MenuSystem : MonoBehaviour
 {
+	public AudioClip music, ambience;
+
 	public GameObject gameUI;
 	public GameObject menuBackground;
 	public GameObject connectingScreen;
@@ -88,6 +90,8 @@ public class MenuSystem : MonoBehaviour
 		MatchManager.OnMatchUnloaded += () =>
 		{
 			LoadScreen("play");
+			SoundManager.PlayMusic(music);
+			SoundManager.PlayAmbience(ambience);
 		};
 
 		ConnectionConfiguration.OnVersionNumber += version =>
@@ -184,12 +188,15 @@ public class MenuSystem : MonoBehaviour
 	{
 		foreach (MenuScreen menuScreen in menuScreens) menuScreen.screen.SetActive(false);
 		LoadScreen("intro");
+		SoundManager.PlayAmbience(ambience);
 
+		menuBackground.SetActive(false);
 		header.SetActive(false);
 	}
 
 	public void StartLoginAnimation()
 	{
+		SoundManager.PlayMusic(music);
 		lobbyCamera.AnimateFromLogin(() =>
 		{
 			LoadScreenElements("play");

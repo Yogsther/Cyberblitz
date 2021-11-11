@@ -19,28 +19,50 @@ public class SoundRequest
 public class SoundManager : MonoBehaviour
 {
 
+	public float effectVolume;
 	static int nextSpeaker = 0;
 	static List<AudioSource> speakers = new List<AudioSource>();
 	public GameObject speakerPrefab;
 	static AudioSource musicPlayer;
+	static AudioSource ambiancePlayer;
+
+	public AudioSource musicPlayerReference;
+	public AudioSource ambiancePlayerReference;
 
 	public Sound[] sounds;
-	public Sound[] music;
+
 	public static Sound[] staticSounds;
-	public static Sound[] staticMusic;
+
 	static List<SoundRequest> soundQueue = new List<SoundRequest>();
 
 	private void Awake()
 	{
 		staticSounds = sounds;
-		staticMusic = music;
-		musicPlayer = gameObject.AddComponent(typeof(AudioSource)) as AudioSource;
+		musicPlayer = musicPlayerReference;
+		ambiancePlayer = ambiancePlayerReference;
+
 		for (int i = 0; i < 10; i++)
 		{
 			GameObject speaker = Instantiate(speakerPrefab, transform);
 			speaker.name = "Speaker " + (i + 1);
-			speakers.Add(speaker.GetComponent<AudioSource>());
+			AudioSource speakerSource = speaker.GetComponent<AudioSource>();
+
+			speakerSource.volume = effectVolume;
+
+			speakers.Add(speakerSource);
 		}
+	}
+
+	public static void PlayMusic(AudioClip music)
+	{
+		musicPlayer.clip = music;
+		musicPlayer.Play();
+	}
+
+	public static void PlayAmbience(AudioClip ambience)
+	{
+		ambiancePlayer.clip = ambience;
+		ambiancePlayer.Play();
 	}
 
 	public static void PlaySound(string name)
@@ -55,6 +77,29 @@ public class SoundManager : MonoBehaviour
 		SoundRequest request = new SoundRequest();
 		request.sound = GetSound(name);
 		request.position = position;
+		request.delay = delay;
+
+		QueueSound(request);
+	}
+
+	public static void PlaySound(AudioClip clip, Vector3 position, float delay = 0f)
+	{
+		SoundRequest request = new SoundRequest();
+		request.sound = new Sound();
+		request.sound.clip = clip;
+
+		request.position = position;
+		request.delay = delay;
+
+		QueueSound(request);
+	}
+
+	public static void PlaySound(AudioClip clip, float delay = 0f)
+	{
+		SoundRequest request = new SoundRequest();
+		request.sound = new Sound();
+		request.sound.clip = clip;
+
 		request.delay = delay;
 
 		QueueSound(request);
@@ -79,8 +124,6 @@ public class SoundManager : MonoBehaviour
 	void PlaySound(SoundRequest soundRequest)
 	{
 		AudioSource speaker = speakers[nextSpeaker];
-
-		Debug.Log("Played sound " + soundRequest.sound.name);
 
 		if (soundRequest.position != null) speaker.transform.position = soundRequest.position;
 		else
@@ -109,11 +152,12 @@ public class SoundManager : MonoBehaviour
 
 	void Update()
 	{
-		foreach (SoundRequest request in soundQueue)
+		foreach (SoundRequest request in soundQueue.ToArray())
 		{
 			if (request.delay <= 0)
 			{
 				PlaySound(request);
+				soundQueue.Remove(request);
 			} else
 			{
 				request.delay -= Time.deltaTime;

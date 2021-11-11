@@ -18,3 +18,5 @@ MonoBehaviour:
   thumbnail: {fileID: 21300000, guid: 15ca216fb2c35944bb4b3659a7a2ef6f, type: 3}
   levelPrefab: {fileID: 3070884839923585934, guid: 00fd6dd11a23eff42affeb2bf4e0c4ea, type: 3}
   layout: {fileID: 11400000, guid: ad26a6fab8b8a5043b17d6f24b69c690, type: 2}
+  music: {fileID: 8300000, guid: 11294f22f9d645a4db1ad7877d54427f, type: 3}
+  ambience: {fileID: 8300000, guid: fa569dd98664fa54f9b78ae9fa37cf4d, type: 3}

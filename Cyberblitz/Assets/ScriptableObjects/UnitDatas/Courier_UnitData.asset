@@ -27,3 +27,9 @@ MonoBehaviour:
   image: {fileID: 397736350623959575, guid: 27d75b41d9fc5c84caa6bc684e89ff1c, type: 3}
   portrait: {fileID: 6053246153437315200, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
   roleIcon: {fileID: 7149892210239447775, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
+  fireSounds:
+  - {fileID: 8300000, guid: 96434fb9d0ba9d14292e6d36365b6105, type: 3}
+  - {fileID: 8300000, guid: 245268b0b2a33fe4e9a4c408cf3847e2, type: 3}
+  - {fileID: 8300000, guid: 281bc55c831bbbf4988c238dddcfa67e, type: 3}
+  - {fileID: 8300000, guid: 7d84283298cdc324a8178122a73cf403, type: 3}
+  - {fileID: 8300000, guid: 8d6e7061cf1eb274e90f0ae132668092, type: 3}

@@ -20,6 +20,8 @@ public class PlayPage : MonoBehaviour
 
 	public VisualEffect[] spawnEffects;
 
+	public AudioClip[] classSelectSounds;
+
 
 	public class SelectedUnit
 	{
@@ -71,6 +73,8 @@ public class PlayPage : MonoBehaviour
 	{
 		selectedUnits[index] = new SelectedUnit(type);
 		selectedUnits[index].empty = false;
+		SoundManager.PlaySound(classSelectSounds[UnityEngine.Random.Range(0, classSelectSounds.Length - 1)]);
+
 		LoadModels();
 		if (HasSelectedUnits() && ClientLogin.user.state == UserState.Unavalible)
 		{

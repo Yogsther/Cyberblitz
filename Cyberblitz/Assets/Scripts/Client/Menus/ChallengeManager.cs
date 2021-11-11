@@ -24,11 +24,16 @@ public class ChallengeManager : MonoBehaviour
 	{
 		ClearList();
 		ClientConnection.On("USER_LIST", OnUserList);
+		ClientConnection.On("INVITED", packet =>
+		{
+			SoundManager.PlaySound("invite_received");
+		});
 		PlayPage.OnUnitsAssembled += () => { warning.SetActive(false); };
 		warning.SetActive(true);
 		OnLocalUserUpdate += OnUserUpdate;
 		matchmakingBanner.SetActive(false);
 	}
+
 
 	public void PlayBot()
 	{
@@ -48,7 +53,11 @@ public class ChallengeManager : MonoBehaviour
 		if (PlayPage.HasSelectedUnits())
 		{
 			inMatchMaking = !inMatchMaking;
+			SoundManager.PlaySound(inMatchMaking ? "enter_matchmaking" : "leave_matchmaking");
 			ClientConnection.Emit("TOGGLE_MATCHMAKING");
+		} else
+		{
+			SoundManager.PlaySound("error");
 		}
 		UpdateMatchmakingVisuals();
 	}
@@ -97,7 +106,6 @@ public class ChallengeManager : MonoBehaviour
 	{
 		userList = packet.Parse<UserList>();
 		UpdateEntries();
-
 	}
 
 	ChallengeEntry GetEntry(User user)
@@ -113,6 +121,7 @@ public class ChallengeManager : MonoBehaviour
 	{
 		userList.invites.CreateInvite(ClientLogin.user.id, user);
 		ClientConnection.Emit("INVITE", user);
+		SoundManager.PlaySound("invite_sent");
 		UpdateEntries();
 	}
 

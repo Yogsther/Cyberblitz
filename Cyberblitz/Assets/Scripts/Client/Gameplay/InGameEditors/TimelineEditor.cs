@@ -98,6 +98,7 @@ public class TimelineEditor : InGameEditor
 
 	public void SelectBlock(Block block)
 	{
+		if (selectedBlock == null || selectedBlock.id != block.id) SoundManager.PlaySound("select_block");
 		DeselectBlock();
 		selectedBlock = block;
 		GetSelectedBlockElement().SetSelected(true);
@@ -189,6 +190,7 @@ public class TimelineEditor : InGameEditor
 	{
 		if (MatchManager.match.state == Match.GameState.Planning)
 		{
+			if (selectedUnit == null || selectedUnit.id != unit.id) SoundManager.PlaySound("select_unit");
 			DeselectUnit();
 			SetTimelineVisibility(true);
 			ClearTimeline();

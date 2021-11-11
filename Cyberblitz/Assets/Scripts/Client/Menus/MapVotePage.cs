@@ -65,6 +65,7 @@ public class MapVotePage : MonoBehaviour
 		this.votes = votes;
 		if (menuSystem.selectedMenuScreen.name != "vote")
 		{
+			SoundManager.PlaySound("map_selection_start");
 			menuSystem.LoadScreen("vote", () =>
 			{
 				menuSystem.header.SetActive(false);
@@ -80,6 +81,7 @@ public class MapVotePage : MonoBehaviour
 
 	public void Vote(VoteType type, string map)
 	{
+		SoundManager.PlaySound("vote_click");
 		votes.AddVote(map, ClientLogin.user.id, type);
 		ClientConnection.Emit("VOTE", new Vote(map, ClientLogin.user.id, type));
 		UpdateMaps();

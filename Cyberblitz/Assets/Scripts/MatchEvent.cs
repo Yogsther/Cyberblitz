@@ -48,6 +48,15 @@ public class ShootEvent : MatchEvent
 
 		shooter.SetTargetForward(fromShooterToVictim);
 
+		Unit shooterUnit = simulatedMatch.GetUnit(actorUnitId);
+		UnitData shooterData = UnitDataManager.GetUnitDataByType(shooterUnit.type);
+
+		AudioClip fireSound = shooterData.fireSounds[Random.Range(0, shooterData.fireSounds.Length - 1)];
+
+		if (isHit) SoundManager.PlaySound(fireSound, shooter.mainModel.transform.position);
+		else SoundManager.PlaySound("missed_shot", shooter.mainModel.transform.position);
+
+		SoundManager.PlaySound("shell_drop", shooter.mainModel.transform.position, 500f);
 
 		shooter.animator.SetTrigger("FireTrigger");
 	}
@@ -79,6 +88,8 @@ public class DeathEvent : MatchEvent
 
 	public override void PlaybackEffect(Match simulatedMatch)
 	{
+		VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(actorUnitId);
+		SoundManager.PlaySound("unit_killed", visualUnit.mainModel.position);
 		VisualUnit.OnDeath?.Invoke(actorUnitId);
 	}
 }

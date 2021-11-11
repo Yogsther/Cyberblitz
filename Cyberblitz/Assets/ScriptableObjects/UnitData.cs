@@ -23,4 +23,6 @@ public class UnitData : ScriptableObject
 	public GameObject model;
 	public GameObject image;
 	public Sprite portrait, roleIcon;
+
+	public AudioClip[] fireSounds;
 }
