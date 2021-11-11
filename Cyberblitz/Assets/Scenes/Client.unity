@@ -831,6 +831,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &347346941 stripped
+AudioListener:
+  m_CorrespondingSourceObject: {fileID: 4967767291766484547, guid: e7cb27ccd9527bd4893c907485aa5e3c, type: 3}
+  m_PrefabInstance: {fileID: 4967767292585154362}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &395966065 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4488433514588575990, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
@@ -1186,7 +1191,7 @@ MonoBehaviour:
   blinds:
   - {fileID: 395966066}
   - {fileID: 395966065}
-  globalAudioListener: {fileID: 1373387129}
+  globalAudioListener: {fileID: 347346941}
   playbackStart: 0
 --- !u!1 &511596331 stripped
 GameObject:
@@ -3902,7 +3907,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4599371291570348122, guid: 493396a01fac419448e5f1fa42667088, type: 3}
       propertyPath: live
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5634848534606447202, guid: 493396a01fac419448e5f1fa42667088, type: 3}
       propertyPath: m_RootOrder
