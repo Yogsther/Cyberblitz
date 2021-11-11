@@ -37,6 +37,8 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
 	private Vector3 targetForward;
 
+	public Rigidbody[] rigidBodies;
+
 	private float smoothRotationVelocity;
 
 	private void Start()
@@ -74,23 +76,19 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
 		OnDeath += id =>
 		{
+
 			if (id == this.id)
 			{
 				isDead = true;
-
 				isSelectable = false;
 				SetRagdollEnabled(isDead);
+
 				outlineAnimator.SetBool("Dead", isDead);
 				SoundManager.PlaySound("unit_killed", mainModel.position);
 			}
 		};
 	}
 
-
-	private void OnDestroy()
-	{
-		Debug.Log("Got destroyed! " + id);
-	}
 
 
 	private void Update()
@@ -113,14 +111,11 @@ public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
 	public void SetRagdollEnabled(bool enabled)
 	{
-		Debug.Log("ID of killed unit " + id);
 
 		if (animator != null) animator.enabled = !enabled;
-		else Debug.Log("ANIMATOR WAS NULL");
-		foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
+		foreach (Rigidbody rb in rigidBodies)
 		{
 			if (rb != null) rb.isKinematic = !enabled;
-			else Debug.Log("RB was NULL");
 		}
 	}
 

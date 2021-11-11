@@ -46,7 +46,6 @@ public class Level : MonoBehaviour
 
 	public void ShowElementGameObjects()
 	{
-		Debug.Log("show");
 		if (visualsParent == null)
 		{
 			GameObject visualsContainer = new GameObject("Level Visuals");

@@ -132,12 +132,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 416131168}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 3388042962066488503}
-  m_RootOrder: 16
+  m_Father: {fileID: 2109809370969237751}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -667,8 +667,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Play vs. Bot
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
+  m_sharedMaterial: {fileID: 5451875767968659672, guid: 0355edd733d0e1245ac1fca86156a1e7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -692,8 +692,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 33.55
+  m_fontSizeBase: 33.55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -17355,6 +17355,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  classSelectSounds:
+  - {fileID: 8300000, guid: 43d56efe7850a3f4a9d08ebaa0a1c654, type: 3}
+  - {fileID: 8300000, guid: fb55ac04691cbe24fa494eb6156d64c7, type: 3}
+  - {fileID: 8300000, guid: ad933e3605570e148ae874c37976f552, type: 3}
 --- !u!1 &276323335008206453
 GameObject:
   m_ObjectHideFlags: 0
@@ -23638,6 +23642,7 @@ RectTransform:
   - {fileID: 1525557158840867309}
   - {fileID: 8163936791852416820}
   - {fileID: 2109809370210807931}
+  - {fileID: 416131169}
   m_Father: {fileID: 2109809371519254620}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25488,7 +25493,6 @@ RectTransform:
   - {fileID: 9116767415290395335}
   - {fileID: 1086331698}
   - {fileID: 5277030247870430745}
-  - {fileID: 416131169}
   m_Father: {fileID: 2109809370969237751}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25514,7 +25518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5277030247870430745
 RectTransform:
   m_ObjectHideFlags: 0
@@ -44260,6 +44264,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d7fc5fc339c9f34db9debd97d9f7a66, type: 3}
+--- !u!224 &1464454707946343188 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7985217867241109576, guid: 2d7fc5fc339c9f34db9debd97d9f7a66, type: 3}
+  m_PrefabInstance: {fileID: 8828173043471250268}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &9156307673864022832 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 401460054115571820, guid: 2d7fc5fc339c9f34db9debd97d9f7a66, type: 3}
@@ -44271,8 +44280,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7d7199e521ab4448029a4df60176c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &1464454707946343188 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7985217867241109576, guid: 2d7fc5fc339c9f34db9debd97d9f7a66, type: 3}
-  m_PrefabInstance: {fileID: 8828173043471250268}
-  m_PrefabAsset: {fileID: 0}

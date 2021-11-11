@@ -103,6 +103,10 @@ public class VisualUnitManager : MonoBehaviour
 					model.transform.localPosition = Vector3.zero;
 					model.transform.localRotation = Quaternion.AngleAxis(visualUnitInstance.rotationOffset, Vector3.down);
 
+					visualUnitInstance.rigidBodies = model.GetComponentsInChildren<Rigidbody>();
+					/*visualUnitInstance.rigidBodies.AddRange();*/
+
+
 					if (friendlyPlayer) model.layer = 7;
 					else
 					{

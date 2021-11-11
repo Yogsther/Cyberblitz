@@ -157,6 +157,7 @@ public class Referee
 	/// </summary>
 	void Broadcast(string message, object content)
 	{
+		Debug.Log("SENT GAME UPDATE " + message);
 		foreach (Player player in match.players)
 		{
 			ServerCore.SendTo(player.user.id, message, content);
@@ -220,8 +221,6 @@ public class Referee
 		List<string> playerNames = new List<string>();
 		foreach (Player player in match.players) playerNames.Add(player.user.username);
 		Debug.Log("Startin game with: " + String.Join(", ", playerNames.ToArray()));
-
-		SendGameUpdate();
 	}
 
 	public void Init()

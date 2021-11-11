@@ -67,6 +67,7 @@ public class MatchManager : MonoBehaviour
 	void MatchUpdate(NetworkPacket packet)
 	{
 		match = packet.Parse<Match>();
+		Debug.Log("Got match state: " + match.state);
 
 		switch (match.state)
 		{
@@ -101,7 +102,6 @@ public class MatchManager : MonoBehaviour
 
 	void MatchStart()
 	{
-		Debug.Log("New match started");
 		OnMatchStart?.Invoke(match);
 
 		QueueSystem.Call("MATCH_START");
@@ -112,7 +112,6 @@ public class MatchManager : MonoBehaviour
 
 	public static void SignalReady()
 	{
-		Debug.Log("Sent READY");
 		ClientConnection.Emit("READY");
 	}
 

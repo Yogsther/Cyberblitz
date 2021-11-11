@@ -248,7 +248,6 @@ public class CinematicCamera : MonoBehaviour
 	void DisableActionCamera()
 	{
 		globalAudioListener.enabled = true;
-		Debug.Log("Trying to disable action camera, is null? " + actionCamera);
 		if (actionCamera != null)
 		{
 			actionCamera.microphone.enabled = false;

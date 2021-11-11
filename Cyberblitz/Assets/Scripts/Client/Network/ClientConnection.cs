@@ -36,7 +36,7 @@ public class ClientConnection
 	{
 		this.config = config;
 		version = config.version;
-		ws = new WebSocket(live ? "ws://stable.cyberblitz.okdev.se:5009/" : "ws://localhost:" + config.port);
+		ws = new WebSocket(live ? "ws://stable.cyberblitz.okdev.se:5009" : "ws://localhost:" + config.port);
 		/*ws = new WebSocket(live ? "wss://stable.cyberblitz.okdev.se/" : "ws://localhost");*/
 		/*ws.SetProxy("https://stable.cyberblitz.okdev.se", null, null);*/
 
@@ -48,23 +48,23 @@ public class ClientConnection
 
 		ws.OnClose += (sender, e) =>
 		{
-			Debug.LogWarning("Disconnected!");
+			NetworkPacket disconnectMessage = new NetworkPacket("DISCONNECTED", "");
+			callstack.Add(disconnectMessage);
+		};
 
-			/*Task.Run(() =>
+#if !UNITY_EDITOR
+			Task.Run(() =>
 			{
-				Debug.Log("Disconnected!, RECONNINECINTINGIN");
-				NetworkPacket disconnectMessage = new NetworkPacket("DISCONNECTED", "");
-				callstack.Add(disconnectMessage);
-
-				while (ws.IsAlive == false && Application.isPlaying)
+				while (!ws.IsAlive)
 				{
 					Task.Delay(1000).Wait();
-					Debug.Log("Reconnecting");
 
 					ws.Connect();
 				}
-			});*/
-		};
+			});
+		
+#endif
+
 
 		On("CONNECTED", packet =>
 		{

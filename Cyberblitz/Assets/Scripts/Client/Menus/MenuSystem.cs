@@ -84,7 +84,7 @@ public class MenuSystem : MonoBehaviour
 		ClientConnection.OnDisconnected += () =>
 		{
 			connectingScreen.SetActive(true);
-			LoadScreen("play");
+			/*LoadScreen("play");*/
 		};
 
 		MatchManager.OnMatchUnloaded += () =>

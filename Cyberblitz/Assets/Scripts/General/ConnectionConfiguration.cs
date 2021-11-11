@@ -41,7 +41,8 @@ public class ConnectionConfiguration : MonoBehaviour
 			// Connect to server
 			clientConnection = new ClientConnection(config, live);
 			MatchManager.Instance.Init();
-			OnVersionNumber?.Invoke(config.version);
+			OnVersionNumber?.Invoke($"{config.version } {(live ? "LIVE" : "LOCAL")}");
+
 		}
 	}
 
