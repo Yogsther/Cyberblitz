@@ -148,6 +148,33 @@ public static class ServerCore
 		ServerConnection.On("PLAY_BOT", StartGameWithBot);
 		ServerConnection.On("USER_STATE", OnUserState);
 		ServerConnection.On("INVITE", OnInvite);
+		ServerConnection.On("TOGGLE_MATCHMAKING", OnToggleMatchmaking);
+	}
+
+	static void OnToggleMatchmaking(NetworkPacket packet)
+	{
+		ConnectedUser user = GetConnectedUser(packet.user.id);
+		if (user != null)
+		{
+			if (user.user.state == UserState.InPool)
+			{
+				user.user.state = UserState.Ready;
+			} else
+			{
+				user.user.state = UserState.InPool;
+				foreach (ConnectedUser otherUser in users)
+				{
+					if (otherUser.user.id != user.user.id)
+					{
+						if (otherUser.user.state == UserState.InPool)
+						{
+							StartGameWithPlayers(otherUser, user);
+						}
+					}
+				}
+			}
+		}
+		UpdateUserList();
 	}
 
 	static void OnInvite(NetworkPacket packet)
