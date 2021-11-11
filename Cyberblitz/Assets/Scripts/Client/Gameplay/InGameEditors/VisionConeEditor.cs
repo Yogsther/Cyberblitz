@@ -41,18 +41,17 @@ public class VisionConeEditor : InGameEditor
 		while (selectedVisionCone == visionCone)
 		{
 
-			if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), LayerMask.GetMask("UI"), out RaycastHit groundHit) && !InputManager.startedHoldingWhileOnGui)
+			if (!InputManager.isOnGui && InputManager.TryGetPointerHitLayer(LayerMask.GetMask("Ground"), LayerMask.GetMask("UI"), out RaycastHit groundHit))
 			{
-
-				Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();
-
-				Vector2 toMouse = mouseHitPoint - visionCone.origin.point;
-
-				inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
-
-
-				if (InputManager.pointerIsHeld)
+				if (InputManager.pointerIsHeld && !InputManager.startedHoldingWhileOnGui)
 				{
+					Vector2 mouseHitPoint = groundHit.point.FlatVector3ToVector2();
+
+					Vector2 toMouse = mouseHitPoint - visionCone.origin.point;
+
+					inputDirection = (Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg) - 90f;
+
+
 					visionCone.isSet = true;
 					visionCone.direction = inputDirection;
 

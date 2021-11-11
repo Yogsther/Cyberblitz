@@ -52,6 +52,16 @@ public static class ExtensionMethods
         return new Vector3(vector.x, y, vector.z);
     }
 
+    public static Vector3 ClampToRect(this Vector3 vector, Rect rect, float padding)
+    {
+        Vector3 clampedVector = new Vector3();
+
+        clampedVector.x = Mathf.Clamp(vector.x, rect.xMin + padding, rect.xMax - padding);
+        clampedVector.y = Mathf.Clamp(vector.y, rect.yMin + padding, rect.yMax - padding);
+
+        return vector;
+    }
+
     public static Vector2Int RoundFlatToVector2Int(this Vector3 vector)
     {
         int x = Mathf.RoundToInt(vector.x);

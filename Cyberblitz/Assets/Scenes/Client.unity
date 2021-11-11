@@ -1065,6 +1065,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 041188e6909d02c40ad97c65665ab62b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 1373387131}
+  pivotTransform: {fileID: 913508002}
+  localCameraOffset: {x: 0, y: 13, z: -6.062}
+  zoom: 1
+  minZoom: 0.55
+  maxZoom: 1.4
+  levelBorderPadding: 7
+  lookAtPivot: 1
+  grabbableLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &913508002
 Transform:
   m_ObjectHideFlags: 0
@@ -1536,8 +1547,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373387128}
-  m_LocalRotation: {x: 0.53729963, y: 0, z: 0, w: 0.8433915}
-  m_LocalPosition: {x: 0, y: 13, z: -4.5}
+  m_LocalRotation: {x: 0.53729963, y: -0, z: -0, w: 0.8433914}
+  m_LocalPosition: {x: 0, y: 13, z: -6.062}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 913508002}
@@ -2388,6 +2399,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: b8a25004-361f-44ed-af62-4e54dcffa9eb
     m_ActionName: Gameplay/PointerRightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1783340067}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: OnCameraZoomInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6d39c000-c516-4609-9ef3-1e4394353819
+    m_ActionName: Gameplay/Camera Zoom In / Out[/Mouse/scroll/y]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay

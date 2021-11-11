@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -23,6 +24,8 @@ public class InputManager : MonoBehaviour
 	public static bool rightButtonIsReleased;
 
 	public static Ray pointerRay;
+
+	public static Action<float> OnCameraZoom;
 
 	public LayerMask pointerLayers;
 
@@ -63,6 +66,11 @@ public class InputManager : MonoBehaviour
 		rightButtonIsHeld = ctx.performed;
 		rightButtonIsReleased = ctx.canceled;
 	}
+
+	public void OnCameraZoomInput(InputAction.CallbackContext ctx)
+    {
+		OnCameraZoom?.Invoke(ctx.ReadValue<float>());
+    }
 
 
 	private void Update()
