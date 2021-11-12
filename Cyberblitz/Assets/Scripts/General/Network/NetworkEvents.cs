@@ -30,7 +30,7 @@ public class NetworkEvents
 
 		if (packet.user != null)
 		{
-			foreach (Referee referee in ServerCore.games)
+			foreach (Referee referee in ServerCore.games.ToArray())
 			{
 				if (referee.match.ContainsPlayer(packet.user.id))
 				{
@@ -39,7 +39,7 @@ public class NetworkEvents
 					{
 						if (contextEvents[match].listeners.ContainsKey(packet.identifier))
 						{
-							foreach (Action<NetworkPacket> func in contextEvents[match].listeners[packet.identifier])
+							foreach (Action<NetworkPacket> func in contextEvents[match].listeners[packet.identifier].ToArray())
 							{
 								func(packet);
 							}

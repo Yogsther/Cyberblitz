@@ -25,4 +25,11 @@ public class EmoteBlock : Block
 
 	}
 
+	public override void OnPlaybackEnd(Match simulatedMatch)
+	{
+		Debug.Log("Stopping emote");
+		VisualUnit unit = VisualUnitManager.GetVisualUnitById(ownerId);
+		/*unit.animator.ResetTrigger("Emote");*/
+		unit.animator.SetTrigger("StopEmote");
+	}
 }

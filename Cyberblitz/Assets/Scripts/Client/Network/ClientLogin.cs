@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +26,9 @@ public static class ClientLogin
 	public static void Login(string username)
 	{
 		Init();
+		string[] emptyUsernames = new string[] { "NotVeryCreative", "Gen Eric", "Joel", "404", "ForgotTheName", "Forgor" };
+
+		if (username == "") username = emptyUsernames[UnityEngine.Random.Range(0, emptyUsernames.Length)];
 		ClientConnection.Emit("login", username);
 	}
 

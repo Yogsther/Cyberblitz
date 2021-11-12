@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TurnPlayback : MonoBehaviour
@@ -49,17 +50,26 @@ public class TurnPlayback : MonoBehaviour
 		Debug.Log("Started Playback");
 		OnPlaybackStarted?.Invoke();
 
+		Dictionary<UnitID, BlockID> activeBlocks = new Dictionary<UnitID, BlockID>();
 
 		Unit[] units = match.GetAllUnits();
 
 		MatchEvent nextEvent = null;
 
-		Debug.Log("MATCH EVENT COUNT: " + match.events.Count);
+		Debug.Log($"[Starting Playback] EventCount: {match.events.Count}");
 
 		if (match.events.Count != 0) nextEvent = match.events.Dequeue();
 
+		bool startedMusic = false;
+
 		for (float time = -1f; time < match.longestTimelineDuration + 1f; time += Time.deltaTime)
 		{
+
+			if (time >= match.longestTimelineDuration && match.winner != null && !startedMusic)
+			{
+				startedMusic = true;
+				SoundManager.PlayMusicNonLooping($"{(match.winner == ClientLogin.user.id ? "winning" : "losing")}_music");
+			}
 
 			if (nextEvent != null && time > nextEvent.time)
 			{
@@ -76,11 +86,18 @@ public class TurnPlayback : MonoBehaviour
 
 					if (unit.timeline.TryGetBlockAtTime(time, out Block block))
 					{
-						if (block.firstPlaybackTick)
+						// Check if the playing block is the same as last frame
+						if (!activeBlocks.ContainsKey(unit.id) || activeBlocks[unit.id] != block.id)
 						{
+							if (activeBlocks.ContainsKey(unit.id))
+							{
+								unit.timeline.GetBlock(activeBlocks[unit.id]).OnPlaybackEnd(match);
+							}
+
 							block.OnPlaybackStart(match);
-							block.firstPlaybackTick = false;
+							activeBlocks[unit.id] = block.id;
 						}
+
 
 						float blockStartTime = unit.timeline.GetStartTimeOfBlockAtIndex(block.timelineIndex);
 
@@ -92,11 +109,16 @@ public class TurnPlayback : MonoBehaviour
 						//Debug.LogWarning($"Unit {unit.id} had a Block that was null at time {time}");
 					}
 				}
-			}
 
+			}
 			yield return null;
 		}
-		Debug.Log("Finished playback");
+
+		// Finish all started blocks at the end of the timeline
+		foreach (UnitID unitId in activeBlocks.Keys)
+			match.GetUnit(unitId).timeline.GetBlock(activeBlocks[unitId]).OnPlaybackEnd(match);
+
+		Debug.Log("[Finished playback]");
 		OnPlaybackFinished?.Invoke();
 	}
 }

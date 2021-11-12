@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class LoginWindow : MonoBehaviour
@@ -10,12 +11,14 @@ public class LoginWindow : MonoBehaviour
 	public TMP_InputField usernameInput;
 	public Button loginButton;
 	public MenuSystem menuSystem;
+	public bool sentLogin = false;
 
 	void Start()
 	{
+		sentLogin = false;
 		loginButton.onClick.AddListener(() =>
 		{
-			ClientLogin.Login(usernameInput.text);
+			Login();
 		});
 
 		ClientLogin.OnLogin += user =>
@@ -26,8 +29,15 @@ public class LoginWindow : MonoBehaviour
 
 	}
 
+	void Login()
+	{
+		if (sentLogin) return;
+		sentLogin = true;
+		ClientLogin.Login(usernameInput.text);
+	}
+
 	void Update()
 	{
-
+		if (Keyboard.current[Key.Enter].wasPressedThisFrame) Login();
 	}
 }

@@ -103,7 +103,7 @@ public class Timeline
 	}
 
 	public bool TryGetBlockAtTime(float time, out Block outputBlock)
-    {
+	{
 		outputBlock = null;
 
 		foreach (Block block in blocks)
@@ -121,6 +121,15 @@ public class Timeline
 		/*Debug.LogWarning("No block found at " + time);*/
 
 		return false;
+	}
+
+	public Block GetBlock(BlockID id)
+	{
+		foreach (Block block in blocks)
+		{
+			if (block.id == id) return block;
+		}
+		return null;
 	}
 
 	public Block GetBlockAtIndex(int index)

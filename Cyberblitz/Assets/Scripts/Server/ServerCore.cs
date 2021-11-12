@@ -112,7 +112,6 @@ public static class ServerCore
 
 	public static void DisconnectUser(SocketID socket)
 	{
-		Debug.Log("Disconnecting socket: " + socket);
 		foreach (ConnectedUser connectedUser in users.ToList())
 		{
 			if (connectedUser.socket == socket)
@@ -124,7 +123,7 @@ public static class ServerCore
 					activeGame.OnPlayerDisconnect(connectedUser.user);
 				}
 				invites.RemoveAllInvitesRelatingToUser(connectedUser.user.id);
-				Debug.Log($"Disconnected user {connectedUser.user.username}\nTotal connected users: {users.Count}");
+				Debug.Log($"Disconnected user {connectedUser.user.username}, Total connected users: {users.Count}");
 			}
 		}
 		UpdateUserList();

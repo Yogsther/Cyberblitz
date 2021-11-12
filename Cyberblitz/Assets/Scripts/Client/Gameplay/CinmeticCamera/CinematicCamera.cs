@@ -57,6 +57,7 @@ public class CinematicCamera : MonoBehaviour
 
 	public float playbackStart;
 
+
 	class UnitFocus
 	{
 		public float duration;
@@ -113,7 +114,7 @@ public class CinematicCamera : MonoBehaviour
 					{
 						ActionClip clip = new ActionClip();
 						clip.start = matchEvent.time - eventPaddingBefore;
-						clip.end = matchEvent.time + (matchEvent.type == MatchEventType.Death ? eventPaddingAfterDeath : eventPaddingAfter);
+						clip.end = matchEvent.time + eventPaddingAfter;
 						clip.unit = actor.id;
 
 						actionClips.Add(clip);
@@ -131,13 +132,13 @@ public class CinematicCamera : MonoBehaviour
 
 			// Remove unrunnable clips that may have been modified with the merge action
 			RemoveUnrunnableActionClips();
-
 			inPlaybackMode = true;
 			playbackStart = Time.time;
 			StartCircling();
 		} else
 		{
-			EnablePlanningCamera();
+			if (match.state == Match.GameState.Starting || match.state == Match.GameState.Planning || match.state == Match.GameState.Ending) EnablePlanningCamera();
+
 			inPlaybackMode = false;
 		}
 	}

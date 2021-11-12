@@ -142,5 +142,7 @@ public class GuardBlock : Block
 
 	}
 
-
+	public override void OnPlaybackEnd(Match simulatedMatch)
+	{
+	}
 }

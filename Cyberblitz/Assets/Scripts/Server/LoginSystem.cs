@@ -15,7 +15,7 @@ public static class LoginSystem
 		User user = new User();
 		user.username = packet.content;
 
-		Debug.Log($"Creating and loggin in dummy user {user.username}");
+		Debug.Log($"User connected: {user.username}");
 
 		ServerCore.ConnectUser(user, Token.New, packet.socket);
 	}

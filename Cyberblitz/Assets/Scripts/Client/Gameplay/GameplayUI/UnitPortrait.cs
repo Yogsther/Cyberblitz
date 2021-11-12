@@ -35,8 +35,6 @@ public class UnitPortrait : MonoBehaviour
 		SetSelected(false);
 		SetHighlighted(false);
 		SetAlive();
-
-
 	}
 
 	public void SetSelected(bool selected)

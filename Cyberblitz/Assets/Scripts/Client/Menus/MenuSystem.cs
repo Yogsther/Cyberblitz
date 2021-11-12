@@ -65,6 +65,12 @@ public class MenuSystem : MonoBehaviour
 
 	private void Awake()
 	{
+		Settings.OnResolutionChanged += () =>
+		{
+			Debug.Log("Setting resolution: " + Settings.settings.width);
+			Screen.SetResolution(Settings.settings.width, Settings.settings.height, Settings.settings.fullscreen, Settings.settings.hz);
+		};
+
 		selectedMenuScreen = null;
 
 		MatchManager.OnMatchStart += match =>
@@ -77,6 +83,7 @@ public class MenuSystem : MonoBehaviour
 
 		MatchManager.OnMapVote += (match) =>
 		{
+			gameUI.SetActive(true);
 			header.SetActive(false);
 		};
 
@@ -98,6 +105,8 @@ public class MenuSystem : MonoBehaviour
 		{
 			versionNumber.text = version;
 		};
+
+		Settings.LoadSettings();
 	}
 
 
@@ -186,6 +195,7 @@ public class MenuSystem : MonoBehaviour
 
 	private void Start()
 	{
+		Settings.LoadSettings();
 		foreach (MenuScreen menuScreen in menuScreens) menuScreen.screen.SetActive(false);
 		LoadScreen("intro");
 		SoundManager.PlayAmbience(ambience);
