@@ -57,6 +57,7 @@ public class CinematicCamera : MonoBehaviour
 
 	public float playbackStart;
 
+
 	class UnitFocus
 	{
 		public float duration;
@@ -131,13 +132,13 @@ public class CinematicCamera : MonoBehaviour
 
 			// Remove unrunnable clips that may have been modified with the merge action
 			RemoveUnrunnableActionClips();
-
 			inPlaybackMode = true;
 			playbackStart = Time.time;
 			StartCircling();
 		} else
 		{
-			EnablePlanningCamera();
+			if (match.state == Match.GameState.Starting || match.state == Match.GameState.Planning || match.state == Match.GameState.Ending) EnablePlanningCamera();
+
 			inPlaybackMode = false;
 		}
 	}
