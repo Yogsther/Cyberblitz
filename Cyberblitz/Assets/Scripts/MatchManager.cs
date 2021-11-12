@@ -60,6 +60,7 @@ public class MatchManager : MonoBehaviour
 	void OnGameEnd(NetworkPacket packet)
 	{
 		string reason = packet.content;
+		Debug.Log("Reason? " + reason);
 		Debug.Log("Match undefined? " + match);
 		OnMatchEnd.Invoke(match, reason);
 		Debug.LogWarning("Game terminated: " + reason);
