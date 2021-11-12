@@ -6,7 +6,7 @@ public abstract class Block
 	public float duration = 5f;
 	public UnitID ownerId = "[ID NOT SET]";
 	public int timelineIndex = -1;
-	public bool firstPlaybackTick = true;
+	/*public bool firstPlaybackTick = true;*/
 
 	public Block(UnitID ownerId, int timelineIndex)
 	{
@@ -20,6 +20,8 @@ public abstract class Block
 	public abstract void Simulate(Match simulatedMatch, float localTime);
 
 	public abstract void OnPlaybackStart(Match simulatedMatch);
+
+	public abstract void OnPlaybackEnd(Match simulatedMatch);
 
 	public abstract void Playback(Match simulatedMatch, float localTime);
 

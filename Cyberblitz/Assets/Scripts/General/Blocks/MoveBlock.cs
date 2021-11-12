@@ -44,7 +44,7 @@ public class MoveBlock : Block
 
 		ownerVisualUnit.SetTargetForward((newForwardDirection.magnitude != 0f) ? newForwardDirection : ownerTransform.forward);
 
-		if(localTime + .1f > duration) ownerVisualUnit.animator.SetTrigger("Stop");
+		if (localTime + .1f > duration) ownerVisualUnit.animator.SetTrigger("Stop");
 	}
 
 	public Vector2 GetPositionAtTime(float localTime)
@@ -59,4 +59,9 @@ public class MoveBlock : Block
 		return GetPositionAtTime(duration);
 	}
 
+	public override void OnPlaybackEnd(Match simulatedMatch)
+	{
+		/*VisualUnit ownerVisualUnit = VisualUnitManager.GetVisualUnitById(ownerId);
+		ownerVisualUnit.animator.SetTrigger("Stop");*/
+	}
 }

@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TurnPlayback : MonoBehaviour
@@ -49,6 +50,7 @@ public class TurnPlayback : MonoBehaviour
 		Debug.Log("Started Playback");
 		OnPlaybackStarted?.Invoke();
 
+		Dictionary<UnitID, BlockID> activeBlocks = new Dictionary<UnitID, BlockID>();
 
 		Unit[] units = match.GetAllUnits();
 
@@ -84,11 +86,18 @@ public class TurnPlayback : MonoBehaviour
 
 					if (unit.timeline.TryGetBlockAtTime(time, out Block block))
 					{
-						if (block.firstPlaybackTick)
+						// Check if the playing block is the same as last frame
+						if (!activeBlocks.ContainsKey(unit.id) || activeBlocks[unit.id] != block.id)
 						{
+							if (activeBlocks.ContainsKey(unit.id))
+							{
+								unit.timeline.GetBlock(activeBlocks[unit.id]).OnPlaybackEnd(match);
+							}
+
 							block.OnPlaybackStart(match);
-							block.firstPlaybackTick = false;
+							activeBlocks[unit.id] = block.id;
 						}
+
 
 						float blockStartTime = unit.timeline.GetStartTimeOfBlockAtIndex(block.timelineIndex);
 
@@ -100,10 +109,15 @@ public class TurnPlayback : MonoBehaviour
 						//Debug.LogWarning($"Unit {unit.id} had a Block that was null at time {time}");
 					}
 				}
-			}
 
+			}
 			yield return null;
 		}
+
+		// Finish all started blocks at the end of the timeline
+		foreach (UnitID unitId in activeBlocks.Keys)
+			match.GetUnit(unitId).timeline.GetBlock(activeBlocks[unitId]).OnPlaybackEnd(match);
+
 		Debug.Log("[Finished playback]");
 		OnPlaybackFinished?.Invoke();
 	}

@@ -24,7 +24,7 @@ public class SettingsMenu : MonoBehaviour
 			if (Mathf.Floor(((float)resolution.width / resolution.height) * 10) == 17)
 			{
 				resolutions.Add(resolution);
-				resolutionOptions.Add($"{resolution.width}x{resolution.height} {resolution.refreshRate}hz");
+				resolutionOptions.Add($"{resolution.width}x{resolution.height}, {resolution.refreshRate}hz");
 			}
 		}
 
