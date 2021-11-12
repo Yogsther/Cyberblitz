@@ -41,6 +41,12 @@ public class SoundManager : MonoBehaviour
 		musicPlayer = musicPlayerReference;
 		ambiancePlayer = ambiancePlayerReference;
 
+		Settings.OnAudioChanged += () =>
+		{
+			musicPlayer.volume = Settings.settings.music;
+			ambiancePlayer.volume = Settings.settings.ambience;
+		};
+
 		for (int i = 0; i < 10; i++)
 		{
 			GameObject speaker = Instantiate(speakerPrefab, transform);
@@ -136,6 +142,7 @@ public class SoundManager : MonoBehaviour
 
 	void PlaySound(SoundRequest soundRequest)
 	{
+		Debug.Log("PLAYING SOUND");
 		AudioSource speaker = speakers[nextSpeaker];
 
 		if (soundRequest.position != null) speaker.transform.position = soundRequest.position;
@@ -145,23 +152,14 @@ public class SoundManager : MonoBehaviour
 			// CHANGE SOUND TYPE 
 		}
 		speaker.clip = soundRequest.sound.clip;
+		speaker.volume = Settings.settings.effects;
+
 		speaker.Play();
 
 		nextSpeaker++;
 		nextSpeaker %= speakers.Count;
 	}
 
-
-
-	public static void PlaySound(string name, Vector3 position)
-	{
-
-	}
-
-	void Start()
-	{
-
-	}
 
 	void Update()
 	{
