@@ -19,7 +19,7 @@ public class LineIntersectionTest : MonoBehaviour
 
     public static bool Intersect(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2, out Vector2 point)
     {
-        point = Vector2.zero;
+        point = a2;
 
         Vector2 aDir = (a2 - a1).normalized;
         Vector2 bDir = (b2 - b1).normalized;
@@ -100,7 +100,24 @@ public class LineIntersectionTest : MonoBehaviour
         return isBetween;
     }
 
-    public static bool Intersect(Vector2 a, Vector2 b, Rect rect)
+    public struct Line
+    {
+        public Vector2 pointA;
+        public Vector2 pointB;
+
+        public Line(Vector2 a, Vector2 b)
+        {
+            this.pointA = a;
+            this.pointB = b;
+        }
+    }
+
+    public static bool LineIntersectsLine(Line lineA, Line lineB, out Vector2 intersectionPoint)
+    {
+        return Intersect(lineA.pointA, lineA.pointB, lineB.pointA, lineB.pointB, out intersectionPoint);
+    }
+
+    public static bool LineIntersectsRect(Vector2 a, Vector2 b, Rect rect)
     {
         return rect.Contains(a) 
             || rect.Contains(b)
@@ -108,6 +125,44 @@ public class LineIntersectionTest : MonoBehaviour
             || Intersect(a, b, new Vector2(rect.x, rect.yMax), new Vector2(rect.xMax, rect.yMax), out Vector2 pointD)
             || Intersect(a, b, new Vector2(rect.x, rect.y), new Vector2(rect.x, rect.yMax), out Vector2 pointL)
             || Intersect(a, b, new Vector2(rect.xMax, rect.y), new Vector2(rect.xMax, rect.yMax), out Vector2 pointR);
+    }
+
+    public static bool LineIntersectsRect(Vector2 a, Vector2 b, Rect rect, out Vector2 intersectionPoint)
+    {
+        float closestIntersectionPoint = -1f;
+        intersectionPoint = Vector2.zero;
+
+        List<Line> rectLines = new List<Line>
+        {
+            new Line(new Vector2(rect.x, rect.y), new Vector2(rect.xMax, rect.y)),
+            new Line(new Vector2(rect.xMax, rect.y), new Vector2(rect.xMax, rect.yMax)),
+            new Line(new Vector2(rect.xMax, rect.yMax), new Vector2(rect.x, rect.yMax)),
+            new Line(new Vector2(rect.x, rect.yMax), new Vector2(rect.x, rect.y))
+        };
+
+        List<Vector2> intersectionPoints = new List<Vector2>();
+
+        foreach(Line line in rectLines)
+        {
+            if(Intersect(a, b, line.pointA, line.pointB, out Vector2 point))
+            {
+                intersectionPoints.Add(point);
+            }
+        }
+
+        foreach(Vector2 point in intersectionPoints)
+        {
+            float distance = Vector2.Distance(a, point);
+
+            if (distance < closestIntersectionPoint || closestIntersectionPoint == -1f)
+            {
+                closestIntersectionPoint = distance;
+                intersectionPoint = point;
+            }
+        }
+
+        bool isIntersecting = LineIntersectsRect(a,b,rect);
+        return isIntersecting;
     }
 
     public static bool Intersect(Vector2 a, Vector2 b, List<Vector2> rectPoints, out Vector2 point)
@@ -135,7 +190,7 @@ public class LineIntersectionTest : MonoBehaviour
         {
             Rect rect = gc.collisionRect;
 
-            if (Intersect(pointA + offset, pointB + offset, gc.collisionRect))
+            if (LineIntersectsRect(pointA + offset, pointB + offset, gc.collisionRect))
             {
                 Gizmos.color = Color.green;
             }
