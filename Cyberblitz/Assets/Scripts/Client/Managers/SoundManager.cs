@@ -166,7 +166,7 @@ public class SoundManager : MonoBehaviour
 				soundQueue.Remove(request);
 			} else
 			{
-				request.delay -= Time.deltaTime;
+				request.delay -= Time.deltaTime * 1000;
 			}
 		}
 	}
