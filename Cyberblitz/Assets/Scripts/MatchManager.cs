@@ -67,7 +67,7 @@ public class MatchManager : MonoBehaviour
 	void MatchUpdate(NetworkPacket packet)
 	{
 		match = packet.Parse<Match>();
-		Debug.Log("Got match state: " + match.state);
+		Debug.Log($"[Got match update] State: {match.state}");
 
 		switch (match.state)
 		{
@@ -79,7 +79,6 @@ public class MatchManager : MonoBehaviour
 				OnPlanningStart?.Invoke();
 				break;
 			case Match.GameState.Playback:
-				Debug.Log("Stating match playback");
 				QueueSystem.Call("MATCH_PLAYBACK");
 				break;
 			case Match.GameState.Starting:
@@ -107,11 +106,12 @@ public class MatchManager : MonoBehaviour
 		QueueSystem.Call("MATCH_START");
 
 		// Load level...
-		Debug.Log($"Loading level '{match.level}'...");
+		Debug.Log($"[Loading level] '{match.level}'");
 	}
 
 	public static void SignalReady()
 	{
+		Debug.Log("[Sent Ready]");
 		ClientConnection.Emit("READY");
 	}
 

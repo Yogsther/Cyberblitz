@@ -43,8 +43,11 @@ public class VisualUnitManager : MonoBehaviour
 
 	private void Update()
 	{
-		if (Keyboard.current[Key.X].wasPressedThisFrame) SelectNextUnit(true);
-		if (Keyboard.current[Key.Z].wasPressedThisFrame) SelectNextUnit(false);
+		if (MatchManager.match != null && MatchManager.match.state == Match.GameState.Planning)
+		{
+			if (Keyboard.current[Key.X].wasPressedThisFrame) SelectNextUnit(true);
+			if (Keyboard.current[Key.Z].wasPressedThisFrame) SelectNextUnit(false);
+		}
 	}
 
 	private void Start()

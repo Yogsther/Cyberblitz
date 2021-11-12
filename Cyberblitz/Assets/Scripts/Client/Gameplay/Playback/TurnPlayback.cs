@@ -54,12 +54,20 @@ public class TurnPlayback : MonoBehaviour
 
 		MatchEvent nextEvent = null;
 
-		Debug.Log("MATCH EVENT COUNT: " + match.events.Count);
+		Debug.Log($"[Starting Playback] EventCount: {match.events.Count}");
 
 		if (match.events.Count != 0) nextEvent = match.events.Dequeue();
 
+		bool startedMusic = false;
+
 		for (float time = -1f; time < match.longestTimelineDuration + 1f; time += Time.deltaTime)
 		{
+
+			if (time >= match.longestTimelineDuration && match.winner != null && !startedMusic)
+			{
+				startedMusic = true;
+				SoundManager.PlayMusicNonLooping($"{(match.winner == ClientLogin.user.id ? "winning" : "losing")}_music");
+			}
 
 			if (nextEvent != null && time > nextEvent.time)
 			{
@@ -96,7 +104,7 @@ public class TurnPlayback : MonoBehaviour
 
 			yield return null;
 		}
-		Debug.Log("Finished playback");
+		Debug.Log("[Finished playback]");
 		OnPlaybackFinished?.Invoke();
 	}
 }

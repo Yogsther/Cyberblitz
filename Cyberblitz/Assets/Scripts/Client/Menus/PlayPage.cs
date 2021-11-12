@@ -73,7 +73,7 @@ public class PlayPage : MonoBehaviour
 	{
 		selectedUnits[index] = new SelectedUnit(type);
 		selectedUnits[index].empty = false;
-		SoundManager.PlaySound(classSelectSounds[UnityEngine.Random.Range(0, classSelectSounds.Length - 1)]);
+		SoundManager.PlaySound(classSelectSounds[index/*UnityEngine.Random.Range(0, classSelectSounds.Length)*/]);
 
 		LoadModels();
 		if (HasSelectedUnits() && ClientLogin.user.state == UserState.Unavalible)

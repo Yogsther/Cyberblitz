@@ -51,7 +51,7 @@ public class ShootEvent : MatchEvent
 		Unit shooterUnit = simulatedMatch.GetUnit(actorUnitId);
 		UnitData shooterData = UnitDataManager.GetUnitDataByType(shooterUnit.type);
 
-		AudioClip fireSound = shooterData.fireSounds[Random.Range(0, shooterData.fireSounds.Length - 1)];
+		AudioClip fireSound = shooterData.fireSounds[Random.Range(0, shooterData.fireSounds.Length)];
 
 		if (isHit) SoundManager.PlaySound(fireSound, shooter.mainModel.transform.position);
 		else SoundManager.PlaySound("missed_shot", shooter.mainModel.transform.position);

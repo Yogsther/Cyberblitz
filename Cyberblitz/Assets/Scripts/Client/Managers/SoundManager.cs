@@ -53,9 +53,22 @@ public class SoundManager : MonoBehaviour
 		}
 	}
 
+	public static void PlayMusicNonLooping(string name)
+	{
+		musicPlayer.loop = false;
+		musicPlayer.clip = GetSound(name).clip;
+		musicPlayer.Play();
+	}
+
+	public static void StopMusic()
+	{
+		musicPlayer.Stop();
+	}
+
 	public static void PlayMusic(AudioClip music)
 	{
 		musicPlayer.clip = music;
+		musicPlayer.loop = true;
 		musicPlayer.Play();
 	}
 

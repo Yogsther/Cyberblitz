@@ -77,6 +77,7 @@ public class MenuSystem : MonoBehaviour
 
 		MatchManager.OnMapVote += (match) =>
 		{
+			gameUI.SetActive(true);
 			header.SetActive(false);
 		};
 

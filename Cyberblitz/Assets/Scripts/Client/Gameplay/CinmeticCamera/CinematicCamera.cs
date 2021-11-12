@@ -113,7 +113,7 @@ public class CinematicCamera : MonoBehaviour
 					{
 						ActionClip clip = new ActionClip();
 						clip.start = matchEvent.time - eventPaddingBefore;
-						clip.end = matchEvent.time + (matchEvent.type == MatchEventType.Death ? eventPaddingAfterDeath : eventPaddingAfter);
+						clip.end = matchEvent.time + eventPaddingAfter;
 						clip.unit = actor.id;
 
 						actionClips.Add(clip);

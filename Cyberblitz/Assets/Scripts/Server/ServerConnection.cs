@@ -103,7 +103,9 @@ public class ServerConnection : WebSocketBehavior
 
 	public static void FreeMatchContext(MatchID id)
 	{
-		foreach (MatchID contextEventID in events.contextEvents.Keys)
+		List<MatchID> keys = new List<MatchID>(events.contextEvents.Keys);
+
+		foreach (MatchID contextEventID in keys)
 		{
 			if (contextEventID == id)
 			{

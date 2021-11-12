@@ -28,7 +28,7 @@ public class GameOverScreen : MonoBehaviour
 			won = match.winner == ClientLogin.user.id;
 
 			DisplayPostGame(won, reason);
-			SoundManager.PlaySound("game_over");
+			/*SoundManager.PlaySound("game_over");*/
 			cinematicCamera.StartCircling();
 		};
 	}
