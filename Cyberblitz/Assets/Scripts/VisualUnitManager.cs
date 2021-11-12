@@ -113,11 +113,12 @@ public class VisualUnitManager : MonoBehaviour
 					if (friendlyPlayer) model.layer = 7;
 					else
 					{
-						visualUnitInstance.gameObject.layer = 13;
+						SetChildLayersRecursive(visualUnitInstance.transform, 13);
+						/*visualUnitInstance.gameObject.layer = 13;
 						foreach (Transform child in visualUnitInstance.transform)
 						{
 							child.gameObject.layer = 13;
-						}
+						}*/
 					}
 					visualUnitInstance.overheadIconRenderer.sprite = unitData.roleIcon;
 					if (unit.isMVP) visualUnitInstance.overheadIconRenderer.gameObject.SetActive(true);
@@ -142,7 +143,17 @@ public class VisualUnitManager : MonoBehaviour
 		}
 
 		OnVisualUnitsSpawned?.Invoke();
+
 	}
+
+	public void SetChildLayersRecursive(Transform parent, int layer)
+    {
+		parent.gameObject.layer = layer;
+		foreach (Transform child in parent.GetComponentsInChildren<Transform>())
+        {
+			child.gameObject.layer = layer;
+        }
+    }
 
 	private void DeleteAllVisualUnits()
 	{

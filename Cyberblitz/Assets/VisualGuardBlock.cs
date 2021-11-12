@@ -5,10 +5,14 @@ public class VisualGuardBlock : VisualBlock
 {
     public GuardBlock guardBlock => block as GuardBlock;
 
+    public LayerMask blockingLayerMask;
+
     [Header("Temp Cone")]
     public GameObject tempCone;
     public MeshFilter tempConeMeshFilter;
     public MeshRenderer tempConeMeshRenderer;
+
+    private Mesh tempConeMesh;
 
     [Header("Locked Cone")]
     public GameObject lockedCone;
@@ -16,9 +20,35 @@ public class VisualGuardBlock : VisualBlock
     public MeshFilter lockedConeMeshFilter;
     public MeshRenderer lockedConeMeshRenderer;
 
+    private Mesh lockedConeMesh;
+
+    [Header("Half Cover Mesh")]
+    public GameObject coverCone;
+
+    public MeshFilter coverConeMeshFilter;
+    public MeshRenderer coverConeMeshRenderer;
+
+    private Mesh coverConeMesh;
+
+
     public float smoothingSpeed = 20f;
 
     private Vector2[] drawnPoints;
+
+    private void Start()
+    {
+        tempConeMesh = new Mesh();
+        lockedConeMesh = new Mesh();
+        coverConeMesh = new Mesh();
+
+        tempConeMesh.name = "Temporary Cone";
+        lockedConeMesh.name = "Locked Cone";
+        coverConeMesh.name = "Cover Cone";
+
+        tempConeMeshFilter.mesh = tempConeMesh;
+        lockedConeMeshFilter.mesh = lockedConeMesh;
+        coverConeMeshFilter.mesh = coverConeMesh;
+    }
 
     public override void SetBlock(Block block)
     {
@@ -43,8 +73,11 @@ public class VisualGuardBlock : VisualBlock
         };
 
 
-        tempConeMeshFilter.mesh = GetConeMesh(testTempPoints);
-        lockedConeMeshFilter.mesh = GetConeMesh(testLockPoints);
+        //tempConeMeshFilter.mesh = GetConeMesh(testTempPoints);
+        //lockedConeMeshFilter.mesh = GetConeMesh(testLockPoints);
+
+        UpdateConeMesh(ref tempConeMesh, testTempPoints);
+        UpdateConeMesh(ref lockedConeMesh, testLockPoints);
 
     }
 
@@ -69,7 +102,7 @@ public class VisualGuardBlock : VisualBlock
 
                 Vector2[] points = guardBlock.aimCone.GetConePoints(inputDirection);
 
-                tempConeMeshFilter.mesh = GetConeMesh(points);
+                UpdateConeMesh(ref tempConeMesh, points);
             }
 
             if (lockedCone.activeInHierarchy)
@@ -83,11 +116,11 @@ public class VisualGuardBlock : VisualBlock
                     {
                         drawnPoints[i] = Vector2.LerpUnclamped(drawnPoints[i], points[i], smoothingSpeed * Time.deltaTime);
                     }
-                    lockedConeMeshFilter.mesh = GetConeMesh(drawnPoints);
+                    UpdateConeMesh(ref lockedConeMesh, drawnPoints);
                 }
                 else
                 {
-                    lockedConeMeshFilter.mesh = GetConeMesh(points);
+                    UpdateConeMesh(ref lockedConeMesh, points);
                 }
 
             }
@@ -104,24 +137,18 @@ public class VisualGuardBlock : VisualBlock
             lockedCone.SetActive(true);
         }
     }
-    private Mesh GetConeMesh(Vector2[] conePoints)
+
+    private void UpdateConeMesh(ref Mesh mesh, Vector2[] conePoints)
     {
-        Mesh mesh = new Mesh();
+        mesh.Clear();
+        coverConeMesh.Clear();
 
-        Vector3[] verts = GetConeVertices(conePoints);
-        int[] tris = GetConeTriangles(verts);
-
-        mesh.SetVertices(verts);
-        mesh.SetTriangles(tris, 0);
+        GetConeVertices(ref mesh, conePoints);
         mesh.RecalculateNormals();
         mesh.RecalculateTangents();
-
-        mesh.Optimize();
-
-        return mesh;
     }
 
-    private Vector3[] GetConeVertices(Vector2[] points)
+    private void GetConeVertices(ref Mesh mesh, Vector2[] points)
     {
         float lineHeight = .21f;
 
@@ -129,9 +156,9 @@ public class VisualGuardBlock : VisualBlock
 
         float coneDistance = Vector2.Distance(origin, points[1]);
 
-        int coneResolution = Mathf.CeilToInt(Vector2.Angle(points[1], points[2]) * coneDistance * .25f);
+        int coneResolution = Mathf.CeilToInt(Vector2.Angle(points[1], points[2]) * coneDistance * .33f);
 
-        List<Vector3> verts = new List<Vector3>();
+
 
         Vector2 dirA = points[1] - origin;
         Vector2 dirB = points[2] - origin;
@@ -145,46 +172,240 @@ public class VisualGuardBlock : VisualBlock
 
 
 
-        for (int i = 0; i < coneResolution + 1; i++)
+        //List<Vector3> verts = new List<Vector3>();
+        List<Vector2> outerPoints = new List<Vector2>();
+
+        List<Vector2> halfCoveredPoints = new List<Vector2>();
+
+        ConeCastInfo oldConeCast = new ConeCastInfo();
+
+        for (int i = 0; i < coneResolution; i++)
         {
             float lerpVal = i / (float)coneResolution;//Mathf.InverseLerp(0, coneResolution, i);
 
             float angle = Mathf.LerpAngle(startAngle, endAngle, lerpVal) * Mathf.Deg2Rad;
             float x = (Mathf.Cos(angle) * coneDistance) + origin.x;
             float y = (Mathf.Sin(angle) * coneDistance) + origin.y;
-            verts.Add(new Vector2(x, y).ToFlatVector3(lineHeight));
+
+            Vector2 point = new Vector2(x, y);
+
+            ConeCastInfo newConeCast = ConeCast(origin, point);
+
+            if (i > 0)
+            {
+                if (oldConeCast.hit != newConeCast.hit)
+                {
+
+                    outerPoints.Add(newConeCast.point);
+
+                   // Edge edge = CalculateBlocking(oldConeCast, newConeCast);
+
+                    //outerPoints.Add(edge.min);
+                    //outerPoints.Add(edge.max);
+
+                }
+            }
+
+            outerPoints.Add(newConeCast.point);
+
+            if (newConeCast.secondPoint != Vector2.zero)
+            {
+                ConeCastInfo ccInfo = ConeCast(newConeCast.point, newConeCast.secondPoint, true);
+
+                halfCoveredPoints.Add(ccInfo.origin);
+                halfCoveredPoints.Add(ccInfo.point);
+
+            }
+
+            oldConeCast = newConeCast;
         }
 
-        verts.Insert(0, origin.ToFlatVector3(lineHeight));
 
-        return verts.ToArray();
+        int vertexCount = outerPoints.Count + 1;
+        int triangleCount = (vertexCount - 2) * 3;
+
+        Vector3[] verts = new Vector3[vertexCount];
+        int[] tris = new int[triangleCount];
+
+        verts[0] = origin.ToFlatVector3(lineHeight);
+
+
+        for (int i = 0; i < vertexCount - 1; i++)
+        {
+            int v = i + 1;
+            int t = i * 3;
+
+            verts[v] = outerPoints[i].ToFlatVector3(lineHeight);
+
+            if (i < vertexCount - 2)
+            {
+                tris[t + 0] = 0;
+                tris[t + 1] = i + 1;
+                tris[t + 2] = i + 2;
+
+            }
+
+        }
+
+
+
+        mesh.SetVertices(verts);
+        mesh.SetTriangles(tris, 0);
+
+        if (halfCoveredPoints.Count > 0)
+        {
+
+            int coverVertCount = halfCoveredPoints.Count;
+            int coverTriCount = (halfCoveredPoints.Count - 2) * 3;
+
+            Vector3[] coverVerts = new Vector3[coverVertCount];
+            int[] halfCoverTris = new int[coverTriCount];
+
+            for (int i = 0; i < coverVertCount; i++)
+            {
+                int v = i;
+                int t = i * 3;
+
+                coverVerts[v] = halfCoveredPoints[i].ToFlatVector3(lineHeight);
+
+                if (i < coverVertCount - 2)
+                {
+                    if (i % 2 == 0)
+                    {
+                        halfCoverTris[t + 0] = i + 0;
+                        halfCoverTris[t + 1] = i + 1;
+                        halfCoverTris[t + 2] = i + 2;
+                    }
+                    else
+                    {
+                        halfCoverTris[t + 0] = i + 2;
+                        halfCoverTris[t + 1] = i + 1;
+                        halfCoverTris[t + 2] = i + 0;
+                    }
+                    
+                }
+            }
+
+            coverConeMesh.SetVertices(coverVerts);
+            coverConeMesh.SetTriangles(halfCoverTris, 0);
+
+        }
+        //verts.Insert(0, origin.ToFlatVector3(lineHeight));
+
+        //return verts.ToArray();
     }
 
-    private int[] GetConeTriangles(Vector3[] verts)
+    public struct Edge
     {
-        int[] tris = new int[(verts.Length + 1) * 3];
+        public Vector2 min;
+        public Vector2 max;
 
-        for (int i = 0, t = 0; i < verts.Length - 2; i++, t += 3)
-        {
-            tris[t + 0] = 0;
-            tris[t + 1] = i + 1;
-            tris[t + 2] = i + 2;
-        }
-
-        return tris;
+        public bool isBlocked;
+        public Vector2 Average => Vector3.Cross(min, max);
     }
 
-    private List<Vector3> GetConeNormals(VisionCone cone)
+    public struct ConeCastInfo
     {
-        int coneResolution = 16;
-        List<Vector3> normals = new List<Vector3>();
+        public bool hit;
+        public Vector2 origin;
+        public Vector2 point;
+        public float distance;
+        public float angle;
 
-        for (int i = 0; i < coneResolution; i++)
+        public float secondDistance;
+        public Vector2 secondPoint;
+    }
+
+    /*    public ConeCastInfo ConeCast(Vector2 origin, Vector2 point)
         {
-            normals.Add(Vector3.up);
+            foreach (GridCollider gridCollider in LevelManager.instance.currentLevel.gridColliders)
+            {
+                LineIntersectionTest.LineIntersectsRect(origin, point, gridCollider.collisionRect, out Vector2 hitPoint);
+            }
+        }*/
+    private ConeCastInfo ConeCast(Vector2 origin, Vector2 point, bool ignoreHalfColliders = false)
+    {
+        Vector2 originalPoint = point;
+        float originalDistance = Vector2.Distance(origin, point);
+
+        ConeCastInfo info = new ConeCastInfo
+        {
+            hit = false,
+            origin = origin,
+            point = point,
+            distance = Vector2.Distance(origin, point),
+
+            secondPoint = Vector2.zero
+        };
+
+        Vector2 dir = (point - origin).normalized;
+
+        foreach (GridCollider gridCollider in LevelManager.instance.currentLevel.gridColliders)
+        {
+
+            if (LineIntersectionTest.LineIntersectsRect(info.origin, info.point, gridCollider.collisionRect, out Vector2 hitPoint))
+            {
+                if(gridCollider.type == ColliderType.Full)
+                {
+                    info.hit = true;
+                    info.point = hitPoint;
+                    info.distance = (info.point - origin).magnitude;
+                }
+                
+
+                if (gridCollider.type == ColliderType.Half && !ignoreHalfColliders)
+                {
+                    info.hit = true;
+                    info.point = hitPoint;
+                    info.distance = (info.point - origin).magnitude;
+                    info.secondDistance = (originalDistance - info.distance);
+                    info.secondPoint = originalPoint;
+                }
+            }
         }
 
-        return normals;
+        return info;
+    }
+
+    private Edge CalculateBlocking(ConeCastInfo minConeCast, ConeCastInfo maxConeCast)
+    {
+
+        Edge edge = new Edge
+        {
+            min = minConeCast.point,
+            max = maxConeCast.point
+        };
+
+
+        for (int i = 0; i < 10; i++)
+        {
+
+            ConeCastInfo newConeCast = ConeCast(minConeCast.origin, edge.Average);
+
+            if (newConeCast.hit == minConeCast.hit)
+            {
+                edge.min = newConeCast.point;
+            }
+            else
+            {
+                edge.max = newConeCast.point;
+            }
+
+        }
+
+        return edge;
+
+        /*if (gridCollider.type == ColliderType.Full)
+        {
+            return 0f;
+        }
+
+        if (gridCollider.type == ColliderType.Half)
+        {
+            hitChance = .5f;
+        }*/
+
+
     }
 
     private void OnDrawGizmos()

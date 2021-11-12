@@ -108,7 +108,7 @@ public class GuardBlock : Block
 
 		foreach (GridCollider gridCollider in levelLayout.gridColliders)
 		{
-			if (LineIntersectionTest.Intersect(originPosition, targetPosition, gridCollider.collisionRect))
+			if (LineIntersectionTest.LineIntersectsRect(originPosition, targetPosition, gridCollider.collisionRect))
 			{
 				Debug.Log(gridCollider.type);
 
