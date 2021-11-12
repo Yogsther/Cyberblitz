@@ -142,15 +142,10 @@ public class SoundManager : MonoBehaviour
 
 	void PlaySound(SoundRequest soundRequest)
 	{
-		Debug.Log("PLAYING SOUND");
 		AudioSource speaker = speakers[nextSpeaker];
 
 		if (soundRequest.position != null) speaker.transform.position = soundRequest.position;
-		else
-		{
-			Debug.Log("Playing 2D sound");
-			// CHANGE SOUND TYPE 
-		}
+
 		speaker.clip = soundRequest.sound.clip;
 		speaker.volume = Settings.settings.effects;
 
