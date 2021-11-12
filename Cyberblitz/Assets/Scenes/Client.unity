@@ -961,7 +961,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 495027650}
   m_LocalRotation: {x: 0.12773782, y: 0.33388034, z: -0.045721613, w: 0.9328004}
-  m_LocalPosition: {x: 13.654792, y: 20, z: -1.6565313}
+  m_LocalPosition: {x: 13.462231, y: 20, z: 22.507046}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 333648134}
@@ -1190,13 +1190,13 @@ MonoBehaviour:
   circlePath: {fileID: 2127092749}
   zoomPath: {fileID: 1571030275}
   virtualCamera: {fileID: 547450739}
-  focusedUnit: {fileID: 898359075}
-  smoothFocusVal: {x: 0, y: 0, z: 0}
+  focusedUnit: {fileID: 0}
+  smoothFocusVal: {x: -0.000006298074, y: -0.0000003452686, z: -0.000005903029}
   blinds:
   - {fileID: 395966066}
   - {fileID: 395966065}
   globalAudioListener: {fileID: 347346941}
-  playbackStart: 0
+  playbackStart: 184.8736
 --- !u!1 &511596331 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 276323334761517774, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
@@ -1711,7 +1711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Path: {fileID: 2127092749}
-  m_PathPosition: 0
+  m_PathPosition: 10.006
   m_PositionUnits: 0
   m_PathOffset: {x: 0, y: 0, z: 0}
   m_XDamping: 0
@@ -2209,7 +2209,11 @@ MonoBehaviour:
     inactivePathColor: {r: 1, g: 0, b: 0.3208251, a: 1}
     width: 0.62
   m_Looped: 0
-  m_Waypoints: []
+  m_Waypoints:
+  - position: {x: 4.775853, y: 20, z: 19.03991}
+    roll: 0
+  - position: {x: 16, y: 1.7, z: 10.44691}
+    roll: 0
 --- !u!1 &1594121985 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 253012045317619803, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
@@ -3176,6 +3180,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 432488593, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 432488593, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 432488593, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 432488593, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 7.700012
+      objectReference: {fileID: 0}
+    - target: {fileID: 690627971, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 690627971, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1273196765, guid: fcea7e0ad8ab45d4fa3af6a45b1e950b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
