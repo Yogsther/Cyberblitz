@@ -352,6 +352,7 @@ MonoBehaviour:
   isSelectable: 1
   isDead: 0
   mouseDownOnUnit: 0
+  rigidBodies: []
 --- !u!114 &2935608566055494640
 MonoBehaviour:
   m_ObjectHideFlags: 0
