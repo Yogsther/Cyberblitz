@@ -83,6 +83,13 @@ public class PlayPage : MonoBehaviour
 		}
 	}
 
+	public void SelectAllUnits()
+	{
+		SelectUnit(UnitType.Scout, 0);
+		SelectUnit(UnitType.Scout, 1);
+		SelectUnit(UnitType.Scout, 2);
+	}
+
 	void LoadModels()
 	{
 		for (int i = 0; i < selectedUnits.Length; i++)

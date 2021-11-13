@@ -63,20 +63,30 @@ public class MapVotePage : MonoBehaviour
 	void OnVoteUpdate(MapVotes votes)
 	{
 		this.votes = votes;
+		Debug.Log("Got map vote, selected screen: " + menuSystem.selectedMenuScreen.name);
 		if (menuSystem.selectedMenuScreen.name != "vote")
 		{
-			SoundManager.PlaySound("map_selection_start");
-			menuSystem.LoadScreen("vote", () =>
-			{
-				menuSystem.header.SetActive(false);
-			});
-
-			ready = false;
-			timeLeft = VOTE_TIME;
-
-			LoadMaps();
+			StartCoroutine(ShowMapVoteScreen(.5f));
 		}
 		UpdateMaps();
+	}
+
+	public IEnumerator ShowMapVoteScreen(float delay)
+	{
+		yield return new WaitForSeconds(delay);
+
+
+		SoundManager.PlaySound("map_selection_start");
+		menuSystem.LoadScreen("vote", () =>
+		{
+			menuSystem.header.SetActive(false);
+			menuSystem.gameUI.SetActive(true);
+		});
+
+		ready = false;
+		timeLeft = VOTE_TIME;
+
+		LoadMaps();
 	}
 
 	public void Vote(VoteType type, string map)

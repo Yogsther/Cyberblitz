@@ -15,6 +15,9 @@ public class UnitPortraits : MonoBehaviour
 		TimelineEditor.OnUnitDeselect += OnUnitDeselected;
 		CinematicCamera.OnActionCameraIn += OnActionCameraIn;
 		CinematicCamera.OnActionCameraOut += OnActionCameraOut;
+
+		VisualUnit.OnDeath += OnUnitDeath;
+		DamageEvent.OnUnitDamage += OnUnitDamage;
 	}
 
 	void OnActionCameraIn(UnitID id)
@@ -71,7 +74,7 @@ public class UnitPortraits : MonoBehaviour
 
 	void OnMatchUpdate(Match match)
 	{
-		if (match.state != Match.GameState.MapVote && match.state != Match.GameState.WaitingForUnitSelection)
+		if (match.state != Match.GameState.MapVote && match.state != Match.GameState.WaitingForUnitSelection && match.state != Match.GameState.Playback)
 		{
 			Unit[] units = match.GetAllUnits(match.GetLocalTeam());
 			for (int i = 0; i < units.Length; i++)
@@ -79,16 +82,26 @@ public class UnitPortraits : MonoBehaviour
 				portraits[i].SetHp(units[i].hp);
 				if (units[i].IsDead()) portraits[i].SetDead();
 			}
-
 		}
-
-
 	}
 
-
-
-	void Update()
+	void OnUnitDamage(UnitID id, float amount)
 	{
-
+		GetUnitPortrait(id).ChangeHp(-amount);
 	}
+
+	UnitPortrait GetUnitPortrait(UnitID id)
+	{
+		foreach (UnitPortrait portrait in portraits)
+		{
+			if (portrait.unitID == id) return portrait;
+		}
+		return null;
+	}
+
+	void OnUnitDeath(UnitID id)
+	{
+		GetUnitPortrait(id).SetDead();
+	}
+
 }

@@ -166,7 +166,7 @@ public static class ServerCore
 					{
 						if (otherUser.user.state == UserState.InPool)
 						{
-							StartGameWithPlayers(otherUser, user);
+							StartGameWithPlayers(otherUser, user, false);
 						}
 					}
 				}
@@ -184,7 +184,7 @@ public static class ServerCore
 			if (invites.ExistsInvite(to.user.id, from.user.id))
 			{
 				// Start game with players
-				StartGameWithPlayers(from, to);
+				StartGameWithPlayers(from, to, true);
 
 			} else if (invites.CreateInvite(from.user.id, to.user.id))
 			{
@@ -205,7 +205,7 @@ public static class ServerCore
 		}
 	}
 
-	static void StartGameWithPlayers(ConnectedUser user1, ConnectedUser user2)
+	static void StartGameWithPlayers(ConnectedUser user1, ConnectedUser user2, bool privateMatch)
 	{
 		/*PlayRequest playRequest = packet.Parse<PlayRequest>();*/
 
@@ -217,7 +217,7 @@ public static class ServerCore
 			Referee referee = new Referee();
 			games.Add(referee);
 
-			referee.Init();
+			referee.Init(privateMatch);
 			referee.AddPlayer(user1.user);
 			referee.AddPlayer(user2.user);
 			referee.SendGameUpdate();
@@ -228,17 +228,18 @@ public static class ServerCore
 
 	static void StartGameWithBot(NetworkPacket packet)
 	{
-		PlayRequest playRequest = packet.Parse<PlayRequest>();
 		if (packet.user == null)
 		{
 			Debug.Log("WARNING USER NOT LOGGED IN TRIED TO START GAME!");
 			return;
 		}
 
+		invites.RemoveAllInvitesRelatingToUser(packet.user.id);
+
 		Referee referee = new Referee();
 		games.Add(referee);
 
-		referee.Init();
+		referee.Init(true);
 		referee.AddPlayer(packet.user);
 		referee.AddBot();
 		referee.SendGameUpdate();

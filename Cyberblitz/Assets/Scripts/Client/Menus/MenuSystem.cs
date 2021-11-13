@@ -81,11 +81,11 @@ public class MenuSystem : MonoBehaviour
 			lobbyWorld.SetActive(false);
 		};
 
-		MatchManager.OnMapVote += (match) =>
+		/*MatchManager.OnMapVote += (match) =>
 		{
 			gameUI.SetActive(true);
 			header.SetActive(false);
-		};
+		};*/
 
 		ClientConnection.OnConnected += () => { connectingScreen.SetActive(false); };
 		ClientConnection.OnDisconnected += () =>

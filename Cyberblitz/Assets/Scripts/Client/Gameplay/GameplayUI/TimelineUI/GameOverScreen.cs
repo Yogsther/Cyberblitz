@@ -24,8 +24,8 @@ public class GameOverScreen : MonoBehaviour
 		MatchManager.OnMatchEnd += (Match match, string reason) =>
 		{
 			bool won = true;
-
-			won = match.winner == ClientLogin.user.id;
+			Debug.Log("Got game end screen");
+			if (match.winner != null) won = match.winner == ClientLogin.user.id;
 
 			DisplayPostGame(won, reason);
 			/*SoundManager.PlaySound("game_over");*/

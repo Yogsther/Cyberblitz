@@ -223,10 +223,11 @@ public class Referee
 		Debug.Log("Startin game with: " + String.Join(", ", playerNames.ToArray()));
 	}
 
-	public void Init()
+	public void Init(bool privateMatch)
 	{
 		match = new Match();
 		match.level = "CITY";
+		match.privateMatch = privateMatch;
 
 		match.state = Match.GameState.WaitingForUnitSelection;
 		match.round = 0;
