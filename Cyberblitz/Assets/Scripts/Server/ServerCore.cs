@@ -116,6 +116,8 @@ public static class ServerCore
 		{
 			if (connectedUser.socket == socket)
 			{
+				connectedUser.connected = false;
+
 				Referee activeGame = GetUserGame(connectedUser.user.id);
 				users.Remove(connectedUser);
 				if (activeGame != null)
@@ -209,7 +211,7 @@ public static class ServerCore
 	{
 		/*PlayRequest playRequest = packet.Parse<PlayRequest>();*/
 
-		if (user1 != null && user2 != null)
+		if (user1 != null && user2 != null && CanStartGame(user1.user.id) && CanStartGame(user1.user.id))
 		{
 			invites.RemoveAllInvitesRelatingToUser(user1.user.id);
 			invites.RemoveAllInvitesRelatingToUser(user2.user.id);
@@ -226,6 +228,12 @@ public static class ServerCore
 		}
 	}
 
+	static bool CanStartGame(UserID userId)
+	{
+		if (GetUserGame(userId) != null) return false;
+		return true;
+	}
+
 	static void StartGameWithBot(NetworkPacket packet)
 	{
 		if (packet.user == null)
@@ -234,16 +242,21 @@ public static class ServerCore
 			return;
 		}
 
-		invites.RemoveAllInvitesRelatingToUser(packet.user.id);
+		if (CanStartGame(packet.user.id))
+		{
+			invites.RemoveAllInvitesRelatingToUser(packet.user.id);
 
-		Referee referee = new Referee();
-		games.Add(referee);
+			Referee referee = new Referee();
+			games.Add(referee);
 
-		referee.Init(true);
-		referee.AddPlayer(packet.user);
-		referee.AddBot();
-		referee.SendGameUpdate();
+			referee.Init(true);
+			referee.AddPlayer(packet.user);
+			referee.AddBot();
+			referee.SendGameUpdate();
 
-		UpdateUserList();
+			UpdateUserList();
+		}
+
+
 	}
 }

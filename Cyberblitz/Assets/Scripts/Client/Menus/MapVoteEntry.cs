@@ -7,13 +7,15 @@ using UnityEngine.UI;
 public class MapVoteEntry : MonoBehaviour
 {
 	public MapVotePage mapVotePage;
+
 	public Image mapImage, outline;
 	public TMP_Text mapTitle, upvotes, downvotes;
-	public Button upvoteButton, downvoteButton;
+	public Button mapButton, upvoteButton, downvoteButton;
 
 	public Color32 upvoteColor, downvoteColor, defaultColor, undecidedColor;
 	public Image upvoteImage, downvoteImage;
 
+	[HideInInspector]
 	public LevelData levelData;
 
 	public void Setup(LevelData data)
@@ -21,6 +23,12 @@ public class MapVoteEntry : MonoBehaviour
 		levelData = data;
 		mapImage.sprite = levelData.thumbnail;
 		mapTitle.text = data.name;
+
+		mapButton.onClick.AddListener(() =>
+		{
+			mapVotePage.Vote(VoteType.Upvote, data.id);
+		});
+
 		upvoteButton.onClick.AddListener(() =>
 		{
 			mapVotePage.Vote(VoteType.Upvote, data.id);
