@@ -13688,7 +13688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3540027659871016932}
-  - component: {fileID: 1066314216825749922}
+  - component: {fileID: 71868669}
   m_Layer: 0
   m_Name: CraneTop-Animated
   m_TagString: Untagged
@@ -13732,7 +13732,7 @@ Transform:
   m_Father: {fileID: 6470543349341955420}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 16.931, z: 0}
---- !u!95 &1066314216825749922
+--- !u!95 &71868669
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0

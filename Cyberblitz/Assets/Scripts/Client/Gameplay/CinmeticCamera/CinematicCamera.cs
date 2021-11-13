@@ -96,7 +96,7 @@ public class CinematicCamera : MonoBehaviour
 			EnableCinematicCamera();
 			actionClips.Clear();
 
-			foreach (Unit unit in match.GetAllUnits(match.GetLocalTeam()))
+			foreach (Unit unit in match.GetAllUnits())
 				if (unit.timeline.GetDuration() > 0)
 				{
 					UnitFocus focus = new UnitFocus();
@@ -382,7 +382,7 @@ public class CinematicCamera : MonoBehaviour
 
 		} else
 		{
-			List<VisualUnit> visualUnits = VisualUnitManager.GetUserVisualUnitsById(ClientLogin.user.id);
+			List<VisualUnit> visualUnits = VisualUnitManager.visualUnits;
 			int aliveUnits = 0;
 			if (visualUnits != null)
 			{
