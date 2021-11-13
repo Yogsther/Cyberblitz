@@ -25,4 +25,9 @@ public class UnitData : ScriptableObject
 	public Sprite portrait, roleIcon;
 
 	public AudioClip[] fireSounds;
+
+	public AudioClip GetRandomFireSound()
+    {
+		return fireSounds[Random.Range(0, fireSounds.Length)];
+	}
 }

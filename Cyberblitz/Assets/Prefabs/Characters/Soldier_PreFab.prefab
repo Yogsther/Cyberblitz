@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 993728620}
   - component: {fileID: 993728619}
   - component: {fileID: 993728618}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 629179109200913558}
   - component: {fileID: 7673651999698622604}
   - component: {fileID: 1635291376713879107}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: upperarm_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 2938436726332580794}
   - component: {fileID: 4645643871470254475}
   - component: {fileID: 6108499211287828666}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: upperarm_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -508,7 +508,7 @@ GameObject:
   - component: {fileID: 3295664359987213946}
   - component: {fileID: 6238400708159477675}
   - component: {fileID: 683267707593229103}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: thigh_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -618,7 +618,7 @@ GameObject:
   - component: {fileID: 8669162897680734783}
   - component: {fileID: 4626838781706091414}
   - component: {fileID: 2320841414121995939}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: thigh_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1199,7 +1199,7 @@ GameObject:
   - component: {fileID: 2913493002124564909}
   - component: {fileID: 2913493002132289045}
   m_Layer: 7
-  m_Name: Sci_Fi_Character_01
+  m_Name: Soldier_PreFab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1253,7 +1253,7 @@ GameObject:
   - component: {fileID: 7646404213882709666}
   - component: {fileID: 2828372588789821792}
   - component: {fileID: 6212867530976941065}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: spine_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1790,7 +1790,7 @@ GameObject:
   - component: {fileID: 2913493002124564941}
   - component: {fileID: 6997465307879567065}
   - component: {fileID: 6482908343350625310}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1886,7 +1886,7 @@ GameObject:
   - component: {fileID: 1931626908883263107}
   - component: {fileID: 563880267431629589}
   - component: {fileID: 8259225555175626676}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: lowerarm_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2057,7 +2057,7 @@ GameObject:
   - component: {fileID: 6152654612402190365}
   - component: {fileID: 1011864567618056866}
   - component: {fileID: 5834557237057486518}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: lowerarm_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2291,7 +2291,7 @@ GameObject:
   - component: {fileID: 372761989532827462}
   - component: {fileID: 8361294887742345124}
   - component: {fileID: 1832856564231349297}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2625,7 +2625,7 @@ GameObject:
   - component: {fileID: 7587430233904671828}
   - component: {fileID: 6591335413119114905}
   - component: {fileID: 8118599187599281279}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: calf_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2735,7 +2735,7 @@ GameObject:
   - component: {fileID: 3039969799974576566}
   - component: {fileID: 4440159090456598684}
   - component: {fileID: 6871183656282810541}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: calf_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3025,12 +3025,36 @@ PrefabInstance:
     m_TransformParent: {fileID: 2913493002124564967}
     m_Modifications:
     - target: {fileID: 1107519505620848, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1107519505620848, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1406482055188504, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1406973521519276, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1499331574927716, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
       propertyPath: m_Name
       value: Sci-fi Rifle 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499331574927716, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1786676320871052, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880587522693968, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4953455873149578, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
       propertyPath: m_RootOrder
@@ -3075,6 +3099,22 @@ PrefabInstance:
     - target: {fileID: 4953455873149578, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 91.04101
+      objectReference: {fileID: 0}
+    - target: {fileID: 2394656839550687285, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
+      propertyPath: m_Layer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5459313988870026584, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5459313988870026584, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5459313988870026584, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0328ce1c9e80f74468f07d56bb2a5cb9, type: 3}

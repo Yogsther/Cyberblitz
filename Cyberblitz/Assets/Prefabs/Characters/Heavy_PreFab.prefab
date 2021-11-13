@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1176494586}
   - component: {fileID: 1176494585}
   - component: {fileID: 1176494584}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 3904920755567965697}
   - component: {fileID: 8402018276019775447}
   - component: {fileID: 933905198834403317}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -620,7 +620,7 @@ GameObject:
   - component: {fileID: 8976218145274952185}
   - component: {fileID: 293353145117549745}
   - component: {fileID: 7740982182344755821}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: calf_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -730,7 +730,7 @@ GameObject:
   - component: {fileID: 6132124138626547479}
   - component: {fileID: 6832315025801166456}
   - component: {fileID: 181174926970677410}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: calf_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1116,7 +1116,7 @@ GameObject:
   - component: {fileID: 497778076058153130}
   - component: {fileID: 1885991060972046866}
   - component: {fileID: 4944864072313419837}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1243,7 +1243,7 @@ GameObject:
   - component: {fileID: 6335419487484405345}
   - component: {fileID: 4066772607737850442}
   - component: {fileID: 5949306963177169012}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: lowerarm_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1414,7 +1414,7 @@ GameObject:
   - component: {fileID: 4678889096740247890}
   - component: {fileID: 2673828175815705870}
   - component: {fileID: 554949478546794033}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: lowerarm_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2969,7 +2969,7 @@ GameObject:
   - component: {fileID: 5014606611583625503}
   - component: {fileID: 3611681310312925098}
   - component: {fileID: 6433105311822966164}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: spine_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3438,7 +3438,7 @@ GameObject:
   - component: {fileID: 4541648941858968246}
   - component: {fileID: 3545125350775155627}
   - component: {fileID: 5170999018901107609}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: upperarm_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3548,7 +3548,7 @@ GameObject:
   - component: {fileID: 4115641113126982295}
   - component: {fileID: 296300325008337097}
   - component: {fileID: 3905481413193538332}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: upperarm_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3722,7 +3722,7 @@ GameObject:
   - component: {fileID: 602491349099153213}
   - component: {fileID: 296220868660761878}
   - component: {fileID: 7563644041740476642}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: thigh_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3832,7 +3832,7 @@ GameObject:
   - component: {fileID: 3850674492028096618}
   - component: {fileID: 6450986057714311310}
   - component: {fileID: 3641345135741997920}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: thigh_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4065,6 +4065,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sci-fi Rifle 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1913298436267184, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4167483207883930, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -4108,6 +4112,50 @@ PrefabInstance:
     - target: {fileID: 4167483207883930, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 91.04101
+      objectReference: {fileID: 0}
+    - target: {fileID: 5288982630553462309, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5288982630553462309, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5288982630553462309, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762756699213089488, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762756699213089492, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762756699213089494, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762756699213089496, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762756699213089498, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762756699213089500, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762756699213089502, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921512000271096473, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5656a6ccbf3efed47b3add1ec1de3769, type: 3}

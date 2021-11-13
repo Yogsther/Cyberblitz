@@ -130,11 +130,16 @@ public class GuardBlock : Block
 	public override void OnPlaybackStart(Match simulatedMatch)
 	{
 		VisualUnit ownerVisualUnit = VisualUnitManager.GetVisualUnitById(ownerId);
+
+		
+
 		ownerVisualUnit.animator.SetTrigger("Stop");
+		if (!ownerVisualUnit.isAiming)
+		{
+			Quaternion targetRotation = Quaternion.AngleAxis(aimCone.direction, Vector3.down);
 
-		Quaternion targetRotation = Quaternion.AngleAxis(aimCone.direction, Vector3.down);
-
-		ownerVisualUnit.SetTargetForward(targetRotation * Vector3.forward);
+			ownerVisualUnit.SetTargetForward(targetRotation * Vector3.forward);
+		}
 	}
 
 	public override void Playback(Match simulatedMatch, float localTime)
@@ -144,5 +149,8 @@ public class GuardBlock : Block
 
 	public override void OnPlaybackEnd(Match simulatedMatch)
 	{
+		VisualUnit ownerVisualUnit = VisualUnitManager.GetVisualUnitById(ownerId);
+
+		ownerVisualUnit.isAiming = false;
 	}
 }

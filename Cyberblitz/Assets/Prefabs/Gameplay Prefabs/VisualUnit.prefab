@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6981174404635103774}
   - component: {fileID: 7811638850505545310}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Model - Main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 762027383312993629}
   - component: {fileID: 5479005297392622843}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Selection Ring (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8608801115243983407}
   - component: {fileID: 2798491236032930682}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Selection Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1010761047293992740}
   - component: {fileID: 7395737574004248064}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -342,17 +342,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   friendly: 0
-  mainModel: {fileID: 6981174404635103774}
+  modelTransform: {fileID: 6981174404635103774}
+  model: {fileID: 0}
   rotationOffset: -24.2
+  aimRotationOffset: -44.2
+  lockTargetForward: 0
   outlineAnimator: {fileID: 2653236648001534482}
   outlineController: {fileID: 2935608566055494640}
   animator: {fileID: 0}
+  shootVFX: {fileID: 0}
   overheadIconRenderer: {fileID: 5803937780249501093}
   isSelected: 0
   isSelectable: 1
   isDead: 0
   mouseDownOnUnit: 0
   rigidBodies: []
+  isAiming: 0
 --- !u!114 &2935608566055494640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,7 +403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3183658862910005879}
   - component: {fileID: 5976177378084708608}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,7 +486,7 @@ GameObject:
   - component: {fileID: 3056601682940068540}
   - component: {fileID: 5803937780249501093}
   - component: {fileID: 3467407408790853513}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: Overhead Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,7 +527,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 87d8d601fc3be3a4d85066627f081bfd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -543,7 +548,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7149892210239447775, guid: a18cc11eccdc1314db0a2e5821ad1ab0, type: 3}
+  m_Sprite: {fileID: 5120940934649208145, guid: 211567e542236fd4b86032171731f1b2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

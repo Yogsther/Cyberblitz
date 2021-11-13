@@ -1,160 +1,207 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.VFX;
 
 public class VisualUnit : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
 {
-	public UnitID id = "test id";
-	public bool friendly = false;
+    public UnitID id = "test id";
+    public UnitType type => MatchManager.GetUnit(id).type;
+    public UnitData unitData => UnitDataManager.GetUnitDataByType(type);
 
-	public Transform mainModel;
+    public bool friendly = false;
 
-	public float rotationOffset;
+    public Transform modelTransform;
+    public GameObject model;
 
-	public Animator outlineAnimator;
-	public OutlineController outlineController;
+    public float rotationOffset;
+    public float aimRotationOffset = -44.2f;
 
-	public Animator animator;
+    public Quaternion modelRotation => Quaternion.AngleAxis(rotationOffset, Vector3.down);
+    public Quaternion modelAimRotation => Quaternion.AngleAxis(aimRotationOffset, Vector3.down);
 
-	public SpriteRenderer overheadIconRenderer;
+    public bool lockTargetForward = false;
 
-	public bool isSelected;
-	public bool isSelectable;
+    public Animator outlineAnimator;
+    public OutlineController outlineController;
 
-	public bool isDead;
+    public Animator animator;
 
-	public static Action<UnitID> OnSelected;
-	public static Action<UnitID> OnSelectAndDrag;
-	public static Action<UnitID> OnDeselected;
+    public VisualEffect shootVFX;
 
-	public static Action<UnitID, float> OnShoot;
+    public SpriteRenderer overheadIconRenderer;
 
-	public static Action<UnitID> OnDeath;
+    public bool isSelected;
+    public bool isSelectable;
 
-	public bool mouseDownOnUnit = false;
+    public bool isDead;
 
-	private Vector3 targetForward;
+    public static Action<UnitID> OnSelected;
+    public static Action<UnitID> OnSelectAndDrag;
+    public static Action<UnitID> OnDeselected;
 
-	public Rigidbody[] rigidBodies;
+    public static Action<UnitID, bool> OnShoot;
 
-	private float smoothRotationVelocity;
+    public static Action<UnitID> OnDeath;
 
-	private void Start()
-	{
-		animator = mainModel.GetComponentInChildren<Animator>();
-		SetRagdollEnabled(false);
+    public bool mouseDownOnUnit = false;
 
-		outlineAnimator.SetBool("Friendly", friendly);
+    private Vector3 targetForward;
 
-		TimelineEditor.OnUnitSelected += id =>
-		{
-			isSelected = id == this.id;
-			// TODO NULL CHECK BECAUSE BUG IF YOU PLAY MORE THAN ONE GAME
-			if (outlineAnimator != null) outlineAnimator.SetBool("Selected", isSelected);
-		};
+    public Rigidbody[] rigidBodies;
 
-		TimelineEditor.OnUnitDeselect += id =>
-		{
-			bool isDeselectedUnit = id == this.id;
+    private readonly float smoothRotationVelocity;
 
-			if (isDeselectedUnit)
-			{
-				isSelected = false;
-				if (outlineAnimator != null) outlineAnimator.SetBool("Selected", isSelected);
-			}
-		};
+    public bool isAiming;
+    private readonly VisualUnit targetVisualUnit;
 
-		OnShoot += (id, direction) =>
-		{
-			if (id == this.id)
-			{
+    private void Start()
+    {
+        animator = modelTransform.GetComponentInChildren<Animator>();
+        shootVFX = modelTransform.GetComponentInChildren<VisualEffect>();
+        SetRagdollEnabled(false);
 
-			}
-		};
+        outlineAnimator.SetBool("Friendly", friendly);
 
-		OnDeath += id =>
-		{
+        TimelineEditor.OnUnitSelected += id =>
+        {
+            isSelected = id == this.id;
+            // TODO NULL CHECK BECAUSE BUG IF YOU PLAY MORE THAN ONE GAME
+            if (outlineAnimator != null)
+            {
+                outlineAnimator.SetBool("Selected", isSelected);
+            }
+        };
 
-			if (id == this.id)
-			{
-				isDead = true;
-				isSelectable = false;
-				SetRagdollEnabled(isDead);
+        TimelineEditor.OnUnitDeselect += id =>
+        {
+            bool isDeselectedUnit = id == this.id;
 
-				outlineAnimator.SetBool("Dead", isDead);
-				SoundManager.PlaySound("unit_killed", mainModel.position);
-			}
-		};
-	}
+            if (isDeselectedUnit)
+            {
+                isSelected = false;
+                if (outlineAnimator != null)
+                {
+                    outlineAnimator.SetBool("Selected", isSelected);
+                }
+            }
+        };
 
+        OnShoot += (id, hit) =>
+        {
+            if (id == this.id)
+            {
+                if (hit)
+                {
+                    SoundManager.PlaySound(unitData.GetRandomFireSound(), modelTransform.position);
+                }
+                else
+                {
+                    SoundManager.PlaySound("missed_shot", modelTransform.position);
+                }
 
+                SoundManager.PlaySound("shell_drop", modelTransform.position, 500f);
 
-	private void Update()
-	{
+                animator.SetTrigger("FireTrigger");
 
-		float angleDifference = Vector3.Angle(mainModel.forward, targetForward);
-		mainModel.forward = Vector3.RotateTowards(mainModel.forward, targetForward, (1f + (angleDifference * .1f)) * Time.deltaTime, 1f);
+                shootVFX.SendEvent("Fire");
+            }
+        };
 
-	}
+        OnDeath += id =>
+        {
 
-	public void SetVisable(bool visable)
-	{
+            if (id == this.id)
+            {
+                isDead = true;
+                isSelectable = false;
+                SetRagdollEnabled(isDead);
 
-	}
-
-	public void SetTargetForward(Vector3 newTargetForward)
-	{
-		targetForward = newTargetForward;
-	}
-
-	public void SetRagdollEnabled(bool enabled)
-	{
-
-		if (animator != null) animator.enabled = !enabled;
-		foreach (Rigidbody rb in rigidBodies)
-		{
-			if (rb != null) rb.isKinematic = !enabled;
-		}
-	}
-
-	public void SetSelected(bool selected)
-	{
-		if (isSelectable && selected)
-		{
-			//outlineController.color = selectedColor;
-			OnSelected?.Invoke(id);
-		} else if (isSelected)
-		{
-			//outlineController.color = friendlyColor;
-			OnDeselected?.Invoke(id);
-		}
-
-	}
+                outlineAnimator.SetBool("Dead", isDead);
+                SoundManager.PlaySound("unit_killed", modelTransform.position);
+            }
+        };
+    }
 
 
-	public void OnPointerClick(PointerEventData eventData)
-	{
-		SetSelected(true);
-	}
 
-	public void OnPointerExit(PointerEventData eventData)
-	{
-		if (mouseDownOnUnit)
-		{
-			if (isSelectable) OnSelectAndDrag?.Invoke(id);
-			mouseDownOnUnit = false;
-		}
-	}
+    private void Update()
+    {
+        model.transform.localRotation = Quaternion.RotateTowards(model.transform.localRotation, isAiming ? modelAimRotation : modelRotation, 180f * Time.deltaTime);
+        float angleDifference = Vector3.Angle(modelTransform.forward, targetForward);
+        modelTransform.forward = Vector3.RotateTowards(modelTransform.forward, targetForward, (1f + (angleDifference * .1f)) * Time.deltaTime, 1f);
 
-	public void OnPointerDown(PointerEventData eventData)
-	{
-		mouseDownOnUnit = true;
-	}
+    }
 
-	public void OnPointerUp(PointerEventData eventData)
-	{
-		mouseDownOnUnit = false;
-	}
+    public void SetVisable(bool visable)
+    {
+
+    }
+
+    public void SetTargetForward(Vector3 newTargetForward)
+    {
+        targetForward = newTargetForward.normalized;
+    }
+
+    public void SetRagdollEnabled(bool enabled)
+    {
+
+        if (animator != null)
+        {
+            animator.enabled = !enabled;
+        }
+
+        foreach (Rigidbody rb in rigidBodies)
+        {
+            if (rb != null)
+            {
+                rb.isKinematic = !enabled;
+            }
+        }
+    }
+
+    public void SetSelected(bool selected)
+    {
+        if (isSelectable && selected)
+        {
+            //outlineController.color = selectedColor;
+            OnSelected?.Invoke(id);
+        }
+        else if (isSelected)
+        {
+            //outlineController.color = friendlyColor;
+            OnDeselected?.Invoke(id);
+        }
+
+    }
+
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        SetSelected(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (mouseDownOnUnit)
+        {
+            if (isSelectable)
+            {
+                OnSelectAndDrag?.Invoke(id);
+            }
+
+            mouseDownOnUnit = false;
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        mouseDownOnUnit = true;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        mouseDownOnUnit = false;
+    }
 }

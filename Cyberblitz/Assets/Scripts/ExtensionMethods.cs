@@ -144,4 +144,16 @@ public static class ExtensionMethods
 
         return vector3s;
     }
+
+
+    //___Transform___//
+
+    public static void SetChildLayersRecursive(Transform parent, int layer)
+    {
+        parent.gameObject.layer = layer;
+        foreach (Transform child in parent.GetComponentsInChildren<Transform>())
+        {
+            child.gameObject.layer = layer;
+        }
+    }
 }
