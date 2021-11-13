@@ -118,13 +118,6 @@ public class CameraController : MonoBehaviour
         pivotTargetPosition += smoothCameraMovementInput * cameraMovementSpeed * Time.deltaTime;
         pivotTargetRotation *= Quaternion.AngleAxis(smoothCameraRotationInput * cameraRotationSpeed * Time.deltaTime, Vector3.up);
 
-
-
-
-
-
-
-
         
         zoom = Mathf.Lerp(zoom, targetZoom, 20f * Time.deltaTime);
     }
