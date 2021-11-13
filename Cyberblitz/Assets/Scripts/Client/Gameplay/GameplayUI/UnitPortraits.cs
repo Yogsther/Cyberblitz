@@ -62,12 +62,9 @@ public class UnitPortraits : MonoBehaviour
 
 	void OnMatchStart(Match match)
 	{
-		Debug.Log("ON MATCH STARTED, SETTING UP PORTRAITS!");
 		Unit[] units = match.GetAllUnits(match.GetLocalTeam());
-		Debug.Log("GOT UNITS: " + units.Length);
 		for (int i = 0; i < units.Length; i++)
 		{
-			Debug.Log("SET UP PORTRAIT FOR UNIT");
 			portraits[i].Setup(units[i].type, units[i].id);
 		}
 	}
@@ -87,7 +84,8 @@ public class UnitPortraits : MonoBehaviour
 
 	void OnUnitDamage(UnitID id, float amount)
 	{
-		GetUnitPortrait(id).ChangeHp(-amount);
+		UnitPortrait portrait = GetUnitPortrait(id);
+		if (portrait != null) portrait.ChangeHp(-amount);
 	}
 
 	UnitPortrait GetUnitPortrait(UnitID id)
@@ -101,7 +99,8 @@ public class UnitPortraits : MonoBehaviour
 
 	void OnUnitDeath(UnitID id)
 	{
-		GetUnitPortrait(id).SetDead();
+		UnitPortrait portrait = GetUnitPortrait(id);
+		if (portrait != null) portrait.SetDead();
 	}
 
 }
