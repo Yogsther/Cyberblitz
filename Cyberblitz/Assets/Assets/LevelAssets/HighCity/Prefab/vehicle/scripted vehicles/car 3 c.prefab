@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9165601495019832500}
-  - component: {fileID: -8505274858073633808}
   - component: {fileID: 2069404644662681414}
   m_Layer: 0
   m_Name: car 3 c
@@ -37,21 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-8505274858073633808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5289926532220106407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45505b0db6e99c04eb57c247d1fdbb33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CarSpeed: 45
-  CarLife: 300
-  _HCTrafficLinked: {fileID: 0}
 --- !u!82 &2069404644662681414
 AudioSource:
   m_ObjectHideFlags: 0
