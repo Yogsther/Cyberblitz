@@ -38,6 +38,7 @@ public class CameraController : MonoBehaviour
 
     private Vector3 cameraMovementInput = Vector3.zero;
     private float cameraRotationInput = 0f;
+    private float cameraZoomInput = 0f;
 
     private Vector3 smoothCameraMovementInput = Vector3.zero;
     private float smoothCameraRotationInput = 0f;
@@ -52,9 +53,14 @@ public class CameraController : MonoBehaviour
         cameraRotationInput = ctx.ReadValue<float>();
     }
 
+    public void OnCameraZoomInput(InputAction.CallbackContext ctx)
+    {
+        cameraZoomInput = ctx.ReadValue<float>();
+    }
+
     private void Awake()
     {
-        InputManager.OnCameraZoom += ChangeCameraZoom;
+        //InputManager.OnCameraZoom += ChangeCameraZoom;
     }
 
     public void InitCamera(Level level)
@@ -113,13 +119,17 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         smoothCameraMovementInput = Vector3.Lerp(smoothCameraMovementInput, cameraMovementInput, cameraSmoothingSpeed * Time.deltaTime);
-        smoothCameraRotationInput = Mathf.Lerp(smoothCameraRotationInput, cameraRotationInput, cameraSmoothingSpeed * Time.deltaTime);
+        //smoothCameraRotationInput = Mathf.Lerp(smoothCameraRotationInput, cameraRotationInput, cameraSmoothingSpeed * Time.deltaTime);
+
+        smoothCameraRotationInput.SmoothToAngle(cameraRotationInput, cameraSmoothingSpeed * Time.deltaTime);
 
         pivotTargetPosition += smoothCameraMovementInput * cameraMovementSpeed * Time.deltaTime;
         pivotTargetRotation *= Quaternion.AngleAxis(smoothCameraRotationInput * cameraRotationSpeed * Time.deltaTime, Vector3.up);
 
+        targetZoom = Mathf.Clamp(targetZoom + (cameraZoomInput * zoomSpeed), minZoom, maxZoom);
+
         
-        zoom = Mathf.Lerp(zoom, targetZoom, 20f * Time.deltaTime);
+        zoom.SmoothTo(targetZoom, 20f * Time.deltaTime);
     }
 
     private void LateUpdate()

@@ -20,6 +20,22 @@ public static class ExtensionMethods
     }
 
 
+    //___float__//
+
+    public static float SmoothTo(ref this float value, float target, float delta)
+    {
+        value = Mathf.Lerp(value, target, delta);
+
+        return value;
+    }
+
+    public static float SmoothToAngle(ref this float angle, float target, float delta)
+    {
+        angle = Mathf.LerpAngle(angle, target, delta);
+
+        return angle;
+    }
+
 
     //___Vector2___//
 

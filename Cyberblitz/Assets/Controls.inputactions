@@ -46,11 +46,11 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Camera Zoom In / Out",
+                    "name": "Camera Movement",
                     "type": "Value",
-                    "id": "6d39c000-c516-4609-9ef3-1e4394353819",
-                    "expectedControlType": "",
-                    "processors": "Clamp(min=-1,max=1)",
+                    "id": "8a4288fe-0725-4fe5-922a-5701095bdc9d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
                     "interactions": ""
                 },
                 {
@@ -62,11 +62,11 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Camera Movement",
+                    "name": "Camera Zoom In / Out",
                     "type": "Value",
-                    "id": "8a4288fe-0725-4fe5-922a-5701095bdc9d",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
+                    "id": "6d39c000-c516-4609-9ef3-1e4394353819",
+                    "expectedControlType": "",
+                    "processors": "Clamp(min=-1,max=1)",
                     "interactions": ""
                 }
             ],
@@ -138,40 +138,40 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "b37f4973-9fc2-4db6-9bbb-f32c37127f26",
+                    "name": "Keys",
+                    "id": "65c0419e-97f1-4931-a3c8-a92e3a89fb84",
                     "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Camera Rotation",
+                    "action": "Camera Zoom In / Out",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "69c51ab4-c8a1-4487-8c75-99846a693a3b",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Camera Rotation",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "positive",
-                    "id": "0cf0f59e-cbfa-4ebb-88f9-8e8e994b40b0",
-                    "path": "<Keyboard>/e",
+                    "id": "4a852c38-51e4-4592-ad95-d13f03cd0fe5",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Camera Rotation",
+                    "action": "Camera Zoom In / Out",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "2D Vector",
+                    "name": "negative",
+                    "id": "5ecc51dc-d314-4587-b9a7-8db685e1e55e",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera Zoom In / Out",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Keys",
                     "id": "47de0c4c-a279-43c2-bb16-f266967a2f88",
                     "path": "2DVector",
                     "interactions": "",
@@ -222,6 +222,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Camera Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Keys",
+                    "id": "b37f4973-9fc2-4db6-9bbb-f32c37127f26",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera Rotation",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "positive",
+                    "id": "0cf0f59e-cbfa-4ebb-88f9-8e8e994b40b0",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "negative",
+                    "id": "69c51ab4-c8a1-4487-8c75-99846a693a3b",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera Rotation",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
