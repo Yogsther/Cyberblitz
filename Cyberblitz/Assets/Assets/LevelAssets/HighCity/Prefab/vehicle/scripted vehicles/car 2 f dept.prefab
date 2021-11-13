@@ -23,7 +23,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6396490145581157822}
-  - component: {fileID: -4226045688877731487}
   - component: {fileID: 7966233135198985654}
   m_Layer: 0
   m_Name: car 2 f dept
@@ -54,21 +53,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-4226045688877731487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6396490145581157823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45505b0db6e99c04eb57c247d1fdbb33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CarSpeed: 45
-  CarLife: 300
-  _HCTrafficLinked: {fileID: 0}
 --- !u!82 &7966233135198985654
 AudioSource:
   m_ObjectHideFlags: 0
@@ -421,7 +405,8 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5692826900689057746, guid: 3e1c8db9c3a02f94499a67353728e7b7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3e1c8db9c3a02f94499a67353728e7b7, type: 3}
 --- !u!4 &5962390751116485988 stripped
 Transform:
@@ -499,7 +484,8 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5692826900689057746, guid: 3e1c8db9c3a02f94499a67353728e7b7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3e1c8db9c3a02f94499a67353728e7b7, type: 3}
 --- !u!4 &5962390751584299492 stripped
 Transform:
@@ -585,7 +571,8 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5692826900689057746, guid: 3e1c8db9c3a02f94499a67353728e7b7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3e1c8db9c3a02f94499a67353728e7b7, type: 3}
 --- !u!4 &5962390750747412284 stripped
 Transform:
@@ -663,7 +650,8 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5692826900689057746, guid: 3e1c8db9c3a02f94499a67353728e7b7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3e1c8db9c3a02f94499a67353728e7b7, type: 3}
 --- !u!4 &5962390750491835538 stripped
 Transform:
@@ -749,7 +737,8 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5692826900689057746, guid: 3e1c8db9c3a02f94499a67353728e7b7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3e1c8db9c3a02f94499a67353728e7b7, type: 3}
 --- !u!4 &5889099749809047103 stripped
 Transform:

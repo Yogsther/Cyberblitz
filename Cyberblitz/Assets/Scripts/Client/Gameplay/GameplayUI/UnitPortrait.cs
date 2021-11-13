@@ -10,6 +10,7 @@ public class UnitPortrait : MonoBehaviour
 	public Transform healthBlobs;
 	public Color32 deadColor;
 	public UnitID unitID = new UnitID("NOT_ASSIGNED");
+	public float hp;
 
 	void Start()
 	{
@@ -22,7 +23,6 @@ public class UnitPortrait : MonoBehaviour
 
 	public void Setup(UnitType type, UnitID unitID)
 	{
-		Debug.Log("Setting up Unit: " + type.ToString());
 		this.unitID = unitID;
 		crown.enabled = type == UnitType.Courier;
 		roleIcon.enabled = type != UnitType.Courier;
@@ -32,6 +32,7 @@ public class UnitPortrait : MonoBehaviour
 		roleIcon.sprite = unitData.roleIcon;
 		unitImage.sprite = unitData.portrait;
 		SetMaxHp(unitData.stats.maxHp);
+		SetHp(unitData.stats.maxHp);
 		SetSelected(false);
 		SetHighlighted(false);
 		SetAlive();
@@ -66,18 +67,26 @@ public class UnitPortrait : MonoBehaviour
 
 	public void SetDead()
 	{
+		SetHp(0f);
 		deathCross.enabled = true;
 		crown.color = deadColor;
 		roleIcon.color = deadColor;
 		unitImage.color = deadColor;
 	}
 
+	public void ChangeHp(float change)
+	{
+		this.hp += change;
+		SetHp(this.hp);
+	}
+
 	public void SetHp(float hp)
 	{
+		this.hp = hp;
 		for (int i = 0; i < healthBlobs.childCount; i++)
 		{
 			Image blob = healthBlobs.GetChild(i).GetComponent<Image>();
-			blob.color = hp > i ? Color.white : Color.black;
+			blob.color = Mathf.Round(hp) > i ? Color.white : Color.black;
 		}
 	}
 }

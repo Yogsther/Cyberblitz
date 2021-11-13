@@ -36,7 +36,7 @@ public class ClientConnection
 	{
 		this.config = config;
 		version = config.version;
-		ws = new WebSocket(live ? "ws://stable.cyberblitz.okdev.se:5009" : "ws://localhost:" + config.port);
+		ws = new WebSocket(live ? $"ws://stable.cyberblitz.okdev.se:{config.port}" : "ws://localhost:" + config.port);
 		/*ws = new WebSocket(live ? "wss://stable.cyberblitz.okdev.se/" : "ws://localhost");*/
 		/*ws.SetProxy("https://stable.cyberblitz.okdev.se", null, null);*/
 

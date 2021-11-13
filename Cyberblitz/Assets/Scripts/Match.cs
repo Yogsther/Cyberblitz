@@ -16,6 +16,7 @@ public class Match
 	public MatchRules rules = new MatchRules();
 	public float longestTimelineDuration;
 	public UserID winner = null;
+	public bool privateMatch; // If the game was started through a private invitation (not matchmaking)
 
 	public MapVotes votes = new MapVotes();
 

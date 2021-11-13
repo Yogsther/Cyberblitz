@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public enum MatchEventType
 {
@@ -51,7 +52,7 @@ public class ShootEvent : MatchEvent
 		Unit shooterUnit = simulatedMatch.GetUnit(actorUnitId);
 		UnitData shooterData = UnitDataManager.GetUnitDataByType(shooterUnit.type);
 
-		AudioClip fireSound = shooterData.fireSounds[Random.Range(0, shooterData.fireSounds.Length)];
+		AudioClip fireSound = shooterData.fireSounds[UnityEngine.Random.Range(0, shooterData.fireSounds.Length)];
 
 		if (isHit) SoundManager.PlaySound(fireSound, shooter.mainModel.transform.position);
 		else SoundManager.PlaySound("missed_shot", shooter.mainModel.transform.position);
@@ -65,6 +66,7 @@ public class ShootEvent : MatchEvent
 public class DamageEvent : MatchEvent
 {
 	public float damageAmount;
+	public static Action<UnitID, float> OnUnitDamage;
 
 	public DamageEvent(UnitID actorUnitId, float damageAmount, float time) : base(actorUnitId, time)
 	{
@@ -76,6 +78,8 @@ public class DamageEvent : MatchEvent
 	{
 		VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(actorUnitId);
 		visualUnit.animator.SetTrigger("Hit");
+		Debug.Log("Damge event!");
+		OnUnitDamage?.Invoke(actorUnitId, damageAmount);
 	}
 }
 
