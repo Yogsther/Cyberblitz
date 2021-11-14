@@ -67,7 +67,6 @@ public class MenuSystem : MonoBehaviour
 	{
 		Settings.OnResolutionChanged += () =>
 		{
-			Debug.Log("Setting resolution: " + Settings.settings.width);
 			Screen.SetResolution(Settings.settings.width, Settings.settings.height, Settings.settings.fullscreen, Settings.settings.hz);
 		};
 

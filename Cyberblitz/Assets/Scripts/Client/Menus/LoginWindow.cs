@@ -12,6 +12,7 @@ public class LoginWindow : MonoBehaviour
 	public Button loginButton;
 	public MenuSystem menuSystem;
 	public bool sentLogin = false;
+	public HowToPlayPage tutorial;
 
 	void Start()
 	{
@@ -25,6 +26,7 @@ public class LoginWindow : MonoBehaviour
 		{
 			menuSystem.selectedMenuScreen.screen.SetActive(false);
 			menuSystem.StartLoginAnimation();
+			if (Settings.firstStartup) tutorial.DisplayTutorial();
 		};
 
 	}

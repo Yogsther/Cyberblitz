@@ -20,17 +20,26 @@ public static class Settings
 
 	public static Action OnResolutionChanged;
 	public static Action OnAudioChanged;
+
+	public static bool firstStartup = false;
+
 	static string path = Application.persistentDataPath + "/settings.cyber";
+
 
 	public static void LoadSettings()
 	{
 		if (File.Exists(path))
 		{
 			settings = JsonConvert.DeserializeObject<CyberBlitzSettings>(File.ReadAllText(path));
+		} else
+		{
+			firstStartup = true;
+			SaveSettings();
 		}
 
 		OnResolutionChanged?.Invoke();
 		OnAudioChanged?.Invoke();
+
 	}
 
 	public static void SaveSettings()
