@@ -12,6 +12,7 @@ public class MapVotePage : MonoBehaviour
 	public MapVotes votes = new MapVotes();
 	public MenuSystem menuSystem;
 	public List<MapVoteEntry> entries = new List<MapVoteEntry>();
+	public TMP_Text playerNames;
 
 	public Button readyButton;
 	public TMP_Text countdown;
@@ -81,7 +82,10 @@ public class MapVotePage : MonoBehaviour
 		{
 			menuSystem.header.SetActive(false);
 			menuSystem.gameUI.SetActive(true);
+			playerNames.text = $"{MatchManager.match.players[0].user.username} vs. {MatchManager.match.players[1].user.username}";
+
 		});
+
 
 		ready = false;
 		timeLeft = VOTE_TIME;
