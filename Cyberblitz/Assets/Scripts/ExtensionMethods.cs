@@ -20,6 +20,22 @@ public static class ExtensionMethods
     }
 
 
+    //___float__//
+
+    public static float SmoothTo(ref this float value, float target, float delta)
+    {
+        value = Mathf.Lerp(value, target, delta);
+
+        return value;
+    }
+
+    public static float SmoothToAngle(ref this float angle, float target, float delta)
+    {
+        angle = Mathf.LerpAngle(angle, target, delta);
+
+        return angle;
+    }
+
 
     //___Vector2___//
 
@@ -127,5 +143,17 @@ public static class ExtensionMethods
         foreach (Vector2Int vector2Int in vector2Ints) vector3s.Add(vector2Int.ToFlatVector3(y));
 
         return vector3s;
+    }
+
+
+    //___Transform___//
+
+    public static void SetChildLayersRecursive(Transform parent, int layer)
+    {
+        parent.gameObject.layer = layer;
+        foreach (Transform child in parent.GetComponentsInChildren<Transform>())
+        {
+            child.gameObject.layer = layer;
+        }
     }
 }

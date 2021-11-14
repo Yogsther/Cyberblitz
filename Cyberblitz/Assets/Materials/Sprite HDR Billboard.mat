@@ -22,7 +22,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Sprite HDR Billboard
   m_Shader: {fileID: -6465566751694194690, guid: b98a038701399bf4983d18582c31e0b1, type: 3}
-  m_ShaderKeywords: _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+    _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1

@@ -32,7 +32,7 @@ public class MoveBlock : Block
 		VisualUnit ownerVisualUnit = VisualUnitManager.GetVisualUnitById(ownerId);
 		ownerVisualUnit.animator.SetTrigger("Run");
 
-		Transform ownerTransform = ownerVisualUnit.mainModel;
+		Transform ownerTransform = ownerVisualUnit.modelTransform;
 
 		Vector3 newPosition = GetPositionAtTime(localTime).ToFlatVector3();
 

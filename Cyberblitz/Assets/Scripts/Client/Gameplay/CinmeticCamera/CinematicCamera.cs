@@ -100,7 +100,7 @@ public class CinematicCamera : MonoBehaviour
 				if (unit.timeline.GetDuration() > 0)
 				{
 					UnitFocus focus = new UnitFocus();
-					focus.unitModel = VisualUnitManager.GetVisualUnitById(unit.id).mainModel;
+					focus.unitModel = VisualUnitManager.GetVisualUnitById(unit.id).modelTransform;
 					focus.duration = unit.timeline.GetDuration();
 					focusGroup.Add(focus);
 				}
@@ -193,7 +193,7 @@ public class CinematicCamera : MonoBehaviour
 				{
 					clip.hasStarted = true;
 					VisualUnit visualUnit = VisualUnitManager.GetVisualUnitById(clip.unit);
-					focusedUnit = visualUnit.mainModel;
+					focusedUnit = visualUnit.modelTransform;
 
 					activeActionActor = visualUnit.id;
 					OnActionCameraIn?.Invoke(activeActionActor);
@@ -391,7 +391,7 @@ public class CinematicCamera : MonoBehaviour
 					if (!visualUnit.isDead)
 					{
 						aliveUnits++;
-						avgFocus += visualUnit.mainModel.position;
+						avgFocus += visualUnit.modelTransform.position;
 					}
 				}
 

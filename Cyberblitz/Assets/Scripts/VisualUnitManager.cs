@@ -102,23 +102,18 @@ public class VisualUnitManager : MonoBehaviour
 					visualUnitInstance.name = $"VisualUnit {(friendlyPlayer ? "Friendly" : "Enemy")} - {unitData.type} - {unit.id}";
 					visualUnitInstance.id = unit.id;
 					visualUnitInstance.friendly = friendlyPlayer;
-					GameObject model = Instantiate(unitData.model, visualUnitInstance.mainModel);
-					model.transform.localPosition = Vector3.zero;
-					model.transform.localRotation = Quaternion.AngleAxis(visualUnitInstance.rotationOffset, Vector3.down);
+					visualUnitInstance.model = Instantiate(unitData.model, visualUnitInstance.modelTransform);
+					visualUnitInstance.model.transform.localPosition = Vector3.zero;
+					visualUnitInstance.model.transform.localRotation = Quaternion.AngleAxis(visualUnitInstance.rotationOffset, Vector3.down);
 
-					visualUnitInstance.rigidBodies = model.GetComponentsInChildren<Rigidbody>();
+					visualUnitInstance.rigidBodies = visualUnitInstance.model.GetComponentsInChildren<Rigidbody>();
 					/*visualUnitInstance.rigidBodies.AddRange();*/
 
 
-					if (friendlyPlayer) model.layer = 7;
+					if (friendlyPlayer) visualUnitInstance.model.layer = 7;
 					else
 					{
-						SetChildLayersRecursive(visualUnitInstance.transform, 13);
-						/*visualUnitInstance.gameObject.layer = 13;
-						foreach (Transform child in visualUnitInstance.transform)
-						{
-							child.gameObject.layer = 13;
-						}*/
+						ReplaceChildLayersRecursive(visualUnitInstance.transform, 7, 13);
 					}
 					visualUnitInstance.overheadIconRenderer.sprite = unitData.roleIcon;
 					if (unit.isMVP) visualUnitInstance.overheadIconRenderer.gameObject.SetActive(true);
@@ -126,7 +121,7 @@ public class VisualUnitManager : MonoBehaviour
 
 					visualUnitInstance.isSelectable = false;
 
-					visualUnitInstance.mainModel.position = unit.position.ToVector2().ToFlatVector3();
+					visualUnitInstance.modelTransform.position = unit.position.ToVector2().ToFlatVector3();
 					visualUnitInstance.SetTargetForward(spawnArea.cameraRotation * Vector3.forward);
 
 					userVisualUnits.Add(visualUnitInstance);
@@ -154,6 +149,20 @@ public class VisualUnitManager : MonoBehaviour
 			child.gameObject.layer = layer;
         }
     }
+
+	public void ReplaceChildLayersRecursive(Transform parent, int oldLayer, int newLayer)
+	{
+		if(parent.gameObject.layer == oldLayer)
+        {
+			parent.gameObject.layer = newLayer;
+		}
+		
+		foreach (Transform child in parent.GetComponentsInChildren<Transform>())
+		{
+			if(child.gameObject.layer == oldLayer)
+			child.gameObject.layer = newLayer;
+		}
+	}
 
 	private void DeleteAllVisualUnits()
 	{
